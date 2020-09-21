@@ -1,7 +1,6 @@
 //Import Modules
 const express = require('express');
 const path = require('path');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors')
 
@@ -13,9 +12,6 @@ const PORT = process.env.PORT || 5000
 //Import Files
 const routes = require('./routes')
 
-//Connect DB
-//const db = require('./backend/DB')
-//db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 
 //Configuration
