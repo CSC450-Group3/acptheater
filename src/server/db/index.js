@@ -12,7 +12,7 @@ require('dotenv').config()
 
 // setup connection information
 var connection;
-if(process.env.JAWSDB_URL){
+if(process.env.NODE_ENV ==='production' && process.env.JAWSDB_URL){
     // connection to JawsDB on Heroku
     connection = mysql.createConnection(process.env.JAWSDB_URL)
 }
