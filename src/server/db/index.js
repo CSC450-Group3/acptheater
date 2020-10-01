@@ -8,7 +8,7 @@
  */
 
 var mysql = require('mysql');
-var config = require('../config');
+require('dotenv').config()
 
 // setup connection information
 var connection;
@@ -19,10 +19,10 @@ if(process.env.JAWSDB_URL){
 else{
     // connect locally
     connection = mysql.createConnection({
-        host: config.db.host,
-        user: config.db.user,
-        password: config.db.password,
-        database: config.db.database
+        host: process.env.MYSQL_HOST,
+        user: process.env.MYSQL_USER,
+        password: process.env.MYSQL_PASSWORD,
+        database: process.env.MYSQL_DATABASE
     });
 } 
 
