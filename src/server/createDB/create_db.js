@@ -368,7 +368,7 @@ con.query(
 /* Table `acpTheater`.`UserAccount` */
 con.query("DROP TABLE IF EXISTS `acpTheater`.`UserAccount`", function (err, result) {
     if (err) throw err;
-    console.log("Thread table dropped");
+    console.log("UserAccount table dropped");
 });
 
 con.query(
