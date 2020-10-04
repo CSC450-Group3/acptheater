@@ -32,73 +32,82 @@ const navbarStyle = makeStyles((theme) => ({
 
 function NavbarAdmin() {
   const classes = navbarStyle();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const isMenuOpen = Boolean(anchorEl);
+  const [anchorEl1, setAnchorEl1] = React.useState(null);
+  const [anchorEl2, setAnchorEl2] = React.useState(null);
+  const [anchorEl3, setAnchorEl3] = React.useState(null);
 
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const isNavMenuOpen = Boolean(anchorEl1);
+  const isProfileMenuOpen = Boolean(anchorEl2);
+  const isManageMenuOpen = Boolean(anchorEl3);
 
   const handleNavMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl1(event.currentTarget);
   }
 
-  const handleManageMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  }
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl2(event.currentTarget);
   };
 
-  const userMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Sign Out</MenuItem>
-    </Menu>
-  );
+  const handleManageMenuOpen = (event) => {
+    setAnchorEl3(event.currentTarget);
+  };
+
+  const handleNavMenuClose = () => {
+    setAnchorEl1(null);
+  };
+
+  const handleProfileMenuClose = () => {
+    setAnchorEl2(null);
+  };
+
+  const handleManageMenuClose = () => {
+    setAnchorEl3(null);
+  };
 
   const navMenu = (
     <Menu
-    anchorEl={anchorEl}
-    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    anchorEl={anchorEl1}
+    anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
     keepMounted
-    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-    open={isMenuOpen}
-    onClose={handleMenuClose}
+    transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+    open={isNavMenuOpen}
+    onClose={handleNavMenuClose}
   >
-    <MenuItem onClick={handleMenuClose}>Home</MenuItem>
-    <MenuItem onClick={handleMenuClose}>Movies</MenuItem>
-    <MenuItem onClick={handleMenuClose}>Concessions</MenuItem>
-    <MenuItem onClick={handleMenuClose}>Showtimes</MenuItem>
+    <MenuItem onClick={handleNavMenuClose}>Home</MenuItem>
+    <MenuItem onClick={handleNavMenuClose}>Movies</MenuItem>
+    <MenuItem onClick={handleNavMenuClose}>Concessions</MenuItem>
+    <MenuItem onClick={handleNavMenuClose}>Showtimes</MenuItem>
   </Menu>
   )
 
+  const userMenu = (
+    <Menu
+      anchorEl={anchorEl2}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isProfileMenuOpen}
+      onClose={handleProfileMenuClose}
+    >
+      <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleProfileMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleProfileMenuClose}>Sign Out</MenuItem>
+    </Menu>
+  );
+
   const manageMenu = (
     <Menu
-    anchorEl={anchorEl}
+    anchorEl={anchorEl3}
     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
     keepMounted
     transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-    open={isMenuOpen}
-    onClose={handleMenuClose}
+    open={isManageMenuOpen}
+    onClose={handleManageMenuClose}
   >
-    <MenuItem onClick={handleMenuClose}>Movies</MenuItem>
-    <MenuItem onClick={handleMenuClose}>Seats</MenuItem>
-    <MenuItem onClick={handleMenuClose}>Test</MenuItem>
-    <MenuItem onClick={handleMenuClose}>Test</MenuItem>
-    <MenuItem onClick={handleMenuClose}>Test</MenuItem>
-    <MenuItem onClick={handleMenuClose}>Test</MenuItem>
+    <MenuItem onClick={handleManageMenuClose}>Movies</MenuItem>
+    <MenuItem onClick={handleManageMenuClose}>Seats</MenuItem>
   </Menu>
-  )
+  );
 
   return (
     <div className={classes.grow}>
@@ -110,7 +119,6 @@ function NavbarAdmin() {
             aria-label="nav account"
             aria-haspopup="true"
             onClick={handleNavMenuOpen}
-            color="inherit"
           >
             <MenuIcon />
           </IconButton>
@@ -138,16 +146,16 @@ function NavbarAdmin() {
               aria-label="user account"
               aria-haspopup="true"
               onClick={handleManageMenuOpen}
-              color="inherit"color="inherit"
+              color="inherit"
             >
                 Manage</Button>
               <Button color="inherit">Login</Button>
           </div>
         </Toolbar>
       </AppBar>
-      {manageMenu}
       {navMenu}
       {userMenu}
+      {manageMenu}
     </div>
   );
 }

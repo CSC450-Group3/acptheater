@@ -67,7 +67,6 @@ function NavbarHome() {
             aria-label="nav account"
             aria-haspopup="true"
             onClick={handleNavMenuOpen}
-            color="inherit"
           >
             <MenuIcon />
           </IconButton>
