@@ -10,7 +10,14 @@ con.query("DROP procedure IF EXISTS `createSeats`", function (err, result) {
     if (err) throw err;
 });
 
-
+/**
+ * createSeats stored procedure
+ * INT screenID
+ * INT number_of_rows
+ * INT number_of_columns
+ * 
+ * Creates the seats for that screen for the entered number of rows and columns
+ */
 con.query("CREATE PROCEDURE `createSeats`(screenID INT, number_of_rows INT, number_of_columns INT) "+
     "BEGIN " +
 	    "DECLARE r INT; " +
@@ -60,12 +67,21 @@ con.query("CREATE PROCEDURE `createSeats`(screenID INT, number_of_rows INT, numb
 });
 
 
-
 con.query("DROP procedure IF EXISTS `createScreens`", function (err, result) {
     if (err) throw err;
 });
 
 
+/**
+ * createScreens stored procedure
+ * INT theaterID
+ * INT number_of_screens
+ * INT num_rows
+ * INT num_columns
+ * 
+ * Builds the entered number of screens for a given theater location
+ * Then calls the createSeats procuefure to create the seats for the build screen
+ */
 con.query(
     "CREATE PROCEDURE `createScreens` (theaterID INT, number_of_screens INT, num_rows INT, num_columns INT) " +
         "BEGIN " +
@@ -87,6 +103,7 @@ con.query(
 });
 
 
+/* Populate the Movie Theater location */
 con.query("INSERT INTO theater(theater_name, theater_address, theater_phone)" +
     "VALUES('Aragog Cinema','1234 Hidden Rd, Minneapolis, MN 55444' , '(555) 555-1234');", 
     function (err, result) {
@@ -94,20 +111,17 @@ con.query("INSERT INTO theater(theater_name, theater_address, theater_phone)" +
     console.log("Theater created")
 });
 
-
 con.query("SET @VarID = (SELECT LAST_INSERT_ID());", function (err, result) {
     if (err) throw err;
 });
 
-
-
-
+/* Create the screens and seats*/
 con.query("CALL createScreens(@VarID , 6, 10, 20);", function (err, result) {
     if (err) throw err;
     console.log("Screens and Seats created.")
 });
 
-
+/* Create an admin user */
 con.query("INSERT INTO user(first_name, last_name, birthday) " +
     "VALUES('System', 'Administrator', '1980-01-01');", function (err, result) {
     if (err) throw err;
@@ -118,8 +132,7 @@ con.query("SET @VarID = (SELECT LAST_INSERT_ID());", function (err, result) {
     if (err) throw err;
 });
 
-
-
+/* Create the admin user account */
 con.query("INSERT INTO userAccount(user_id, email, password, type) " +
     "Values(@VarID, 'admin@acpTheater.com', 'P@ssw0rd', 'A');", function (err, result) {
     if (err) throw err;

@@ -1,12 +1,3 @@
-
-/*
-    Execute this in mysql workbench before running the program. 
-    There are issues with the new mysql authentication protocols that require this to be executed.
-
-    ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'
-
- */
-
 var mysql = require('mysql');
 require('dotenv').config()
 
