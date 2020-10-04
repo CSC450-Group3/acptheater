@@ -1,7 +1,5 @@
 const con = require('../db')
 
-//if(!process.env.JAWSDB_URL)
-
 con.query("SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0", function (err, result) {
     if (err) throw err;
 });
