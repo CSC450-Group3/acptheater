@@ -13,7 +13,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 
 const navbarStyle = makeStyles((theme) => ({
-  grow: {
+  nav: {
     flexGrow: 1,
   },
   menuButton: {
@@ -86,7 +86,7 @@ function NavbarUser() {
   );
 
   return (
-    <div className={classes.grow}>
+    <div className={classes.nav}>
       
       <AppBar position="static">
         <Toolbar>
@@ -102,7 +102,7 @@ function NavbarUser() {
           <Typography className={classes.acptheater} variant="h6" noWrap>
             ACP Theater
           </Typography>
-          <div className={classes.grow} />
+          <div className={classes.nav} />
           <div>
             <IconButton aria-label="show messages" color="inherit">
               <Badge badgeContent={1} color="secondary">

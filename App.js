@@ -4,15 +4,17 @@ import Home from './pages/Home';
 import NavbarUser from './pages/NavbarUser';
 import NavbarAdmin from './pages/NavbarAdmin';
 import NavbarHome from './pages/NavbarHome';
+import Footer from './pages/Footer';
 import './App.css';
 
 function App() {
   return (
     <Router>
-        <NavbarUser />
+        <NavbarAdmin />
       <div className="App">
           <Route exact path="/"><Home /> </Route>
       </div>
+        <Footer/>
     </Router>
   );
 }

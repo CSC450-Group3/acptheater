@@ -10,7 +10,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 
 const navbarStyle = makeStyles((theme) => ({
-  grow: {
+  nav: {
     flexGrow: 1,
   },
   menuButton: {
@@ -57,7 +57,7 @@ function NavbarHome() {
   )
 
   return (
-    <div className={classes.grow}>
+    <div className={classes.nav}>
       
       <AppBar position="static">
         <Toolbar>
@@ -73,7 +73,7 @@ function NavbarHome() {
           <Typography className={classes.acptheater} variant="h6" noWrap>
             ACP Theater
           </Typography>
-          <div className={classes.grow} />
+          <div className={classes.nav} />
           <div>
               <Button color="inherit">Login</Button>
               <Button color="inherit">Sign-up</Button>
