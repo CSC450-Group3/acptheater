@@ -17,7 +17,7 @@ const navbarStyle = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(0),
   },
   title: {
     display: 'none',
@@ -118,7 +118,6 @@ function NavbarUser() {
             >
               <AccountCircle />
             </IconButton>
-            <Button color="inherit">Login</Button>
           </div>
         </Toolbar>
       </AppBar>

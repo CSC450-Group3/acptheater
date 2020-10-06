@@ -17,7 +17,7 @@ const navbarStyle = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(0),
   },
   title: {
     display: 'none',
@@ -127,6 +127,14 @@ function NavbarAdmin() {
           </Typography>
           <div className={classes.nav} />
           <div>
+            <Button 
+                edge="end" className={classes.menuButton}
+                aria-label="user account"
+                aria-haspopup="true"
+                onClick={handleManageMenuOpen}
+                color="inherit"
+            >
+                Manage</Button>
             <IconButton aria-label="show messages" color="inherit">
               <Badge badgeContent={1} color="secondary">
                 <MailIcon />
@@ -141,15 +149,6 @@ function NavbarAdmin() {
             >
               <AccountCircle />
             </IconButton>
-            <Button 
-              edge="end" className={classes.menuButton}
-              aria-label="user account"
-              aria-haspopup="true"
-              onClick={handleManageMenuOpen}
-              color="inherit"
-            >
-                Manage</Button>
-              <Button color="inherit">Login</Button>
           </div>
         </Toolbar>
       </AppBar>
