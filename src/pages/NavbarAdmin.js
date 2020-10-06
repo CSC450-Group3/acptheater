@@ -149,7 +149,7 @@ function NavbarAdmin() {
               color="inherit"
             >
                 Manage</Button>
-              <Button color="inherit">Login</Button>
+              <Button color="inherit">Sign Out</Button>
           </div>
         </Toolbar>
       </AppBar>

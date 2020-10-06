@@ -118,7 +118,7 @@ function NavbarUser() {
             >
               <AccountCircle />
             </IconButton>
-            <Button color="inherit">Login</Button>
+            <Button color="inherit">Sign Out</Button>
           </div>
         </Toolbar>
       </AppBar>
