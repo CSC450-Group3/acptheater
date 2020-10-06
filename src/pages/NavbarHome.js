@@ -14,7 +14,7 @@ const navbarStyle = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(0),
   },
   title: {
     display: 'none',
@@ -75,8 +75,8 @@ function NavbarHome() {
           </Typography>
           <div className={classes.nav} />
           <div>
+              <Button color="inherit">Sign Up</Button>
               <Button color="inherit">Login</Button>
-              <Button color="inherit">Sign-up</Button>
           </div>
         </Toolbar>
       </AppBar>
