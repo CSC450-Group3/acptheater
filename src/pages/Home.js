@@ -23,7 +23,7 @@ function Home() {
         <p className="welcomeIntro">
           Brought to you by Alex Yahn, Caitlin Landrus, and
           Patrick Garry. Happy to bring you live streaming
-          from the comforts of you own home as well as
+          from the comforts of your own home as well as
           in-person premier seating!
           </p>
       </div>
