@@ -19,7 +19,7 @@ function Home() {
   return (
     <body>
       <div className="welcome">
-        <h1>ACP Theatres Welcomes you!</h1>
+        <h1>ACP Theaters Welcomes you!</h1>
         <p className="welcomeIntro">
           Brought to you by Alex Yahn, Caitlin Landrus, and
           Patrick Garry. Happy to bring you live streaming
