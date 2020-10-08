@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5000
 
 
 //Connect DB
-const db = require('./src/server/db')
+const db = require('./src/backend/db.config')
 
 app.use(express.static(path.join(__dirname, 'build')))
 app.set('build', path.join(__dirname, 'index.html'))

@@ -1,19 +1,4 @@
 import React from 'react';
-import beer from './beer.jpeg';
-import lights from './lights.jpeg';
-import reel from './reel.jpeg';
-import seats from './seats.jpeg';
-import popcorn from './popcorn.jpeg';
-import nachos from './nachos.jpeg';
-import candy from './candy.jpeg';
-
-console.log(beer);
-console.log(lights);
-console.log(reel);
-console.log(seats);
-console.log(popcorn);
-console.log(nachos);
-console.log(candy);
 
 function Home() {
   return (
@@ -68,7 +53,7 @@ function Home() {
           Beverages
           </h1>
           <p>
-            <img src={beer} alt="beer" width="75%"/>
+            <img src={process.env.PUBLIC_URL + '/images/beer.jpeg'} alt="beer" width="75%"/>
           </p>
       </div>
 
@@ -79,21 +64,21 @@ function Home() {
           <div class="row">
 
           <div class="column">
-            <p><img src={popcorn} alt="popcorn" margin="auto" width="75%"/></p>
+            <p><img src={process.env.PUBLIC_URL + '/images/popcorn.jpeg'} alt="popcorn" margin="auto" width="75%"/></p>
             <p>Popcorn</p>
             <p>Description / Sizes</p>
             <p>Price(s)</p>
           </div>
 
           <div class="column">
-          <p><img src={nachos} alt="nachos" margin="auto" width="75%"/></p>
+          <p><img src={process.env.PUBLIC_URL + '/images/nachos.jpeg'} alt="nachos" margin="auto" width="75%"/></p>
             <p>Nachos</p>
             <p>Description</p>
             <p>Price</p>
           </div>
 
           <div class="column">
-          <p><img src={candy} alt="candy" margin="auto" alight width="75%"/></p>
+          <p><img src={process.env.PUBLIC_URL + '/images/candy.jpeg'} alt="candy" margin="auto" alight width="75%"/></p>
             <p>Candy</p>
             <p>Description</p>
             <p>Price</p>
@@ -104,7 +89,7 @@ function Home() {
       <div className="seating">
         <h1>
           State of the Art Seating
-          <img src={seats} alt="seats" width="75%"/>
+          <img src={process.env.PUBLIC_URL + '/images/seats.jpeg'} alt="seats" width="75%"/>
           </h1>
       </div>
     </body>
