@@ -10,8 +10,8 @@ Instructions for connecting and setting up the local database:
         MYSQL_PASSWORD='<PASSWORD>'
 
     # 3. run these scrpts:
-        node src/server/createDB/create_db.js
-        node src/server/createDB/create_sample_data.js
+        node src/backend/server/createDB/create_db.js
+        node src/backend/server/createDB/create_sample_data.js
 
     # 4. Add this to .env:
         MYSQL_DATABASE='acpTheater'
