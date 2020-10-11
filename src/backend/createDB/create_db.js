@@ -1,4 +1,4 @@
-const con = require('../db')
+const con = require('../db.config')
 
 con.query("SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0", function (err, result) {
     if (err) throw err;
