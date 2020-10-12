@@ -134,7 +134,7 @@ con.query("SET @VarID = (SELECT LAST_INSERT_ID());", function (err, result) {
 
 /* Create the admin user account */
 con.query("INSERT INTO userAccount(user_id, email, password, type) " +
-    "Values(@VarID, 'admin@acpTheater.com', 'P@ssw0rd', 'A');", function (err, result) {
+    "Values(@VarID, 'admin@acpTheater.com', SHA1('P@ssw0rd'), 'A');", function (err, result) {
     if (err) throw err;
     console.log("Admin user account created")
 });
