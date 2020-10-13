@@ -16,12 +16,14 @@ db.on('error', console.error.bind(console, 'database connection error:'))
 //Import API Routes
 const movieRoutes = require("./src/backend/routes/movie.routes.js")
 const userRoutes = require("./src/backend/routes/user.routes.js")
+const userAccountRoutes = require("./src/backend/routes/user.account.routes.js")
 
 //Configuration
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/movie', movieRoutes);
 app.use('/user', userRoutes);
+app.use('/userAccount', userAccountRoutes);
 
 
 app.use(express.static(path.join(__dirname, 'build')))

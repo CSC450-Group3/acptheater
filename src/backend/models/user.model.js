@@ -1,4 +1,3 @@
-const { AssignmentReturnOutlined } = require('@material-ui/icons');
 var sql = require('../db.config')
 
 //User object constructor
@@ -69,7 +68,7 @@ User.getAll = result => {
 User.updateById = (user_id, user, result) => {
     sql.query(
         "Update user SET first_name = ?, last_name = ? , middle_name = ?, birthday = ? WHERE user_id = ?",
-        [user.first_name, user.last_name, user.middle_name, '1993-07-15', user_id],
+        [user.first_name, user.last_name, user.middle_name, user.birthday, user_id],
         (err, res) => {
             //Error encountered
             if(err){
@@ -85,7 +84,7 @@ User.updateById = (user_id, user, result) => {
             }
 
             //User updated successfully
-            console.log("updated customer: ", {user_id: user_id, ...user});
+            console.log("updated user: ", {user_id: user_id, ...user});
             result(null, {user_id: user_id, ...user});
         }
     );
@@ -108,7 +107,7 @@ User.delete = (user_id, result) => {
         }
 
         // User deleted successfully
-        console.log("deleted customer with user_id: ", user_id);
+        console.log("deleted user with user_id: ", user_id);
         result(null, res);
     });
 }

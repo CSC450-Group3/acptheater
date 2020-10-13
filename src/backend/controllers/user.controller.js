@@ -30,7 +30,7 @@ exports.create = (req, res) => {
     });
 };
 
-// Find movie by Id
+// Find user by Id
 exports.findOne = (req, res) => {
     User.findById(req.params.user_id, (err, data) => {
         if(err){
