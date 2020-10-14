@@ -11,6 +11,9 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
+import { Link } from "react-router-dom";
+import Home from './frontend/pages/Home';
+import Movies from './frontend/pages/Movies';
 
 const navbarStyle = makeStyles((theme) => ({
   nav: {
@@ -73,8 +76,8 @@ function NavbarAdmin() {
     open={isNavMenuOpen}
     onClose={handleNavMenuClose}
   >
-    <MenuItem onClick={handleNavMenuClose}>Home</MenuItem>
-    <MenuItem onClick={handleNavMenuClose}>Movies</MenuItem>
+    <MenuItem onClick={handleNavMenuClose}><Link to='./frontend/pages/Home'>Home</Link ></MenuItem>
+    <MenuItem onClick={handleNavMenuClose}><Link to='./frontend/pages/Movies'>Movies</Link ></MenuItem>
     <MenuItem onClick={handleNavMenuClose}>Concessions</MenuItem>
     <MenuItem onClick={handleNavMenuClose}>Showtimes</MenuItem>
   </Menu>
