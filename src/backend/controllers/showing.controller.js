@@ -4,7 +4,7 @@ const Showing = require("../models/showing.model.js");
 exports.create = (req, res) => {
     //Validate the request
     if(!req.body){
-        res.staus(400).send({message: "Showing content cannot be empty."});
+        res.status(400).send({message: "Showing content cannot be empty."});
     }
 
     // Create the showing object
@@ -39,7 +39,7 @@ exports.findOne = (req, res) => {
                 });
             }
             else{
-                res.staus(500).send({
+                res.status(500).send({
                     message: `Error retreiving showing with showing_id ${req.params.showing_id}.`
                 });
             }
@@ -62,7 +62,7 @@ exports.findByDate = (req, res) => {
                 });
             }
             else{
-                res.staus(500).send({
+                res.status(500).send({
                     message: `Error retreiving showing for date ${req.params.date}.`
                 });
             }
@@ -73,7 +73,7 @@ exports.findByDate = (req, res) => {
     })
 }
 
-// getUpcoming
+// Find all upcoming tickets by user
 exports.findUpcoming = (req, res) => {
     Showing.getUpcoming((err, data) => {
         if(err){
@@ -103,7 +103,7 @@ exports.update = (req, res) =>{
         new Showing(req.body),
         (err, data) => {
             if(err){
-                // User account to update was not found
+                // Showing to update was not found
                 if(err.kind === "not_found"){
                     res.status(404).send({
                         message: `Showing not found with showing_id ${req.params.showing_id}.`
@@ -116,7 +116,7 @@ exports.update = (req, res) =>{
                     });
                 }
             }
-            // User account udpated successfully
+            // Showing udpated successfully
             else{
                 res.send(data);
             }
@@ -137,7 +137,7 @@ exports.delete = (req, res) => {
             }
             // Error encountered performing delete
             else{
-                res.staus(500).send({
+                res.status(500).send({
                     message: `Could not delete showing with showing_id ${req.params.showing_id}.`
                 });
             }

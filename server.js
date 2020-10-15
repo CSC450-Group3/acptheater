@@ -15,18 +15,21 @@ db.on('error', console.error.bind(console, 'database connection error:'))
 
 //Import API Routes
 const movieRoutes = require("./src/backend/routes/movie.routes.js")
-const userRoutes = require("./src/backend/routes/user.routes.js")
-const userAccountRoutes = require("./src/backend/routes/user.account.routes.js")
 const showingRoutes = require("./src/backend/routes/showing.routes.js")
+const ticketRoutes = require("./src/backend/routes/ticket.routes.js")
+const transactionRoutes = require("./src/backend/routes/transaction.routes.js")
+const userAccountRoutes = require("./src/backend/routes/user.account.routes.js")
+const userRoutes = require("./src/backend/routes/user.routes.js")
 
 //Configuration
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/movie', movieRoutes);
+app.use('/showing', showingRoutes);
+app.use('/ticket', ticketRoutes);
+app.use('/transaction', transactionRoutes);
 app.use('/user', userRoutes);
 app.use('/userAccount', userAccountRoutes);
-app.use('/showing', showingRoutes);
-
 
 app.use(express.static(path.join(__dirname, 'build')))
 app.set('build', path.join(__dirname, 'index.html'))

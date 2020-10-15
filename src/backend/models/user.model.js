@@ -20,7 +20,7 @@ User.create = (newUser, result) => {
 
         //User created successfully
         console.log("Created user: ", {user_id: res.insertId, ...newUser});
-        result(null, { id: res.insertId, ...newUser });
+        result(null, { user_id: res.insertId, ...newUser });
     });
 };
 

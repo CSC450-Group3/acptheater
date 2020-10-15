@@ -21,7 +21,7 @@ Showing.create = (newShowing, result) => {
 
         //Showing created successfully
         console.log("Created showing: ", {showing_id: res.insertId, ...newShowing});
-        result(null, { id: res.insertId, ...newShowing });
+        result(null, { showing_id: res.insertId, ...newShowing });
     });
 };
 
@@ -64,7 +64,7 @@ Showing.getByDate = (date, result) => {
             result(err, null);
             return;
         }
-        console.log(sql)
+        
         //Showing found
         console.log(`showings on ${date}: `, res);
         result(null, res);

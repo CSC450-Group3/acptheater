@@ -27,7 +27,7 @@ UserAccount.create = (newUserAccount, result) => {
 
         //User account created successfully
         console.log("Created user account: ", {user_account_id: res.insertId, ...newUserAccount});
-        result(null, { id: res.insertId, ...newUserAccount });
+        result(null, { user_account_id: res.insertId, ...newUserAccount });
     });
 };
 

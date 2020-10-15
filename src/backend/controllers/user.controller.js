@@ -40,7 +40,7 @@ exports.findOne = (req, res) => {
                 });
             }
             else{
-                res.staus(500).send({
+                res.status(500).send({
                     message: `Error retreiving user with user_id ${req.params.user_id}.`
                 });
             }
@@ -55,7 +55,7 @@ exports.findOne = (req, res) => {
 exports.findAll = (req, res) => {
     User.getAll((err, data) => {
         if(err){
-            res.staus(500).send({
+            res.status(500).send({
                 message: "Could not retreive users: " + err.message + "."
             });
         }

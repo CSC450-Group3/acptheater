@@ -4,7 +4,7 @@ const Movie = require("../models/movie.model.js");
 exports.create = (req, res) => {
     //Validate the request
     if(!req.body){
-        res.staus(400).send({message: "Movie content cannot be empty."});
+        res.status(400).send({message: "Movie content cannot be empty."});
     }
 
     // Create the Movie object
@@ -43,7 +43,7 @@ exports.findOne = (req, res) => {
                 });
             }
             else{
-                res.staus(500).send({
+                res.status(500).send({
                     message: `Error retreiving movie with movie_id ${req.params.movie_id}.`
                 });
             }
@@ -81,7 +81,7 @@ exports.delete = (req, res) => {
             }
             // Error encountered pefroming delete
             else{
-                res.staus(500).send({
+                res.status(500).send({
                     message: `Could not delete movie with movie_id ${req.params.movie_id}.`
                 });
             }

@@ -41,7 +41,7 @@ exports.findOne = (req, res) => {
                 });
             }
             else{
-                res.staus(500).send({
+                res.status(500).send({
                     message: `Error retreiving user account with user_account_id ${req.params.user_account_id}.`
                 });
             }

@@ -78,7 +78,7 @@ con.query(
     "CREATE TABLE IF NOT EXISTS `acpTheater`.`Movie` ( " +
         " `movie_id` INT NOT NULL AUTO_INCREMENT, " +
         " `title` VARCHAR(150) NOT NULL, " +
-        " `director` VARCHAR(150) NOT NULL, " +
+        " `director` VARCHAR(150) NULL, " +
         " `cast` BLOB NOT NULL, " +
         " `plot` BLOB NOT NULL, " +
         " `duration` INT(3) NOT NULL, " +
@@ -103,7 +103,8 @@ con.query(
         " `movie_ticket_id` INT NOT NULL AUTO_INCREMENT, " +
         " `transaction_id` INT NOT NULL, " +
         " `showing_id` INT NOT NULL, " +
-        " `seat_id` INT NOT NULL, " +
+        " `seat_id` INT NULL, " +
+        " `total_viewers` INT NULL, " +
     " PRIMARY KEY (`movie_ticket_id`), " +
     " CONSTRAINT `ticket_seat_id` " +
         " FOREIGN KEY (`seat_id`) " +
@@ -213,7 +214,7 @@ con.query(
         " `screen_id` INT NOT NULL, " +
         " `movie_id` INT NOT NULL, " +
         " `start_date_time` DATETIME NOT NULL, " +
-        " `cancelled` BIT(1) NOT NULL DEFAULT 0, " +
+        " `cancelled` BIT(1) NULL, " +
         " `price` DECIMAL(3,2) NOT NULL, " +
     " PRIMARY KEY (`showing_id`), " +
     " CONSTRAINT `showing_screen_id` " +
@@ -324,7 +325,7 @@ con.query(
     "CREATE TABLE IF NOT EXISTS `acpTheater`.`Transaction` ( " +
         " `transaction_id` INT NOT NULL AUTO_INCREMENT, " +
         " `user_account_id` INT NOT NULL, " +
-        " `total_price` DECIMAL(3,2) NOT NULL, " +
+        " `total_price` DECIMAL(6,2) NOT NULL, " +
     " PRIMARY KEY (`transaction_id`), " +
     " CONSTRAINT `transaction_user_account_id` " +
         " FOREIGN KEY (`user_account_id`) " +
@@ -428,47 +429,6 @@ con.query(
 con.query("CREATE INDEX `user_account_id_idx` ON `acpTheater`.`UserReadMessage` (`user_account_id` ASC) VISIBLE", function (err, result) {
     if (err) throw err;
     console.log("UserReadMessage index user_account_id_idx created");
-});
-
-
-
-/* Table `acpTheater`.`VirtualTicket` */
-con.query("DROP TABLE IF EXISTS `acpTheater`.`VirtualTicket`", function (err, result) {
-    if (err) throw err;
-    console.log("VirtualTicket table dropped");
-});
-
-con.query(
-    "CREATE TABLE IF NOT EXISTS `acpTheater`.`VirtualTicket` ( " +
-        " `virtual_ticket_id` INT NOT NULL AUTO_INCREMENT, " +
-        " `showing_id` INT NOT NULL, " +
-        " `transaction_id` INT NOT NULL, " +
-        " `total_viewers` VARCHAR(45) NOT NULL, " +
-    " PRIMARY KEY (`virtual_ticket_id`), " +
-    " CONSTRAINT `virtual_showing_id` " +
-        " FOREIGN KEY (`showing_id`) " +
-        " REFERENCES `acpTheater`.`Showing` (`showing_id`) " +
-        " ON DELETE CASCADE " +
-        " ON UPDATE NO ACTION, " +
-    " CONSTRAINT `virtual_transaction_id` " +
-        " FOREIGN KEY (`transaction_id`) " +
-        " REFERENCES `acpTheater`.`Transaction` (`transaction_id`) " +
-        " ON DELETE CASCADE " +
-        " ON UPDATE NO ACTION) " +
-    " ENGINE = InnoDB", function (err, result) {
-        if (err) throw err;
-        console.log("VirtualTicket table created");
-    });
-
-con.query("CREATE INDEX `showing_id_idx` ON `acpTheater`.`VirtualTicket` (`showing_id` ASC) VISIBLE", function (err, result) {
-    if (err) throw err;
-    console.log("VirtualTicket index showing_id_idx created");
-});
-
-
-con.query("CREATE INDEX `transaction_id_idx` ON `acpTheater`.`VirtualTicket` (`transaction_id` ASC) VISIBLE", function (err, result) {
-    if (err) throw err;
-    console.log("VirtualTicket index transaction_id_idx created");
     console.log("Database creation complete!");
 });
 
