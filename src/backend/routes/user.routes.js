@@ -4,11 +4,11 @@ const path = require('path');
 const user = require("../controllers/user.controller.js"); 
 const router = express.Router()
 
-// Create a new user
+// Create a new user 
 router.post("/create", user.create);
 
-// Get all users
-router.get("/getAll", user.findAll);
+// Validate user user credentials
+router.get("/email/:email/password/:password", user.validate);
 
 // Get user by user_id
 router.get("/:user_id", user.findOne);

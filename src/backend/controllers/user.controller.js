@@ -1,6 +1,6 @@
 const User = require("../models/user.model.js");
 
-// Create a new user
+// Create a new user 
 exports.create = (req, res) => {
     //Validate the request
     if(!req.body){
@@ -11,10 +11,15 @@ exports.create = (req, res) => {
 
     // Create the user object
     const user = new User({
+        user_id: req.body.user_id,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         middle_name: req.body.middle_name,
-        birthday: req.body.birthday
+        birthday: req.body.birthday,
+        email: req.body.email,
+        password: req.body.password,
+        type: req.body.type,
+        disabled: req.body.disabled
     });
 
     //Save the user to the database
@@ -51,13 +56,20 @@ exports.findOne = (req, res) => {
     })
 }
 
-// Get all users 
-exports.findAll = (req, res) => {
-    User.getAll((err, data) => {
+// Validate User login
+exports.validate = (req, res) => {
+    User.validateCredentials(req.params.email, req.params.password, (err, data) => {
         if(err){
-            res.status(500).send({
-                message: "Could not retreive users: " + err.message + "."
-            });
+            if(err.kind === "not_found"){
+                res.status(404).send({
+                    message: "User not found with the given credentials."
+                });
+            }
+            else{
+                res.status(500).send({
+                    message: "Error retreiving user."
+                });
+            }
         }
         else{
             res.send(data);

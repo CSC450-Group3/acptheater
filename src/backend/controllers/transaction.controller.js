@@ -9,7 +9,7 @@ exports.create = (req, res) => {
 
     // Create the transaction object
     const transaction = new Transaction({
-        user_account_id: req.body.user_account_id,
+        user_id: req.body.user_id,
         total_price: req.body.total_price
     });
 
@@ -50,12 +50,12 @@ exports.findOne = (req, res) => {
 
 
 
-// Find all user transactions by user_account_id
+// Find all user transactions by user_id
 exports.findAllByUser = (req, res) => {
-    Transaction.getAllByUser(req.params.user_account_id, (err, data) => {
+    Transaction.getAllByUser(req.params.user_id, (err, data) => {
         if(err){
             res.status(500).send({
-                message: `Error retreiving transactions for user ${req.params.user_account_id}.`
+                message: `Error retreiving transactions for user ${req.params.user_id}.`
             });
         }
         else{
@@ -64,12 +64,12 @@ exports.findAllByUser = (req, res) => {
     })
 }
 
-// Find all user transactions by user_account_id
+// Find all user transactions by user_id
 exports.findUpcomingByUser = (req, res) => {
-    Transaction.getUpcomingTicketsByUser(req.params.user_account_id, (err, data) => {
+    Transaction.getUpcomingTicketsByUser(req.params.user_id, (err, data) => {
         if(err){
             res.status(500).send({
-                message: `Error retreiving transactions for user ${req.params.user_account_id}.`
+                message: `Error retreiving transactions for user ${req.params.user_id}.`
             });
         }
         else{
@@ -78,12 +78,12 @@ exports.findUpcomingByUser = (req, res) => {
     })
 }
 
-// Get active transactions by user_account_id
+// Get active transactions by user_id
 exports.findActiveByUser = (req, res) => {
-    Transaction.getActiveTicketsByUser(req.params.user_account_id, (err, data) => {
+    Transaction.getActiveTicketsByUser(req.params.user_id, (err, data) => {
         if(err){
             res.status(500).send({
-                message: `Error retreiving transactions for user ${req.params.user_account_id}.`
+                message: `Error retreiving transactions for user ${req.params.user_id}.`
             });
         }
         else{
@@ -106,7 +106,7 @@ exports.update = (req, res) =>{
         new Transaction(req.body),
         (err, data) => {
             if(err){
-                // Transaction account to update was not found
+                // Transaction to update was not found
                 if(err.kind === "not_found"){
                     res.status(404).send({
                         message: `Transaction not found with transaction_id ${req.params.transaction_id}.`

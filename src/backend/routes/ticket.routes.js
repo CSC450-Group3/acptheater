@@ -6,7 +6,7 @@ const router = express.Router()
 // Create a new ticket
 router.post("/create", ticket.create);
 
-// Update ticket with a given ticket_id
+// Get sll tickets for a specific showing
 router.get("/showing/:showing_id", ticket.findAllByShowing);
 
 // Get ticket by ticket_id

@@ -10,13 +10,13 @@ router.post("/create", transaction.create);
 router.get("/:transaction_id", transaction.findOne);
 
 // Get active movie transactions by user
-router.get("/userAccount/:user_account_id/upcoming", transaction.findUpcomingByUser);
+router.get("/user/:user_id/upcoming", transaction.findUpcomingByUser);
 
 // Get active movie transactions by user
-router.get("/userAccount/:user_account_id/active", transaction.findActiveByUser);
+router.get("/user/:user_id/active", transaction.findActiveByUser);
 
 // Get upcoming movie transactions by user
-router.get("/user/:user_account_id", transaction.findAllByUser);
+router.get("/user/:user_id", transaction.findAllByUser);
 
 // Update transaction with a given transaction_id
 router.put("/:transaction_id/update", transaction.update);

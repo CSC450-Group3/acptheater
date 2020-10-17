@@ -121,9 +121,9 @@ con.query("CALL createScreens(@VarID , 6, 10, 20);", function (err, result) {
     console.log("Screens and Seats created.")
 });
 
-/* Create an admin user */
-con.query("INSERT INTO user(first_name, last_name, birthday) " +
-    "VALUES('System', 'Administrator', '1980-01-01');", function (err, result) {
+/* Create an  user */
+con.query("INSERT INTO user(first_name, last_name, birthday, email, password, type) " +
+    "VALUES('System', 'Administrator', '1980-01-01','admin@acpTheater.com', SHA1('P@ssw0rd'), 'A');", function (err, result) {
     if (err) throw err;
     console.log("Admin user created")
 });
@@ -131,12 +131,4 @@ con.query("INSERT INTO user(first_name, last_name, birthday) " +
 con.query("SET @VarID = (SELECT LAST_INSERT_ID());", function (err, result) {
     if (err) throw err;
 });
-
-/* Create the admin user account */
-con.query("INSERT INTO userAccount(user_id, email, password, type) " +
-    "Values(@VarID, 'admin@acpTheater.com', SHA1('P@ssw0rd'), 'A');", function (err, result) {
-    if (err) throw err;
-    console.log("Admin user account created")
-});
-
 

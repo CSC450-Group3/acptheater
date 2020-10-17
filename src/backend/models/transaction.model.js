@@ -2,7 +2,7 @@ var sql = require('../db.config')
 
 //Transaction object constructor
 var Transaction = function(transaction){
-    this.user_account_id = transaction.user_account_id;
+    this.user_id = transaction.user_id;
     this.total_price = transaction.total_price
 };
 
@@ -55,8 +55,8 @@ Transaction.findById = (transaction_id, result) => {
     });
 };
 
-// Get all transaction records by user_account_id
-Transaction.getAllByUser = (user_account_id, result) => {
+// Get all transaction records by user_id
+Transaction.getAllByUser = (user_id, result) => {
     sql.query(
         "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, sh.start_date_time, m.title, m.duration " +
         "FROM transaction t " +
@@ -65,8 +65,8 @@ Transaction.getAllByUser = (user_account_id, result) => {
             "INNER JOIN screen sc on sc.screen_id = sh.screen_id " +
             "INNER JOIN movie m on m.movie_id = sh.movie_id " +
             "LEFT JOIN seat st on st.seat_id = mt.seat_id " +
-        "WHERE t.user_account_id = ?", 
-    [user_account_id], 
+        "WHERE t.user_id = ?", 
+    [user_id], 
     (err, res) => {
         //Error encountered
         if(err){
@@ -82,7 +82,7 @@ Transaction.getAllByUser = (user_account_id, result) => {
 };
 
 // Get tickets for a user where the movie start time is in the future
-Transaction.getUpcomingTicketsByUser = (user_account_id, result) => {
+Transaction.getUpcomingTicketsByUser = (user_id, result) => {
     sql.query(
         "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, sh.start_date_time, m.title, m.duration " +
         "FROM transaction t " +
@@ -91,9 +91,9 @@ Transaction.getUpcomingTicketsByUser = (user_account_id, result) => {
             "INNER JOIN screen sc on sc.screen_id = sh.screen_id " +
             "INNER JOIN movie m on m.movie_id = sh.movie_id " +
             "LEFT JOIN seat st on st.seat_id = mt.seat_id " +
-        "WHERE t.user_account_id = ? " +
+        "WHERE t.user_id = ? " +
             "AND sh.start_date_time > NOW()",
-    [user_account_id], 
+    [user_id], 
     (err, res) => {
 
         //Error encountered
@@ -112,7 +112,7 @@ Transaction.getUpcomingTicketsByUser = (user_account_id, result) => {
 
 /* Get tickets for a user where the movie start time is now or in the past and the
  current time is within the duration of the movie */
- Transaction.getActiveTicketsByUser = (user_account_id, result) => {
+ Transaction.getActiveTicketsByUser = (user_id, result) => {
     sql.query(
         "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, sh.start_date_time, m.title, m.duration " +
         "FROM transaction t " +
@@ -121,10 +121,10 @@ Transaction.getUpcomingTicketsByUser = (user_account_id, result) => {
             "INNER JOIN screen sc on sc.screen_id = sh.screen_id " +
             "INNER JOIN movie m on m.movie_id = sh.movie_id " +
             "LEFT JOIN seat st on st.seat_id = mt.seat_id " +
-        "WHERE t.user_account_id = ? " +
+        "WHERE t.user_id = ? " +
             "AND sh.start_date_time <= NOW() " +
             "AND NOW() <= (sh.start_date_time + INTERVAL m.duration MINUTE)",
-    [user_account_id], 
+    [user_id], 
     (err, res) => {
         
         //Error encountered

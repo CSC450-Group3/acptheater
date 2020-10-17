@@ -56,7 +56,7 @@ exports.findAllByShowing = (req, res) => {
     Ticket.getAllByShowing(req.params.showing_id, (err, data) => {
         if(err){
             res.status(500).send({
-                message: `Error retreiving ticket for user ${req.params.showing_id}.`
+                message: `Error retreiving tickets for showing_id ${req.params.showing_id}.`
             });
         }
         else{
@@ -79,7 +79,7 @@ exports.update = (req, res) =>{
         new Ticket(req.body),
         (err, data) => {
             if(err){
-                // Ticket account to update was not found
+                // Ticket to update was not found
                 if(err.kind === "not_found"){
                     res.status(404).send({
                         message: `Ticket not found with ticket_id ${req.params.ticket_id}.`

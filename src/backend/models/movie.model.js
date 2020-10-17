@@ -6,7 +6,7 @@ var sql = require('../db.config')
 //Movie object constructor
 var Movie = function(movie){
     this.title = movie.title;
-    this.director = movie.director;
+    this.director = movie.director; //optional
     this.cast = movie.cast;
     this.plot = movie.plot;
     this.duration = movie.duration;

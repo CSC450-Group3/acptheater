@@ -5,7 +5,7 @@ var Showing = function(showing){
     this.screen_id = showing.screen_id;
     this.movie_id = showing.movie_id;
     this.start_date_time = showing.start_date_time;
-    this.cancelled = showing.cancelled
+    this.cancelled = showing.cancelled 
     this.price = showing.price
 };
 
