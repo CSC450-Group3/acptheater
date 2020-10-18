@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
+import { Link } from "react-router-dom";
+
 
 const navbarStyle = makeStyles((theme) => ({
   nav: {
@@ -49,7 +51,7 @@ function NavbarHome() {
     open={isMenuOpen}
     onClose={handleMenuClose}
   >
-    <MenuItem onClick={handleMenuClose}>Home</MenuItem>
+    <MenuItem onClick={handleMenuClose}><Link to='/'>Home</Link ></MenuItem>
     <MenuItem onClick={handleMenuClose}>Movies</MenuItem>
     <MenuItem onClick={handleMenuClose}>Concessions</MenuItem>
     <MenuItem onClick={handleMenuClose}>Showtimes</MenuItem>
@@ -70,7 +72,7 @@ function NavbarHome() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.acptheater} variant="h6" noWrap>
+          <Typography className={classes.acptheater} variant="p" noWrap>
             ACP Theater
           </Typography>
           <div className={classes.nav} />

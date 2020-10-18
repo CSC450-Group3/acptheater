@@ -4,13 +4,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
+import { Link } from "react-router-dom";
 
 const navbarStyle = makeStyles((theme) => ({
   nav: {
@@ -63,7 +63,7 @@ function NavbarUser() {
     open={isNavMenuOpen}
     onClose={handleNavMenuClose}
   >
-    <MenuItem onClick={handleNavMenuClose}>Home</MenuItem>
+    <MenuItem onClick={handleNavMenuClose}><Link to='/'>Home</Link ></MenuItem>
     <MenuItem onClick={handleNavMenuClose}>Movies</MenuItem>
     <MenuItem onClick={handleNavMenuClose}>Concessions</MenuItem>
     <MenuItem onClick={handleNavMenuClose}>Showtimes</MenuItem>
@@ -99,7 +99,7 @@ function NavbarUser() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.acptheater} variant="h6" noWrap>
+          <Typography className={classes.acptheater} variant="p" noWrap>
             ACP Theater
           </Typography>
           <div className={classes.nav} />
