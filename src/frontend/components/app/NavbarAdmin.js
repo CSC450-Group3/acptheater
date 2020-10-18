@@ -12,12 +12,11 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import { Link } from "react-router-dom";
-import Home from './frontend/pages/Home';
-import Movies from './frontend/pages/Movies';
+
 
 const navbarStyle = makeStyles((theme) => ({
   nav: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   menuButton: {
     marginRight: theme.spacing(0),
@@ -76,8 +75,8 @@ function NavbarAdmin() {
     open={isNavMenuOpen}
     onClose={handleNavMenuClose}
   >
-    <MenuItem onClick={handleNavMenuClose}><Link to='./frontend/pages/Home'>Home</Link ></MenuItem>
-    <MenuItem onClick={handleNavMenuClose}><Link to='./frontend/pages/Movies'>Movies</Link ></MenuItem>
+    <MenuItem onClick={handleNavMenuClose}><Link to='/'>Home</Link ></MenuItem>
+    <MenuItem onClick={handleNavMenuClose}>Movies</MenuItem>
     <MenuItem onClick={handleNavMenuClose}>Concessions</MenuItem>
     <MenuItem onClick={handleNavMenuClose}>Showtimes</MenuItem>
   </Menu>
@@ -107,7 +106,7 @@ function NavbarAdmin() {
     open={isManageMenuOpen}
     onClose={handleManageMenuClose}
   >
-    <MenuItem onClick={handleManageMenuClose}>Movies</MenuItem>
+    <MenuItem onClick={handleManageMenuClose}><Link to='/Movies'>Movies</Link ></MenuItem>
     <MenuItem onClick={handleManageMenuClose}>Seats</MenuItem>
   </Menu>
   );
@@ -125,7 +124,7 @@ function NavbarAdmin() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.acptheater} variant="h6" noWrap>
+          <Typography className={classes.acptheater} variant="p" noWrap>
             ACP Theater
           </Typography>
           <div className={classes.nav} />

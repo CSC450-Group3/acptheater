@@ -5,7 +5,6 @@ const footerStyle = makeStyles(() => ({
     footer: {
         background: '#3f51b5',
         color: '#fff',
-        padding: '.5em',
         textAlign: 'center'
     }
 }));
@@ -13,7 +12,7 @@ const footerStyle = makeStyles(() => ({
     function Footer() {
         const classes = footerStyle();
         return (
-            <div className={classes.footer}>
+            <div style={{padding: 20}}className={classes.footer}>
                 <p>ACP Theater | Caitlin Landrus, Patrick Garry, Alex Yahn | © 2020</p>
             </div>   
         )
