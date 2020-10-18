@@ -16,7 +16,10 @@ db.on('error', console.error.bind(console, 'database connection error:'))
 //Import API Routes
 const messageRoutes = require("./src/backend/routes/message.routes.js")
 const movieRoutes = require("./src/backend/routes/movie.routes.js")
+const seatRoutes = require("./src/backend/routes/seat.routes.js")
+const screenRoutes = require("./src/backend/routes/screen.routes.js")
 const showingRoutes = require("./src/backend/routes/showing.routes.js")
+const theaterRoutes = require("./src/backend/routes/theater.routes.js")
 const threadRoutes = require("./src/backend/routes/thread.routes.js")
 const ticketRoutes = require("./src/backend/routes/ticket.routes.js")
 const transactionRoutes = require("./src/backend/routes/transaction.routes.js")
@@ -27,7 +30,10 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/message', messageRoutes);
 app.use('/movie', movieRoutes);
+app.use('/seat', seatRoutes);
+app.use('/screen', screenRoutes);
 app.use('/showing', showingRoutes);
+app.use('/theater', theaterRoutes);
 app.use('/thread', threadRoutes);
 app.use('/ticket', ticketRoutes);
 app.use('/transaction', transactionRoutes);

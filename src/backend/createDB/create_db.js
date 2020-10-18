@@ -201,6 +201,11 @@ con.query("CREATE INDEX `screen_id_idx` ON `acpTheater`.`Seat` (`screen_id` ASC)
     console.log("Seat index screen_id_idx created");
 });
 
+con.query("CREATE UNIQUE INDEX `screen_seat` ON `acpTheater`.`Seat` (`screen_id` ASC, `row_name` ASC, `seat_number` ASC) VISIBLE", function (err, result) {
+    if (err) throw err;
+    console.log("Seat unique index screen_seat created");
+});
+
 
 /* Table `acpTheater`.`Showing` */
 con.query("DROP TABLE IF EXISTS `acpTheater`.`Showing`", function (err, result) {
