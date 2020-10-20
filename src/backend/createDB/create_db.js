@@ -44,7 +44,7 @@ con.query(
     " PRIMARY KEY (`message_id`), " +
     " CONSTRAINT `sending_user_id` " +
         " FOREIGN KEY (`sending_user_id`) " +
-        " REFERENCES `acpTheater`.`UserAccount` (`user_account_id`) " +
+        " REFERENCES `acpTheater`.`User` (`user_id`) " +
         " ON DELETE CASCADE " +
         " ON UPDATE NO ACTION, " +
     " CONSTRAINT `message_thread_id` " +
@@ -78,11 +78,11 @@ con.query(
     "CREATE TABLE IF NOT EXISTS `acpTheater`.`Movie` ( " +
         " `movie_id` INT NOT NULL AUTO_INCREMENT, " +
         " `title` VARCHAR(150) NOT NULL, " +
-        " `director` VARCHAR(150) NOT NULL, " +
+        " `director` VARCHAR(150) NULL, " +
         " `cast` BLOB NOT NULL, " +
         " `plot` BLOB NOT NULL, " +
         " `duration` INT(3) NOT NULL, " +
-        " `rated` VARCHAR(4) NOT NULL, " +
+        " `rated` VARCHAR(5) NOT NULL, " +
         " `poster_URL` VARCHAR(200) NOT NULL, " +
         " `genre` VARCHAR(150) NOT NULL, " +
         " `release_date` DATE NOT NULL, " +
@@ -103,7 +103,8 @@ con.query(
         " `movie_ticket_id` INT NOT NULL AUTO_INCREMENT, " +
         " `transaction_id` INT NOT NULL, " +
         " `showing_id` INT NOT NULL, " +
-        " `seat_id` INT NOT NULL, " +
+        " `seat_id` INT NULL, " +
+        " `total_viewers` INT NULL, " +
     " PRIMARY KEY (`movie_ticket_id`), " +
     " CONSTRAINT `ticket_seat_id` " +
         " FOREIGN KEY (`seat_id`) " +
@@ -142,6 +143,12 @@ con.query("CREATE INDEX `transaction_id_idx` ON `acpTheater`.`MovieTicket` (`tra
 });
 
 
+con.query("CREATE UNIQUE INDEX `seat_showing` ON `acpTheater`.`MovieTicket` (`showing_id` ASC, `seat_id` ASC) VISIBLE;", function (err, result) {
+    if (err) throw err;
+    console.log("MovieTicket unique index seat_showing created");
+});
+
+
 /* Table `acpTheater`.`Screen` */
 con.query("DROP TABLE IF EXISTS `acpTheater`.`Screen`", function (err, result) {
     if (err) throw err;
@@ -168,6 +175,12 @@ con.query(
 con.query("CREATE INDEX `theater_id_idx` ON `acpTheater`.`Screen` (`theater_id` ASC) VISIBLE", function (err, result) {
     if (err) throw err;
     console.log("Screen index theater_id_idx created");
+});
+
+
+con.query("CREATE UNIQUE INDEX `theater_screen_name` ON `acpTheater`.`Screen` (`screen_name` ASC, `theater_id` ASC) VISIBLE;", function (err, result) {
+    if (err) throw err;
+    console.log("Screen unique index theater_screen_name created");
 });
 
 
@@ -200,6 +213,11 @@ con.query("CREATE INDEX `screen_id_idx` ON `acpTheater`.`Seat` (`screen_id` ASC)
     console.log("Seat index screen_id_idx created");
 });
 
+con.query("CREATE UNIQUE INDEX `screen_seat` ON `acpTheater`.`Seat` (`screen_id` ASC, `row_name` ASC, `seat_number` ASC) VISIBLE", function (err, result) {
+    if (err) throw err;
+    console.log("Seat unique index screen_seat created");
+});
+
 
 /* Table `acpTheater`.`Showing` */
 con.query("DROP TABLE IF EXISTS `acpTheater`.`Showing`", function (err, result) {
@@ -213,8 +231,8 @@ con.query(
         " `screen_id` INT NOT NULL, " +
         " `movie_id` INT NOT NULL, " +
         " `start_date_time` DATETIME NOT NULL, " +
-        " `cancelled` BIT(1) NOT NULL DEFAULT 0, " +
-        " `price` DECIMAL(3,2) NOT NULL, " +
+        " `cancelled` BIT(1) NULL, " +
+        " `price` DECIMAL(6,2) NOT NULL, " +
     " PRIMARY KEY (`showing_id`), " +
     " CONSTRAINT `showing_screen_id` " +
         " FOREIGN KEY (`screen_id`) " +
@@ -270,7 +288,7 @@ con.query("DROP TABLE IF EXISTS `acpTheater`.`Thread`", function (err, result) {
 
 con.query(
     " CREATE TABLE IF NOT EXISTS `acpTheater`.`Thread` ( " +
-        " `thread_id` INT NOT NULL, " +
+        " `thread_id` INT NOT NULL AUTO_INCREMENT, " +
         " `resolved` BIT NULL, " +
         " `subject` VARCHAR(50) NOT NULL, " +
     " PRIMARY KEY (`thread_id`)) " +
@@ -289,12 +307,12 @@ con.query("DROP TABLE IF EXISTS `acpTheater`.`ThreadParticipant`", function (err
 
 con.query(
     "CREATE TABLE IF NOT EXISTS `acpTheater`.`ThreadParticipant` ( " +
-        " `user_account_id` INT NOT NULL, " +
+        " `user_id` INT NOT NULL, " +
         " `thread_id` INT NOT NULL, " +
-    " PRIMARY KEY (`thread_id`, `user_account_id`), " +
-    " CONSTRAINT `participant_account_id` " +
-        " FOREIGN KEY (`user_account_id`) " +
-        " REFERENCES `acpTheater`.`UserAccount` (`user_account_id`) " +
+    " PRIMARY KEY (`thread_id`, `user_id`), " +
+    " CONSTRAINT `participant_user_id` " +
+        " FOREIGN KEY (`user_id`) " +
+        " REFERENCES `acpTheater`.`User` (`user_id`) " +
         " ON DELETE CASCADE " +
         " ON UPDATE NO ACTION, " +
     " CONSTRAINT `participant_thread_id` " +
@@ -323,12 +341,12 @@ con.query("DROP TABLE IF EXISTS `acpTheater`.`Transaction`", function (err, resu
 con.query(
     "CREATE TABLE IF NOT EXISTS `acpTheater`.`Transaction` ( " +
         " `transaction_id` INT NOT NULL AUTO_INCREMENT, " +
-        " `user_account_id` INT NOT NULL, " +
-        " `total_price` DECIMAL(3,2) NOT NULL, " +
+        " `user_id` INT NOT NULL, " +
+        " `total_price` DECIMAL(6,2) NOT NULL, " +
     " PRIMARY KEY (`transaction_id`), " +
-    " CONSTRAINT `transaction_user_account_id` " +
-        " FOREIGN KEY (`user_account_id`) " +
-        " REFERENCES `acpTheater`.`UserAccount` (`user_account_id`) " +
+    " CONSTRAINT `transaction_user_id` " +
+        " FOREIGN KEY (`user_id`) " +
+        " REFERENCES `acpTheater`.`User` (`user_id`) " +
         " ON DELETE CASCADE " +
         " ON UPDATE NO ACTION) " +
     " ENGINE = InnoDB", function (err, result) {
@@ -336,14 +354,14 @@ con.query(
         console.log("Transaction table created");
     });
 
-con.query("CREATE INDEX `user_account_id_idx` ON `acpTheater`.`Transaction` (`user_account_id` ASC) VISIBLE", function (err, result) {
+con.query("CREATE INDEX `user_id_idx` ON `acpTheater`.`Transaction` (`user_id` ASC) VISIBLE", function (err, result) {
     if (err) throw err;
-    console.log("ThreadParticipant index user_account_id_idx created");
+    console.log("ThreadParticipant index user_id_idx created");
 });
 
 
 /* Table `acpTheater`.`User` */
-con.query("DROP TABLE IF EXISTS `acpTheater`.`Thread`", function (err, result) {
+con.query("DROP TABLE IF EXISTS `acpTheater`.`User`", function (err, result) {
     if (err) throw err;
     console.log("User table dropped");
 });
@@ -355,47 +373,19 @@ con.query(
         " `last_name` VARCHAR(100) NOT NULL, " +
         " `middle_name` VARCHAR(100) NULL, " +
         " `birthday` DATE NOT NULL," +
+        " `email` VARCHAR(200) NOT NULL, " +
+        " `password` VARCHAR(100) NOT NULL, " +
+        " `type` CHAR(1) NOT NULL, " +
+        " `disabled` BIT NULL, " +
     " PRIMARY KEY (`user_id`)) " +
     " ENGINE = InnoDB", function (err, result) {
         if (err) throw err;
         console.log("User table created");
     });
 
-
-
-/* Table `acpTheater`.`UserAccount` */
-con.query("DROP TABLE IF EXISTS `acpTheater`.`UserAccount`", function (err, result) {
+con.query("CREATE UNIQUE INDEX `email` ON `acpTheater`.`User` (`email` ASC) INVISIBLE", function (err, result) {
     if (err) throw err;
-    console.log("UserAccount table dropped");
-});
-
-con.query(
-    "CREATE TABLE IF NOT EXISTS `acpTheater`.`UserAccount` ( " +
-        " `user_account_id` INT NOT NULL AUTO_INCREMENT, " +
-        " `user_id` INT NOT NULL, " +
-        " `email` VARCHAR(200) NOT NULL, " +
-        " `password` VARCHAR(100) NOT NULL, " +
-        " `type` CHAR(1) NOT NULL, " +
-        " `disabled` BIT NULL, " +
-    " PRIMARY KEY (`user_account_id`), " +
-    " CONSTRAINT `account_user_id` " +
-        " FOREIGN KEY (`user_id`) " +
-        " REFERENCES `acpTheater`.`User` (`user_id`) " +
-        " ON DELETE CASCADE " +
-        " ON UPDATE NO ACTION) " +
-    " ENGINE = InnoDB", function (err, result) {
-        if (err) throw err;
-        console.log("UserAccount table created");
-    });
-
-con.query("CREATE INDEX `user_id_idx` ON `acpTheater`.`UserAccount` (`user_id` ASC) INVISIBLE", function (err, result) {
-    if (err) throw err;
-    console.log("UserAccount index user_id_idx created");
-});
-
-con.query("CREATE UNIQUE INDEX `email` ON `acpTheater`.`UserAccount` (`email` ASC) INVISIBLE", function (err, result) {
-    if (err) throw err;
-    console.log("UserAccount unique index email created");
+    console.log("User unique index email created");
 });
 
 /* Table `acpTheater`.`UserReadMessage` */
@@ -407,12 +397,12 @@ con.query("DROP TABLE IF EXISTS `acpTheater`.`UserReadMessage`", function (err, 
 con.query(
     "CREATE TABLE IF NOT EXISTS `acpTheater`.`UserReadMessage` ( " +
         " `message_id` INT NOT NULL, " +
-        " `user_account_id` INT NOT NULL, " +
+        " `user_id` INT NOT NULL, " +
         " `read_date_time` DATETIME NOT NULL, " +
-    " PRIMARY KEY (`message_id`, `user_account_id`), " +
-    " CONSTRAINT `read_user_account_id` " +
-        " FOREIGN KEY (`user_account_id`) " +
-        " REFERENCES `acpTheater`.`UserAccount` (`user_account_id`) " +
+    " PRIMARY KEY (`message_id`, `user_id`), " +
+    " CONSTRAINT `read_user_id` " +
+        " FOREIGN KEY (`user_id`) " +
+        " REFERENCES `acpTheater`.`User` (`user_id`) " +
         " ON DELETE CASCADE " +
         " ON UPDATE NO ACTION, " +
     " CONSTRAINT `read_message_id` " +
@@ -425,50 +415,9 @@ con.query(
         console.log("UserReadMessage table created");
     });
 
-con.query("CREATE INDEX `user_account_id_idx` ON `acpTheater`.`UserReadMessage` (`user_account_id` ASC) VISIBLE", function (err, result) {
+con.query("CREATE INDEX `user_id_idx` ON `acpTheater`.`UserReadMessage` (`user_id` ASC) VISIBLE", function (err, result) {
     if (err) throw err;
-    console.log("UserReadMessage index user_account_id_idx created");
-});
-
-
-
-/* Table `acpTheater`.`VirtualTicket` */
-con.query("DROP TABLE IF EXISTS `acpTheater`.`VirtualTicket`", function (err, result) {
-    if (err) throw err;
-    console.log("VirtualTicket table dropped");
-});
-
-con.query(
-    "CREATE TABLE IF NOT EXISTS `acpTheater`.`VirtualTicket` ( " +
-        " `virtual_ticket_id` INT NOT NULL AUTO_INCREMENT, " +
-        " `showing_id` INT NOT NULL, " +
-        " `transaction_id` INT NOT NULL, " +
-        " `total_viewers` VARCHAR(45) NOT NULL, " +
-    " PRIMARY KEY (`virtual_ticket_id`), " +
-    " CONSTRAINT `virtual_showing_id` " +
-        " FOREIGN KEY (`showing_id`) " +
-        " REFERENCES `acpTheater`.`Showing` (`showing_id`) " +
-        " ON DELETE CASCADE " +
-        " ON UPDATE NO ACTION, " +
-    " CONSTRAINT `virtual_transaction_id` " +
-        " FOREIGN KEY (`transaction_id`) " +
-        " REFERENCES `acpTheater`.`Transaction` (`transaction_id`) " +
-        " ON DELETE CASCADE " +
-        " ON UPDATE NO ACTION) " +
-    " ENGINE = InnoDB", function (err, result) {
-        if (err) throw err;
-        console.log("VirtualTicket table created");
-    });
-
-con.query("CREATE INDEX `showing_id_idx` ON `acpTheater`.`VirtualTicket` (`showing_id` ASC) VISIBLE", function (err, result) {
-    if (err) throw err;
-    console.log("VirtualTicket index showing_id_idx created");
-});
-
-
-con.query("CREATE INDEX `transaction_id_idx` ON `acpTheater`.`VirtualTicket` (`transaction_id` ASC) VISIBLE", function (err, result) {
-    if (err) throw err;
-    console.log("VirtualTicket index transaction_id_idx created");
+    console.log("UserReadMessage index user_id_idx created");
     console.log("Database creation complete!");
 });
 
