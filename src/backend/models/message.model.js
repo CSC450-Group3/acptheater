@@ -85,12 +85,12 @@ Message.findById = (message_id, result) => {
 };
 
 // Find all messages by thread_id
-Message.findByThread = (thread_id, result) => {
+Message.findByThread = (thread_id, accessing_user_id, result) => {
     sql.query(
         "SELECT t.subject, m.message_id, t.resolved, u.first_name, u.last_name, CAST(m.message_body AS CHAR) as body, m.sent_date_time " +
         "FROM thread t " + 
             "INNER JOIN message m on m.thread_id = t.thread_id " +
-            "INNER JOIN user u on ua.u.user_id = m.sending_user_id " +
+            "INNER JOIN user u on u.user_id = m.sending_user_id " +
         "WHERE t.thread_id = ? " +
         "ORDER BY m.sent_date_time", 
     [thread_id],
@@ -104,13 +104,99 @@ Message.findByThread = (thread_id, result) => {
 
         // Messages found 
         if(res.length){
-            console.log("found messages: ", res);
+            //find new messages in the thread
+            sql.query(
+                `SELECT DISTINCT  m.*
+                FROM thread t  
+                    INNER JOIN threadparticipant tp on tp.thread_id = t.thread_id AND t.thread_id = ${thread_id} 
+                    INNER JOIN message m on m.thread_id = t.thread_id AND m.sending_user_id != ${accessing_user_id} 
+                    INNER JOIN userreadmessage urm1 on urm1.message_id = m.message_id 
+                    LEFT JOIN userreadmessage urm2 on urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
+                    INNER JOIN user u1 on u1.user_id = urm1.user_id 
+                    LEFT JOIN user u2 on u2.user_id = urm2.user_id and u2.type != u1.type 
+                WHERE (u2.user_id is null)`, 
+            (err, res2) => {
+                //Error encountered
+                if(err){
+                    console.log("error: ", err);
+                    result(err, null);
+                    return;
+                }
+
+                // New messages found 
+                if(res2.length){
+                    for(i = 0; i < res2.length; i++){
+                        var message_id = res2[i].message_id;
+                        //Create User Read Message record for the message if it doesn't already exist
+                        sql.query(
+                            `INSERT INTO userreadmessage(message_id, user_id, read_date_time) ` +
+                            `SELECT * FROM ( SELECT ${message_id} AS thread_id , ${accessing_user_id} AS user_id, NOW() AS read_date_time) AS tmp ` +
+                            `WHERE NOT EXISTS(` +
+                                `SELECT message_id, user_id FROM userreadmessage WHERE user_id = ${message_id} AND thread_id = ${accessing_user_id}` +
+                            `) LIMIT 1`,
+                        err => {
+                            //Error encountered
+                            if(err){
+                                console.log("error: ", err);
+                                result(err, null);
+                                return;
+                            }
+                        });
+                    }
+                }
+            });      
+
             result(null, res);
             return;
         }
 
         //Message not found
         result({kind: "not_found"}, null);
+    });
+};
+
+// New Messages by User
+Message.findNewMessagesByUser = (user_id, user_type, result) => {
+    var sqlString;
+
+    //user is admin
+    if(user_type == 'A'){
+        // find all new messages for administrator from all threads
+        sqlString = `SELECT DISTINCT t.thread_id, t.subject, m.message_id, t.resolved, u1.first_name, u1.last_name, CAST(m.message_body AS CHAR) as body, m.sent_date_time
+                        FROM thread t  
+                            INNER JOIN message m on m.thread_id = t.thread_id AND m.sending_user_id != ${user_id}
+                            INNER JOIN userreadmessage urm1 on urm1.message_id = m.message_id  
+                            LEFT JOIN userreadmessage urm2 on urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
+                            INNER JOIN user u1 on u1.user_id = urm1.user_id  AND u1.user_id = m.sending_user_id
+                            LEFT JOIN user u2 on u2.user_id = urm2.user_id and u2.type != u1.type 
+                        WHERE (u2.user_id is null) `;
+    }
+    //user is a customer
+    else{
+        // find all new messages for only the threads that the customer has participated in (only threads they would have created)
+        sqlString = `SELECT DISTINCT t.thread_id, t.subject, m.message_id, t.resolved, u1.first_name, u1.last_name, CAST(m.message_body AS CHAR) as body, m.sent_date_time
+                    FROM thread t  
+                        JOIN threadparticipant tp on tp.thread_id = t.thread_id AND tp.user_id = ${user_id}
+                        INNER JOIN message m on m.thread_id = t.thread_id AND m.sending_user_id != ${user_id}
+                        INNER JOIN userreadmessage urm1 on urm1.message_id = m.message_id 
+                        LEFT JOIN userreadmessage urm2 on urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
+                        INNER JOIN user u1 on u1.user_id = urm1.user_id  AND u1.user_id = m.sending_user_id
+                        LEFT JOIN user u2 on u2.user_id = urm2.user_id and u2.type != u1.type 
+                    WHERE (u2.user_id is null) `
+    }
+
+    sql.query(sqlString, (err, res) => {
+        //Error encountered
+        if(err){
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+
+        // New messages found or no new messages to find
+        console.log("found messages: ", res);
+        result(null, res);
+
     });
 };
 
@@ -161,3 +247,5 @@ Message.delete = (message_id, result) => {
 }
 
 module.exports = Message;
+
+

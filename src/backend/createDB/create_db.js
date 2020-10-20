@@ -143,6 +143,12 @@ con.query("CREATE INDEX `transaction_id_idx` ON `acpTheater`.`MovieTicket` (`tra
 });
 
 
+con.query("CREATE UNIQUE INDEX `seat_showing` ON `acpTheater`.`MovieTicket` (`showing_id` ASC, `seat_id` ASC) VISIBLE;", function (err, result) {
+    if (err) throw err;
+    console.log("MovieTicket unique index seat_showing created");
+});
+
+
 /* Table `acpTheater`.`Screen` */
 con.query("DROP TABLE IF EXISTS `acpTheater`.`Screen`", function (err, result) {
     if (err) throw err;
@@ -169,6 +175,12 @@ con.query(
 con.query("CREATE INDEX `theater_id_idx` ON `acpTheater`.`Screen` (`theater_id` ASC) VISIBLE", function (err, result) {
     if (err) throw err;
     console.log("Screen index theater_id_idx created");
+});
+
+
+con.query("CREATE UNIQUE INDEX `theater_screen_name` ON `acpTheater`.`Screen` (`screen_name` ASC, `theater_id` ASC) VISIBLE;", function (err, result) {
+    if (err) throw err;
+    console.log("Screen unique index theater_screen_name created");
 });
 
 

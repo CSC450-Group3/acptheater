@@ -52,10 +52,25 @@ exports.findOne = (req, res) => {
 
 // Find all messages for a given thread
 exports.findAllByThread = (req, res) => {
-    Message.findByThread(req.params.thread_id, (err, data) => {
+    Message.findByThread(req.params.thread_id, req.params.accessing_user_id, (err, data) => {
         if(err){
             res.status(500).send({
                 message: `Error retreiving message for thread_id ${req.params.thread_id}.`
+            });
+        }
+        else{
+            res.send(data);
+        }
+    })
+}
+
+
+// Find new messages by user
+exports.findNew = (req, res) => {
+    Message.findNewMessagesByUser(req.params.user_id, req.params.user_type, (err, data) => {
+        if(err){
+            res.status(500).send({
+                message: `Error retreiving message for user_id ${req.params.user_id}.`
             });
         }
         else{

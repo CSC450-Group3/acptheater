@@ -28,16 +28,16 @@ const userRoutes = require("./src/backend/routes/user.routes.js")
 //Configuration
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use('/message', messageRoutes);
-app.use('/movie', movieRoutes);
-app.use('/seat', seatRoutes);
-app.use('/screen', screenRoutes);
-app.use('/showing', showingRoutes);
-app.use('/theater', theaterRoutes);
-app.use('/thread', threadRoutes);
-app.use('/ticket', ticketRoutes);
-app.use('/transaction', transactionRoutes);
-app.use('/user', userRoutes);
+app.use('/api/message', messageRoutes);
+app.use('/api/movie', movieRoutes);
+app.use('/api/seat', seatRoutes);
+app.use('/api/screen', screenRoutes);
+app.use('/api/showing', showingRoutes);
+app.use('/api/theater', theaterRoutes);
+app.use('/api/thread', threadRoutes);
+app.use('/api/ticket', ticketRoutes);
+app.use('/api/transaction', transactionRoutes);
+app.use('/api/user', userRoutes);
 
 app.use(express.static(path.join(__dirname, 'build')))
 app.set('build', path.join(__dirname, 'index.html'))

@@ -52,7 +52,7 @@ Showing.findById = (showing_id, result) => {
 Showing.getByDate = (date, result) => {
     sql.query(
         "SELECT s.*, " +
-        "m.title, m.director, CAST(m.cast as CHAR), CAST(m.plot as CHAR), m.duration, m.rated, m.poster_URL, m.genre, m.release_date " +
+        "m.title, m.director, CAST(m.cast as CHAR), CAST(m.plot as CHAR), m.duration, m.rated, m.poster_URL, m.genre, m.release_date, s.start_date_time " +
         "FROM  showing s " +
         "INNER JOIN movie m on m.movie_id = s.movie_id " +
         "WHERE CAST(s.start_date_time AS DATE) = ?", 
@@ -74,7 +74,7 @@ Showing.getByDate = (date, result) => {
 // Get upcoming movies showing (movies not currently playing, but scheduled in the future)
 Showing.getUpcoming = result => {
     sql.query(
-            "SELECT DISTINCT  m.title, m.director, CAST(m.cast as CHAR), CAST(m.plot as CHAR), m.duration, m.rated, m.poster_URL, m.genre, m.release_date FROM  showing s " +
+            "SELECT DISTINCT  m.title, m.director, CAST(m.cast as CHAR), CAST(m.plot as CHAR), m.duration, m.rated, m.poster_URL, m.genre, m.release_date, s.* FROM  showing s " +
             "INNER JOIN movie m on m.movie_id = s.movie_id " +
             "WHERE CAST(start_date_time AS DATE) > NOW() " + 
             "AND s.movie_id NOT IN ( SELECT DISTINCT movie_id " +

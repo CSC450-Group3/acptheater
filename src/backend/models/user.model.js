@@ -78,7 +78,7 @@ User.validateCredentials = (email, password, result) => {
                 result(null, res[0]);
                 return;
             }
-            console.log(`Select * from user WHERE email = '${email}' AND password = SHA1('${password}')`);
+      
             //User not found
             result({kind: "not_found"}, null);
     });
