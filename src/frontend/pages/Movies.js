@@ -24,13 +24,12 @@ const SearchBox = ({searchHandler}) => {
     )
 }
 
-const MovieCard = ({Title, imdbID, Poster, ShowDetails, DetailRequest, ActivateModal, ActivateForm}) => {
+const MovieCard = ({Title, imdbID, Poster, ShowDetails, DetailRequest, ActivateModal}) => {
 
     const clickHandler = () => {
         
         ActivateModal(true);
         DetailRequest(true);
-        ActivateForm(false);
 
         fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=cde43fc8`)
         .then(resp => resp)
