@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Input, Row, Col, Card, Tag, Spin, Modal, Typography } from 'antd';
+import { Layout, Input, Row, Col, Card, Tag, Spin, Modal, Typography, Button } from 'antd';
+import { Link } from "react-router-dom";
 import 'antd/dist/antd.css';
 
 const { Content } = Layout;
@@ -23,12 +24,13 @@ const SearchBox = ({searchHandler}) => {
     )
 }
 
-const ColCardBox = ({Title, imdbID, Poster, ShowDetails, DetailRequest, ActivateModal}) => {
+const MovieCard = ({Title, imdbID, Poster, ShowDetails, DetailRequest, ActivateModal, ActivateForm}) => {
 
     const clickHandler = () => {
-
+        
         ActivateModal(true);
         DetailRequest(true);
+        ActivateForm(false);
 
         fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=cde43fc8`)
         .then(resp => resp)
@@ -109,7 +111,7 @@ function Movies() {
     const [activateModal, setActivateModal] = useState(false);
     const [details, setShowDetails] = useState(false);
     const [detailRequest, setDetailRequest] = useState(false);
-
+    const [activateForm, setActivateForm] = useState(false);
 
     useEffect(() => {
         setError(null);
@@ -133,7 +135,7 @@ function Movies() {
 
     
     return (
-        <div className="App">
+        <div className="Movies">
             <Layout className="layout">
                 <Content>
                     <div style={{ background: '#4a576e', padding: 60, minHeight: 300 }}>
@@ -141,10 +143,11 @@ function Movies() {
                         <br />
                         <Row justify="center">
                             { data !== null && data.length > 0 && data.map((result, index) => (
-                                <ColCardBox 
+                                <MovieCard 
                                     ShowDetails={setShowDetails} 
                                     DetailRequest={setDetailRequest}
                                     ActivateModal={setActivateModal}
+                                    ActivateForm={setActivateForm}
                                     key={index} 
                                     {...result} 
                                 />
@@ -156,7 +159,14 @@ function Movies() {
                         centered
                         visible={activateModal}
                         onCancel={() => setActivateModal(false)}
+                        onOk={() => setActivateForm(true)}
                         width={800}
+                        footer={[
+                            <Button key="cancel" onClick={() => setActivateModal(false)}>
+                                Cancel
+                            </Button>,
+                            <Button key="schedule" onClick={() =>setActivateForm(true)}><Link to='/ScheduleForm'>Schedule</Link ></Button>
+                          ]}
                         >
                         { detailRequest === false ?
                             (<MovieDetail {...details} />) :
