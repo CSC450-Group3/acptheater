@@ -75,14 +75,14 @@ Thread.getAllByUser = (user_id, includeResolved,  result) => {
     if(includeResolved === 'true'){
         queryString = "SELECT DISTINCT t.* " +
             "FROM thread t " +
-                "INNER JOIN threadparticipant tp on tp.thread_id = t.thread_id " +
+                "INNER JOIN threadparticipant tp ON tp.thread_id = t.thread_id " +
             "WHERE tp.user_id = ? " +
             // Order the resolved threads to the bottom of the list
             "ORDER BY  t.resolved, t.thread_id "
     }else{
         queryString =  "SELECT DISTINCT t.* " +
         "FROM thread t " +
-            "INNER JOIN threadparticipant tp on tp.thread_id = t.thread_id " +
+            "INNER JOIN threadparticipant tp ON tp.thread_id = t.thread_id " +
         "WHERE tp.user_id = ? " +
             // Only inlcude the non-resolved threads
             "AND t.resolved = 0 "

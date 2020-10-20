@@ -40,7 +40,10 @@ User.create = (newUser, result) => {
 
 // Find user By ID
 User.findById = (user_id, result) => {
-    sql.query(`Select * FROM user WHERE user_id = ${user_id}`, (err, res) => {
+    sql.query(`SELECT user_id, first_name, last_name, middle_name, DATE_FORMAT(birthday, '%c/%e/%Y') AS birthday, email, password, type, disabled 
+                FROM user 
+                WHERE user_id = ${user_id}`, 
+    (err, res) => {
         //Error encountered
         if(err){
             console.log("error: ", err);
@@ -62,25 +65,26 @@ User.findById = (user_id, result) => {
 
 // Validate username/email and password
 User.validateCredentials = (email, password, result) => {
-    sql.query(`Select * from user WHERE email = '${email}' AND password = SHA1('${password}')`, 
-        
-        (err, res) => {
-            //Error encountered
-            if(err){
-                console.log("error: ", err);
-                result(err, null);
-                return;
-            }
+    sql.query(`SELECT user_id, first_name, last_name, middle_name, DATE_FORMAT(birthday, '%c/%e/%Y') AS birthday, email, password, type, disabled 
+                FROM user 
+                WHERE email = '${email}' AND password = SHA1('${password}')`, 
+    (err, res) => {
+        //Error encountered
+        if(err){
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
 
-            //User found with matching credentials
-            if(res.length){
-                console.log("found user: ", res[0]);
-                result(null, res[0]);
-                return;
-            }
-      
-            //User not found
-            result({kind: "not_found"}, null);
+        //User found with matching credentials
+        if(res.length){
+            console.log("found user: ", res[0]);
+            result(null, res[0]);
+            return;
+        }
+    
+        //User not found
+        result({kind: "not_found"}, null);
     });
 };
 
@@ -88,7 +92,7 @@ User.validateCredentials = (email, password, result) => {
 // Update an existing User by ID
 User.updateById = (user_id, user, result) => {
     sql.query(
-        `Update user 
+        `UPDATE user 
             SET email = '${user.email}', 
                 password = SHA1('${user.password}') , 
                 type = '${user.type}', 

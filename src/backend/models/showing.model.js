@@ -28,7 +28,13 @@ Showing.create = (newShowing, result) => {
 
 // Find showing By ID
 Showing.findById = (showing_id, result) => {
-    sql.query(`SELECT * FROM showing WHERE showing_id = ${showing_id}`, (err, res) => {
+    sql.query( 
+            `SELECT s.showing_id, m.title, m.director, CAST(m.cast AS CHAR), CAST(m.plot AS CHAR), m.duration, m.rated, m.poster_URL, m.genre, 
+                DATE_FORMAT(m.release_date, '%c/%e/%Y') AS release_date, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %r') AS start_date_time 
+            FROM  showing s 
+                INNER JOIN movie m ON m.movie_id = s.movie_id 
+            WHERE showing_id =  ${showing_id}`, 
+        (err, res) => {
         //Error encountered
         if(err){
             console.log("error: ", err);
@@ -51,10 +57,10 @@ Showing.findById = (showing_id, result) => {
 // Get all showing records by date
 Showing.getByDate = (date, result) => {
     sql.query(
-        "SELECT s.*, " +
-        "m.title, m.director, CAST(m.cast as CHAR), CAST(m.plot as CHAR), m.duration, m.rated, m.poster_URL, m.genre, m.release_date, s.start_date_time " +
+        "SELECT s.*, m.title, m.director, CAST(m.cast AS CHAR), CAST(m.plot AS CHAR), m.duration, m.rated, m.poster_URL, m.genre, " +
+        "DATE_FORMAT(m.release_date, '%c/%e/%Y') AS release_date, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %r') AS start_date_time " +
         "FROM  showing s " +
-        "INNER JOIN movie m on m.movie_id = s.movie_id " +
+        "INNER JOIN movie m ON m.movie_id = s.movie_id " +
         "WHERE CAST(s.start_date_time AS DATE) = ?", 
     [date], 
     (err, res) => {
@@ -74,7 +80,9 @@ Showing.getByDate = (date, result) => {
 // Get upcoming movies showing (movies not currently playing, but scheduled in the future)
 Showing.getUpcoming = result => {
     sql.query(
-            "SELECT DISTINCT  m.title, m.director, CAST(m.cast as CHAR), CAST(m.plot as CHAR), m.duration, m.rated, m.poster_URL, m.genre, m.release_date, s.* FROM  showing s " +
+            "SELECT DISTINCT  m.title, m.director, CAST(m.cast as CHAR), CAST(m.plot as CHAR), m.duration, m.rated, m.poster_URL, " +
+                "m.genre, DATE_FORMAT(m.release_date, '%c/%e/%Y'), s.showing_id, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %r') AS start_date_time  " +
+            "FROM  showing s " +
             "INNER JOIN movie m on m.movie_id = s.movie_id " +
             "WHERE CAST(start_date_time AS DATE) > NOW() " + 
             "AND s.movie_id NOT IN ( SELECT DISTINCT movie_id " +

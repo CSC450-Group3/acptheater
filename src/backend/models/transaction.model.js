@@ -26,13 +26,13 @@ Transaction.create = (newTransaction, result) => {
 // Find transaction By ID
 Transaction.findById = (transaction_id, result) => {
     sql.query(
-        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, sh.start_date_time, m.title, m.duration " +
+        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, DATE_FORMAT(sh.start_date_time, '%c/%e/%Y %r') AS start_date_time, m.title, m.duration " +
         "FROM transaction t " +
-            "INNER JOIN movieticket mt on mt.transaction_id = t.transaction_id " +
-            "INNER JOIN showing sh on sh.showing_id = mt.showing_id " + 
-            "INNER JOIN screen sc on sc.screen_id = sh.screen_id " +
-            "INNER JOIN movie m on m.movie_id = sh.movie_id " +
-            "LEFT JOIN seat st on st.seat_id = mt.seat_id " +
+            "INNER JOIN movieticket mt ON mt.transaction_id = t.transaction_id " +
+            "INNER JOIN showing sh ON sh.showing_id = mt.showing_id " + 
+            "INNER JOIN screen sc ON sc.screen_id = sh.screen_id " +
+            "INNER JOIN movie m ON m.movie_id = sh.movie_id " +
+            "LEFT JOIN seat st ON st.seat_id = mt.seat_id " +
         "WHERE t.transaction_id = ?", 
     [transaction_id],
     (err, res) => {
@@ -45,8 +45,8 @@ Transaction.findById = (transaction_id, result) => {
 
         // Transaction is found 
         if(res.length){
-            console.log("found transaction: ", res[0]);
-            result(null, res[0]);
+            console.log("found transaction: ", res);
+            result(null, res);
             return;
         }
 
@@ -58,13 +58,13 @@ Transaction.findById = (transaction_id, result) => {
 // Get all transaction records by user_id
 Transaction.getAllByUser = (user_id, result) => {
     sql.query(
-        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, sh.start_date_time, m.title, m.duration " +
+        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, DATE_FORMAT(sh.start_date_time, '%c/%e/%Y %r') AS start_date_time , m.title, m.duration " +
         "FROM transaction t " +
-            "INNER JOIN movieticket mt on mt.transaction_id = t.transaction_id " +
-            "INNER JOIN showing sh on sh.showing_id = mt.showing_id " + 
-            "INNER JOIN screen sc on sc.screen_id = sh.screen_id " +
-            "INNER JOIN movie m on m.movie_id = sh.movie_id " +
-            "LEFT JOIN seat st on st.seat_id = mt.seat_id " +
+            "INNER JOIN movieticket mt ON mt.transaction_id = t.transaction_id " +
+            "INNER JOIN showing sh ON sh.showing_id = mt.showing_id " + 
+            "INNER JOIN screen sc ON sc.screen_id = sh.screen_id " +
+            "INNER JOIN movie m ON m.movie_id = sh.movie_id " +
+            "LEFT JOIN seat st ON st.seat_id = mt.seat_id " +
         "WHERE t.user_id = ?", 
     [user_id], 
     (err, res) => {
@@ -84,13 +84,13 @@ Transaction.getAllByUser = (user_id, result) => {
 // Get tickets for a user where the movie start time is in the future
 Transaction.getUpcomingTicketsByUser = (user_id, result) => {
     sql.query(
-        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, sh.start_date_time, m.title, m.duration " +
+        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, DATE_FORMAT(sh.start_date_time, '%c/%e/%Y %r') AS start_date_time, m.title, m.duration " +
         "FROM transaction t " +
-            "INNER JOIN movieticket mt on mt.transaction_id = t.transaction_id " +
-            "INNER JOIN showing sh on sh.showing_id = mt.showing_id " +
-            "INNER JOIN screen sc on sc.screen_id = sh.screen_id " +
-            "INNER JOIN movie m on m.movie_id = sh.movie_id " +
-            "LEFT JOIN seat st on st.seat_id = mt.seat_id " +
+            "INNER JOIN movieticket mt ON mt.transaction_id = t.transaction_id " +
+            "INNER JOIN showing sh ON sh.showing_id = mt.showing_id " +
+            "INNER JOIN screen sc ON sc.screen_id = sh.screen_id " +
+            "INNER JOIN movie m ON m.movie_id = sh.movie_id " +
+            "LEFT JOIN seat st ON st.seat_id = mt.seat_id " +
         "WHERE t.user_id = ? " +
             "AND sh.start_date_time > NOW()",
     [user_id], 
@@ -114,13 +114,13 @@ Transaction.getUpcomingTicketsByUser = (user_id, result) => {
  current time is within the duration of the movie */
  Transaction.getActiveTicketsByUser = (user_id, result) => {
     sql.query(
-        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, sh.start_date_time, m.title, m.duration " +
+        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, DATE_FORMAT(sh.start_date_time, '%c/%e/%Y %r') AS start_date_time, m.title, m.duration " +
         "FROM transaction t " +
-            "INNER JOIN movieticket mt on mt.transaction_id = t.transaction_id " +
-            "INNER JOIN showing sh on sh.showing_id = mt.showing_id " +
-            "INNER JOIN screen sc on sc.screen_id = sh.screen_id " +
-            "INNER JOIN movie m on m.movie_id = sh.movie_id " +
-            "LEFT JOIN seat st on st.seat_id = mt.seat_id " +
+            "INNER JOIN movieticket mt ON mt.transaction_id = t.transaction_id " +
+            "INNER JOIN showing sh ON sh.showing_id = mt.showing_id " +
+            "INNER JOIN screen sc ON sc.screen_id = sh.screen_id " +
+            "INNER JOIN movie m ON m.movie_id = sh.movie_id " +
+            "LEFT JOIN seat st ON st.seat_id = mt.seat_id " +
         "WHERE t.user_id = ? " +
             "AND sh.start_date_time <= NOW() " +
             "AND NOW() <= (sh.start_date_time + INTERVAL m.duration MINUTE)",

@@ -28,10 +28,10 @@ Ticket.create = (newTicket, result) => {
 // Find Ticket By ID
 Ticket.findById = (movie_ticket_id, result) => {
     sql.query(
-        "Select * " +
-        "from movieticket mt " +
-        "INNER JOIN showing s on s.showing_id = mt.showing_id " +
-        "LEFT JOIN seat st on st.seat_id = mt.seat_id " +
+        "SELECT mt.*, st.*, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %r') AS start_date_time " +
+        "FROM movieticket mt " +
+        "INNER JOIN showing s ON s.showing_id = mt.showing_id " +
+        "LEFT JOIN seat st ON st.seat_id = mt.seat_id " +
         "WHERE mt.movie_ticket_id = ?",
     [movie_ticket_id],
     (err, res) => {
@@ -57,11 +57,11 @@ Ticket.findById = (movie_ticket_id, result) => {
 // Get all Ticket records by showing
 Ticket.getAllByShowing = (showing_id, result) => {
     sql.query(
-        "Select * " +
-        "from movieticket mt " +
-        "INNER JOIN showing s on s.showing_id = mt.showing_id " +
-        "LEFT JOIN seat st on st.seat_id = mt.seat_id " +
-        "where mt.showing_id = ?", 
+        "SELECT  mt.*, st.*, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %r') AS start_date_time  " +
+        "FROM movieticket mt " +
+        "INNER JOIN showing s ON s.showing_id = mt.showing_id " +
+        "LEFT JOIN seat st ON st.seat_id = mt.seat_id " +
+        "WHERE mt.showing_id = ?", 
     [showing_id], 
     (err, res) => {
         //Error encountered
@@ -81,7 +81,7 @@ Ticket.getAllByShowing = (showing_id, result) => {
 // Update an existing Ticket by ID
 Ticket.updateById = (movie_ticket_id, ticket, result) => {
     sql.query(
-        "Update movieticket SET seat_id = ?, total_viewers = ?  WHERE movie_ticket_id = ?",
+        "UPDATE movieticket SET seat_id = ?, total_viewers = ?  WHERE movie_ticket_id = ?",
         [ticket.seat_id, ticket.total_viewers, movie_ticket_id],
         (err, res) => {
             //Error encountered

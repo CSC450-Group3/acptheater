@@ -25,7 +25,7 @@ Screen.create = (newScreen, result) => {
 
 // Find screen By ID
 Screen.findById = (screen_id, result) => {
-    sql.query(`Select * FROM screen WHERE screen_id = ${screen_id}`, (err, res) => {
+    sql.query(`SELECT * FROM screen WHERE screen_id = ${screen_id}`, (err, res) => {
         //Error encountered
         if(err){
             console.log("error: ", err);

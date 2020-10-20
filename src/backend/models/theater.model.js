@@ -26,7 +26,7 @@ Theater.create = (newTheater, result) => {
 
 // Find theater By ID
 Theater.findById = (theater_id, result) => {
-    sql.query(`Select * FROM theater WHERE theater_id = ${theater_id}`, (err, res) => {
+    sql.query(`SELECT * FROM theater WHERE theater_id = ${theater_id}`, (err, res) => {
         //Error encountered
         if(err){
             console.log("error: ", err);
@@ -48,7 +48,7 @@ Theater.findById = (theater_id, result) => {
 
 // Find all theaters
 Theater.getAll = (result) => {
-    sql.query("Select * FROM theater", (err, res) => {
+    sql.query("SELECT * FROM theater", (err, res) => {
         //Error encountered
         if(err){
             console.log("error: ", err);

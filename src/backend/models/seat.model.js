@@ -48,7 +48,6 @@ Seat.massCreate = (data, result) => {
             return;
         }
 
-        console.log(res)
         //seat created successfully
         console.log("Created seats: ", {seats_created: res.affectedRows, screen_id: data.screen_id, rows: data.rows, columns: data.columns});
         result(null, { seats_created: res.affectedRows, screen_id: data.screen_id, rows: data.rows, columns: data.columns});
@@ -59,7 +58,7 @@ Seat.massCreate = (data, result) => {
 
 // Find seat By ID
 Seat.findById = (seat_id, result) => {
-    sql.query(`Select * FROM seat WHERE seat_id = ${seat_id}`, (err, res) => {
+    sql.query(`SELECT * FROM seat WHERE seat_id = ${seat_id}`, (err, res) => {
         //Error encountered
         if(err){
             console.log("error: ", err);

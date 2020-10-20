@@ -62,7 +62,9 @@ Message.create = (newMessage, result) => {
 
 // Find message by ID
 Message.findById = (message_id, result) => {
-    sql.query("SELECT thread_id, sending_user_id, CAST(message_body AS CHAR) AS body, sent_date_time FROM message WHERE message_id = ? ", 
+    sql.query("SELECT thread_id, sending_user_id, CAST(message_body AS CHAR) AS body, DATE_FORMAT(sent_date_time, '%c/%e/%Y %r') AS sent_date_time " +
+                "FROM message " +
+                "WHERE message_id = ? ", 
     [message_id],
     (err, res) => {
         //Error encountered
@@ -87,7 +89,7 @@ Message.findById = (message_id, result) => {
 // Find all messages by thread_id
 Message.findByThread = (thread_id, accessing_user_id, result) => {
     sql.query(
-        "SELECT t.subject, m.message_id, t.resolved, u.first_name, u.last_name, CAST(m.message_body AS CHAR) as body, m.sent_date_time " +
+        "SELECT t.subject, m.message_id, t.resolved, u.first_name, u.last_name, CAST(m.message_body AS CHAR) as body, DATE_FORMAT(m.sent_date_time, '%c/%e/%Y %r') AS sent_date_time " +
         "FROM thread t " + 
             "INNER JOIN message m on m.thread_id = t.thread_id " +
             "INNER JOIN user u on u.user_id = m.sending_user_id " +
@@ -108,12 +110,12 @@ Message.findByThread = (thread_id, accessing_user_id, result) => {
             sql.query(
                 `SELECT DISTINCT  m.*
                 FROM thread t  
-                    INNER JOIN threadparticipant tp on tp.thread_id = t.thread_id AND t.thread_id = ${thread_id} 
+                    INNER JOIN threadparticipant tp ON tp.thread_id = t.thread_id AND t.thread_id = ${thread_id} 
                     INNER JOIN message m on m.thread_id = t.thread_id AND m.sending_user_id != ${accessing_user_id} 
-                    INNER JOIN userreadmessage urm1 on urm1.message_id = m.message_id 
-                    LEFT JOIN userreadmessage urm2 on urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
-                    INNER JOIN user u1 on u1.user_id = urm1.user_id 
-                    LEFT JOIN user u2 on u2.user_id = urm2.user_id and u2.type != u1.type 
+                    INNER JOIN userreadmessage urm1 ON urm1.message_id = m.message_id 
+                    LEFT JOIN userreadmessage urm2 ON urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
+                    INNER JOIN user u1 ON u1.user_id = urm1.user_id AND u1.user_id = m.sending_user_id
+                    LEFT JOIN user u2 ON u2.user_id = urm2.user_id AND u2.type != u1.type 
                 WHERE (u2.user_id is null)`, 
             (err, res2) => {
                 //Error encountered
@@ -162,26 +164,26 @@ Message.findNewMessagesByUser = (user_id, user_type, result) => {
     //user is admin
     if(user_type == 'A'){
         // find all new messages for administrator from all threads
-        sqlString = `SELECT DISTINCT t.thread_id, t.subject, m.message_id, t.resolved, u1.first_name, u1.last_name, CAST(m.message_body AS CHAR) as body, m.sent_date_time
+        sqlString = `SELECT DISTINCT t.thread_id, t.subject, m.message_id, t.resolved, u1.first_name, u1.last_name, CAST(m.message_body AS CHAR) AS body, DATE_FORMAT(m.sent_date_time, '%c/%e/%Y %r') AS sent_date_time 
                         FROM thread t  
-                            INNER JOIN message m on m.thread_id = t.thread_id AND m.sending_user_id != ${user_id}
-                            INNER JOIN userreadmessage urm1 on urm1.message_id = m.message_id  
-                            LEFT JOIN userreadmessage urm2 on urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
-                            INNER JOIN user u1 on u1.user_id = urm1.user_id  AND u1.user_id = m.sending_user_id
-                            LEFT JOIN user u2 on u2.user_id = urm2.user_id and u2.type != u1.type 
+                            INNER JOIN message m ON m.thread_id = t.thread_id AND m.sending_user_id != ${user_id}
+                            INNER JOIN userreadmessage urm1 ON urm1.message_id = m.message_id  
+                            LEFT JOIN userreadmessage urm2 ON urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
+                            INNER JOIN user u1 ON u1.user_id = urm1.user_id  AND u1.user_id = m.sending_user_id
+                            LEFT JOIN user u2 ON u2.user_id = urm2.user_id AND u2.type != u1.type 
                         WHERE (u2.user_id is null) `;
     }
     //user is a customer
     else{
         // find all new messages for only the threads that the customer has participated in (only threads they would have created)
-        sqlString = `SELECT DISTINCT t.thread_id, t.subject, m.message_id, t.resolved, u1.first_name, u1.last_name, CAST(m.message_body AS CHAR) as body, m.sent_date_time
+        sqlString = `SELECT DISTINCT t.thread_id, t.subject, m.message_id, t.resolved, u1.first_name, u1.last_name, CAST(m.message_body AS CHAR) AS body, DATE_FORMAT(m.sent_date_time, '%c/%e/%Y %r') AS sent_date_time 
                     FROM thread t  
-                        JOIN threadparticipant tp on tp.thread_id = t.thread_id AND tp.user_id = ${user_id}
-                        INNER JOIN message m on m.thread_id = t.thread_id AND m.sending_user_id != ${user_id}
-                        INNER JOIN userreadmessage urm1 on urm1.message_id = m.message_id 
-                        LEFT JOIN userreadmessage urm2 on urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
-                        INNER JOIN user u1 on u1.user_id = urm1.user_id  AND u1.user_id = m.sending_user_id
-                        LEFT JOIN user u2 on u2.user_id = urm2.user_id and u2.type != u1.type 
+                        JOIN threadparticipant tp ON tp.thread_id = t.thread_id AND tp.user_id = ${user_id}
+                        INNER JOIN message m ON m.thread_id = t.thread_id AND m.sending_user_id != ${user_id}
+                        INNER JOIN userreadmessage urm1 ON urm1.message_id = m.message_id 
+                        LEFT JOIN userreadmessage urm2 ON urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
+                        INNER JOIN user u1 ON u1.user_id = urm1.user_id  AND u1.user_id = m.sending_user_id
+                        LEFT JOIN user u2 ON u2.user_id = urm2.user_id AND u2.type != u1.type 
                     WHERE (u2.user_id is null) `
     }
 
