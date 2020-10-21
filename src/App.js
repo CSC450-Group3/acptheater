@@ -12,9 +12,7 @@ import './App.css';
 function App() {
   return (
     <Router>
-        <NavbarHome />
-        {/*<NavbarUser />
-        <NavbarAdmin />*/}
+        <NavbarAdmin />
       <div className="App">
           <Route exact path="/"><Home /> </Route>
           <Route exact path="/Home"><Home /> </Route>
