@@ -152,6 +152,10 @@ function NavbarAdmin() {
               <AccountCircle />
             </IconButton>
           </div>
+          <div className="noUser">
+              <Button color="inherit">Sign Up</Button>
+              <Button color="inherit">Login</Button>
+          </div>
         </Toolbar>
       </AppBar>
       {navMenu}
