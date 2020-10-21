@@ -164,7 +164,7 @@ function Movies() {
                             <Button key="cancel" onClick={() => setActivateModal(false)}>
                                 Cancel
                             </Button>,
-                            <Button key="schedule" onClick={() =>setActivateForm(true)}><Link to='/ScheduleForm'>Schedule</Link ></Button>
+                            <Button key="schedule" onClick={() =>setActivateForm(true)}><Link to='/ScheduleForm'>Schedule Movie</Link ></Button>
                           ]}
                         >
                         { detailRequest === false ?
