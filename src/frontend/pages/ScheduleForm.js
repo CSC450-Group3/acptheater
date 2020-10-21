@@ -48,7 +48,7 @@ const [backToMovies, setBackToMovies] = useState(false);
 		<br />
 		
 		<Modal
-			title='Schedule Form'
+			title='Schedule Movie Form'
 			centered
 			visible={activateModal}
 			onCancel={() => setActivateModal(false)}
