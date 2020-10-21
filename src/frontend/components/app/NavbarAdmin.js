@@ -129,7 +129,7 @@ function NavbarAdmin() {
           </Typography>
           <div className={classes.nav} />
           <div>
-            <Button 
+            <Button
                 edge="end" className={classes.menuButton}
                 aria-label="user account"
                 aria-haspopup="true"
@@ -151,6 +151,10 @@ function NavbarAdmin() {
             >
               <AccountCircle />
             </IconButton>
+          </div>
+          <div className="noUser">
+              <Button color="inherit">Sign Up</Button>
+              <Button color="inherit">Login</Button>
           </div>
         </Toolbar>
       </AppBar>
