@@ -153,8 +153,8 @@ function NavbarAdmin() {
             </IconButton>
           </div>
           <div className="noUser">
-              <Button color="inherit">Sign Up</Button>
-              <Button color="inherit">Login</Button>
+              <Button color="inherit"><Link to='/SignUp'>SignUp</Link ></Button>
+              <Button color="inherit"><Link to='/Login'>Login</Link ></Button>
           </div>
         </Toolbar>
       </AppBar>
