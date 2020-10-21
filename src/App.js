@@ -3,9 +3,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Home from './frontend/pages/Home';
 import Movies from './frontend/pages/Movies';
 import ScheduleForm from './frontend/pages/ScheduleForm';
-import NavbarUser from './frontend/components/app/NavbarUser';
 import NavbarAdmin from './frontend/components/app/NavbarAdmin';
-import NavbarHome from './frontend/components/app/NavbarHome';
 import Footer from './frontend/components/app/Footer';
 import './App.css';
 
