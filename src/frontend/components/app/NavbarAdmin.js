@@ -129,7 +129,7 @@ function NavbarAdmin() {
           </Typography>
           <div className={classes.nav} />
           <div>
-            <Button 
+            <Button
                 edge="end" className={classes.menuButton}
                 aria-label="user account"
                 aria-haspopup="true"
