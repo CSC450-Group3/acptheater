@@ -99,7 +99,7 @@ exports.findAllByScreen = (req, res) => {
 exports.findAllAvailability = (req, res) => {
     Seat.getAllAvailability(req.params.showing_id, (err, data) => {
         if(err){
-            res.send(500).send({
+            res.status(500).send({
                 message: `Could not retreive seats: ${err.message}.`
             });
         }

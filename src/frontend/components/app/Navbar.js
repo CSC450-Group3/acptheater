@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -32,12 +32,12 @@ const navbarStyle = makeStyles((theme) => ({
   },
 }));
 
-function NavbarAdmin() {
+function Navbar(props) {
   const classes = navbarStyle();
-  const [anchorEl1, setAnchorEl1] = React.useState(null);
-  const [anchorEl2, setAnchorEl2] = React.useState(null);
-  const [anchorEl3, setAnchorEl3] = React.useState(null);
-
+  const [anchorEl1, setAnchorEl1] = useState(null);
+  const [anchorEl2, setAnchorEl2] = useState(null);
+  const [anchorEl3, setAnchorEl3] = useState(null);
+  
   const isNavMenuOpen = Boolean(anchorEl1);
   const isProfileMenuOpen = Boolean(anchorEl2);
   const isManageMenuOpen = Boolean(anchorEl3);
@@ -111,6 +111,70 @@ function NavbarAdmin() {
   </Menu>
   );
 
+
+  function displayByLoginStatus(user_id, user_type){
+    console.log("User_id", user_id)
+    //No user is logged in
+    if(user_id == ""){
+      return(
+        <div className="noUser">
+          <Button color="inherit"><Link to='/SignUp'>SignUp</Link ></Button>
+          <Button color="inherit"><Link to='/Login'>Login</Link ></Button>
+        </div>
+      )
+    }
+    //dmin is logged in
+    if(user_type === "A"){
+      return(
+        <div>
+          <Button
+              edge="end" className={classes.menuButton}
+              aria-label="user account"
+              aria-haspopup="true"
+              onClick={handleManageMenuOpen}
+              color="inherit"
+          >
+            Manage
+          </Button>
+          <IconButton aria-label="show messages" color="inherit">
+            <Badge badgeContent={1} color="secondary">
+              <MailIcon />
+            </Badge>
+          </IconButton>
+          <IconButton
+            edge="end" className={classes.menuButton}
+            aria-label="user account"
+            aria-haspopup="true"
+            onClick={handleProfileMenuOpen}
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+        </div>
+      )
+    }
+    // Customer is logged in
+    else{
+      return(
+        <div className="loggedInUser">
+            <IconButton aria-label="show messages" color="inherit">
+              <Badge badgeContent={1} color="secondary">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+            <IconButton
+              edge="end" className={classes.menuButton}
+              aria-label="user account"
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          </div>
+      )
+    }
+  }
   return (
     <div className={classes.nav}>
       <AppBar position="static">
@@ -128,34 +192,10 @@ function NavbarAdmin() {
             ACP Theater
           </Typography>
           <div className={classes.nav} />
-          <div>
-            <Button
-                edge="end" className={classes.menuButton}
-                aria-label="user account"
-                aria-haspopup="true"
-                onClick={handleManageMenuOpen}
-                color="inherit"
-            >
-                Manage</Button>
-            <IconButton aria-label="show messages" color="inherit">
-              <Badge badgeContent={1} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end" className={classes.menuButton}
-              aria-label="user account"
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+          <div className={classes.menuOptions}>    
+            {displayByLoginStatus(props.user.user_id, props.user.type)}
           </div>
-          <div className="noUser">
-              <Button color="inherit"><Link to='/SignUp'>SignUp</Link ></Button>
-              <Button color="inherit"><Link to='/Login'>Login</Link ></Button>
-          </div>
+          
         </Toolbar>
       </AppBar>
       {navMenu}
@@ -165,4 +205,4 @@ function NavbarAdmin() {
   );
 }
 
-export default NavbarAdmin;
+export default Navbar;
