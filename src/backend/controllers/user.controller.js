@@ -58,9 +58,22 @@ exports.findOne = (req, res) => {
 
 // Validate User login
 exports.validate = (req, res) => {
-    User.validateCredentials(req.params.email, req.params.password, (err, data) => {
+    //Validate the request
+    if(!req.body){
+        res.status(400).send({
+            message: "Content cannot be empty."
+        });
+    }
+
+    // Create the user object
+    const credentials = new Object({
+        email: req.body.email,
+        password: req.body.password
+    });
+
+    User.validateCredentials(credentials, (err, data) => {
         if(err){
-            if(err.kind === "not_found"){
+            if(err.kind == "not_found"){
                 res.status(404).send({
                     message: "User not found with the given credentials."
                 });
