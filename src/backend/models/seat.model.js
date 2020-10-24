@@ -80,13 +80,43 @@ Seat.findById = (seat_id, result) => {
 
 
 // Find all seats by screen
-Seat.getAll = (screen_id, result) => {
+Seat.getAllByScreen = (screen_id, result) => {
     sql.query(
         "SELECT * " +
         "FROM seat " +
         "WHERE screen_id = ? " +
         "ORDER BY row_name, seat_number ",
     [screen_id], (err, res) => {
+        //Error encountered
+        if(err){
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+
+        //Seats found
+        console.log("Seats: ", res);
+        result(null, res);
+    });
+};
+
+
+
+// Find all seat availablibilty by showing_id
+Seat.getAllAvailability = (showing_id, result) => {
+    sql.query(
+        "SELECT s.*, " +
+                "CASE " +
+                    "WHEN mt.movie_ticket_id IS NOT NULL THEN 1 " +
+                    "ELSE 0  " +
+                "END AS booked " +
+        "FROM showing sh " +
+            "INNER JOIN screen sc on sc.screen_id = sh.screen_id " +
+            "INNER JOIN seat s on s.screen_id = sc.screen_id " + 
+            "LEFT JOIN movieticket mt ON mt.seat_id = s.seat_id AND mt.showing_id = sh.showing_id " +
+        "WHERE sh.showing_id = ? " +
+        "ORDER BY row_name, seat_number ",
+    [showing_id], (err, res) => {
         //Error encountered
         if(err){
             console.log("error: ", err);

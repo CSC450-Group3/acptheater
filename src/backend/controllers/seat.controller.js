@@ -82,8 +82,8 @@ exports.findOne = (req, res) => {
 }
 
 // Find all seats by screen_id
-exports.findAll = (req, res) => {
-    Seat.getAll(req.params.screen_id, (err, data) => {
+exports.findAllByScreen = (req, res) => {
+    Seat.getAllByScreen(req.params.screen_id, (err, data) => {
         if(err){
             res.send(500).send({
                 message: `Could not retreive seats: ${err.message}.`
@@ -94,6 +94,21 @@ exports.findAll = (req, res) => {
         }
     });
 }
+
+// Find seat availability by showing_id
+exports.findAllAvailability = (req, res) => {
+    Seat.getAllAvailability(req.params.showing_id, (err, data) => {
+        if(err){
+            res.status(500).send({
+                message: `Could not retreive seats: ${err.message}.`
+            });
+        }
+        else{
+            res.send(data);
+        }
+    });
+}
+
 
 
 // Update an existing seat by ID

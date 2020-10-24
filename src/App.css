@@ -78,6 +78,59 @@
   color: white;
 }
 
+.userCreationWelcome {
+  background-color: #282c34;
+  min-height: 35vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.userCreationRow {
+  display: flex;
+}
+
+.userCreationColumn {
+  flex: 100%;
+  margin: 25px;
+  background-color: #282c34;
+  border: 3px solid black;
+  padding: 10px 10px;
+  text-align: center;
+}
+
+.signUpWelcome {
+  background-color: #282c34;
+  min-height: 35vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  margin: auto;
+  width: 90%;
+  padding: 70px 0;
+  text-align: center;
+}
+
+.login {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  margin: auto;
+  width: 25%;
+  padding: 70px 0;
+  text-align: center;
+}
+
 .row {
   display: flex;
 }

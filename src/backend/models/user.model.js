@@ -64,10 +64,11 @@ User.findById = (user_id, result) => {
 };
 
 // Validate username/email and password
-User.validateCredentials = (email, password, result) => {
-    sql.query(`SELECT user_id, first_name, last_name, middle_name, DATE_FORMAT(birthday, '%c/%e/%Y') AS birthday, email, password, type, disabled 
-                FROM user 
-                WHERE email = '${email}' AND password = SHA1('${password}')`, 
+User.validateCredentials = (credentials, result) => {
+    sql.query("SELECT user_id, first_name, last_name, middle_name, DATE_FORMAT(birthday, '%c/%e/%Y') AS birthday, email, password, type, disabled "+
+                "FROM user " +
+                "WHERE email = ? AND password = SHA1(?)", 
+    [credentials.email, credentials.password], 
     (err, res) => {
         //Error encountered
         if(err){

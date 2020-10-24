@@ -9,8 +9,11 @@ router.post("/create", seat.create);
 // Mass create seats 
 router.post("/massCreate", seat.massCreate);
 
-// Get all seats
-router.get("/screen/:screen_id", seat.findAll);
+// Get all seats for a screen
+router.get("/screen/:screen_id", seat.findAllByScreen);
+
+// Get seat availability for a showing
+router.get("/showing/:showing_id", seat.findAllAvailability);
 
 // Get seat by seat_id
 router.get("/:seat_id", seat.findOne);
