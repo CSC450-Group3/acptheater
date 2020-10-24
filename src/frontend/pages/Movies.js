@@ -137,7 +137,7 @@ function Movies() {
         <div className="Movies">
             <Layout className="layout">
                 <Content>
-                    <div style={{ background: '#4a576e', padding: 60, minHeight: 300 }}>
+                    <div style={{ background: '#282c34', padding: 60, minHeight: 300 }}>
                         <SearchBox searchHandler={setQuery} />
                         <br />
                         <Row justify="center">
