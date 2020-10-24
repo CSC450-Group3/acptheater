@@ -26,13 +26,11 @@ User.create = (newUser, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //User created successfully
-        console.log("Created user: ", {user_id: res.insertId, ...newUser});
         result(null, { user_id: res.insertId, ...newUser});
     });
 };
@@ -46,14 +44,12 @@ User.findById = (user_id, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         // User is found 
         if(res.length){
-            console.log("found user: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -72,14 +68,12 @@ User.validateCredentials = (credentials, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //User found with matching credentials
         if(res.length){
-            console.log("found user: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -102,7 +96,6 @@ User.updateById = (user_id, user, result) => {
         (err, res) => {
             //Error encountered
             if(err){
-                console.log("error:", err);
                 result(null, err);
                 return;
             }
@@ -114,7 +107,6 @@ User.updateById = (user_id, user, result) => {
             }
 
             //User updated successfully
-            console.log("updated user: ", {user_id: user_id, ...user});
             result(null, {user_id: user_id, ...user});
         }
     );
@@ -125,7 +117,6 @@ User.delete = (user_id, result) => {
     sql.query("DELETE FROM user WHERE user_id = ?", user_id, (err, res) =>{
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(null, err);
             return;
         }
@@ -137,7 +128,6 @@ User.delete = (user_id, result) => {
         }
 
         // User deleted successfully
-        console.log("deleted user with user_id: ", user_id);
         result(null, res);
     });
 }

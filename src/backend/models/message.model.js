@@ -14,13 +14,11 @@ Message.create = (newMessage, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //Message created successfully
-        console.log("Created message: ", {message_id: res.insertId, ...newMessage});
         result(null, { message_id: res.insertId, ...newMessage });
 
         // Create the UserReadMessage record for the user creating the message
@@ -28,13 +26,13 @@ Message.create = (newMessage, result) => {
         `VALUES(${res.insertId}, ${newMessage.sending_user_id}, NOW())`, err => {
             //Error encountered
             if(err){
-                console.log("error: ", err);
+
                 result(err, null);
                 return;
             }
     
             //UserReadMessage record created successfully
-            console.log(`Created UserReadMessage with message_id: ${res.insertId} , user_id: ${newMessage.sending_user_id}`);
+            //console.log(`Created UserReadMessage with message_id: ${res.insertId} , user_id: ${newMessage.sending_user_id}`);
         });
 
 
@@ -48,13 +46,12 @@ Message.create = (newMessage, result) => {
         err => {
              //Error encountered
             if(err){
-                console.log("error: ", err);
                 result(err, null);
                 return;
             }
              
              //Message participant created successfully or already exists
-            console.log(`Message participant with thread_id: ${newMessage.thread_id} , user_id: ${newMessage.sending_user_id}`);
+            //console.log(`Message participant with thread_id: ${newMessage.thread_id} , user_id: ${newMessage.sending_user_id}`);
          });
     });
 };
@@ -69,14 +66,12 @@ Message.findById = (message_id, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         // Message is found 
         if(res.length){
-            console.log("found message: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -99,7 +94,6 @@ Message.findByThread = (thread_id, accessing_user_id, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
@@ -120,7 +114,6 @@ Message.findByThread = (thread_id, accessing_user_id, result) => {
             (err, res2) => {
                 //Error encountered
                 if(err){
-                    console.log("error: ", err);
                     result(err, null);
                     return;
                 }
@@ -139,7 +132,6 @@ Message.findByThread = (thread_id, accessing_user_id, result) => {
                         err => {
                             //Error encountered
                             if(err){
-                                console.log("error: ", err);
                                 result(err, null);
                                 return;
                             }
@@ -190,13 +182,11 @@ Message.findNewMessagesByUser = (user_id, user_type, result) => {
     sql.query(sqlString, (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         // New messages found or no new messages to find
-        console.log("found messages: ", res);
         result(null, res);
 
     });
@@ -208,7 +198,6 @@ Message.updateById = (message_id, message, result) => {
     (err, res) => {
             //Error encountered
             if(err){
-                console.log("error:", err);
                 result(null, err);
                 return;
             }
@@ -220,7 +209,6 @@ Message.updateById = (message_id, message, result) => {
             }
 
             //Message updated successfully
-            console.log("updated message: ", {message_id: message_id, ...message});
             result(null, {message_id: message_id, ...message});
         }
     );
@@ -231,7 +219,6 @@ Message.delete = (message_id, result) => {
     sql.query("DELETE FROM message WHERE message_id = ?", message_id, (err, res) =>{
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(null, err);
             return;
         }
@@ -243,7 +230,6 @@ Message.delete = (message_id, result) => {
         }
 
         // Message deleted successfully
-        console.log("deleted message with message_id: ", message_id);
         result(null, res);
     });
 }

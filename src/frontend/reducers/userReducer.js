@@ -17,7 +17,7 @@ const INITIAL_STATE={
 export default function userReducer(state = INITIAL_STATE, action ={}){
 switch(action.type){
     case LOGIN:{
-        console.log(action)
+        //console.log(action)
         const userDetails = action.payload;
         //update the state with the passed user data
         const user = {
@@ -47,7 +47,7 @@ switch(action.type){
     }
 
     case UPDATE_ACCOUNT:{
-        console.log(action)
+        //console.log(action)
         const user = action.payload;
         if(state.userID === user.userID){
             //update profile with the new user information

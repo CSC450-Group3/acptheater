@@ -12,13 +12,11 @@ Theater.create = (newTheater, result) => {
     sql.query("INSERT INTO theater SET ? ", [newTheater], (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //theater created successfully
-        console.log("Created theater: ", {theater_id: res.insertId, ...newTheater});
         result(null, { theater_id: res.insertId, ...newTheater});
     });
 };
@@ -29,14 +27,12 @@ Theater.findById = (theater_id, result) => {
     sql.query(`SELECT * FROM theater WHERE theater_id = ${theater_id}`, (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         // theater is found 
         if(res.length){
-            console.log("found theater: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -51,13 +47,11 @@ Theater.getAll = (result) => {
     sql.query("SELECT * FROM theater", (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //Theaters found
-        console.log("Theaters: ", res);
         result(null, res);
     });
 };
@@ -73,7 +67,6 @@ Theater.updateById = (theater_id, theater, result) => {
         (err, res) => {
             //Error encountered
             if(err){
-                console.log("error:", err);
                 result(null, err);
                 return;
             }
@@ -85,7 +78,6 @@ Theater.updateById = (theater_id, theater, result) => {
             }
 
             //theater updated successfully
-            console.log("updated theater: ", {theater_id: theater_id, ...theater});
             result(null, {theater_id: theater_id, ...theater});
         }
     );
@@ -96,7 +88,6 @@ Theater.delete = (theater_id, result) => {
     sql.query("DELETE FROM theater WHERE theater_id = ?", theater_id, (err, res) =>{
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(null, err);
             return;
         }
@@ -108,7 +99,6 @@ Theater.delete = (theater_id, result) => {
         }
 
         // theater deleted successfully
-        console.log("deleted theater with theater_id: ", theater_id);
         result(null, res);
     });
 }

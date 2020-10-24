@@ -19,12 +19,9 @@ var Movie = function(movie){
 Movie.create = (newMovie, result) => {
     sql.query("INSERT INTO movie SET ?", newMovie, (err, res) => {
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
-
-        console.log("Created movie: ", {movie_id: res.insertId, ...newMovie});
         result(null, { movie_id: res.insertId, ...newMovie });
     });
 };
@@ -32,14 +29,12 @@ Movie.create = (newMovie, result) => {
 Movie.findById = (movie_id, result) => {
     sql.query(`SELECT title, director, CAST(cast AS CHAR), CAST(plot AS CHAR), duration, rated, poster_URL, genre, release_date FROM movie WHERE movie_id = ${movie_id}`, (err, res) => {
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         // movie is found 
         if(res.length){
-            console.log("found movie: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -53,12 +48,9 @@ Movie.findById = (movie_id, result) => {
 Movie.getAll = result => {
     sql.query("Select title, director, CAST(cast AS CHAR), CAST(plot AS CHAR), duration, rated, poster_URL, genre, release_date from movie", (err, res) => {
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
-
-        console.log("movies: ", res);
         result(null, res);
     });
 };
@@ -68,7 +60,6 @@ Movie.delete = (movie_id, result) => {
     sql.query("DELETE FROM movie WHERE movie_id = ?", movie_id, (err, res) =>{
         // Error encountered
         if(err){
-            console.log("error: ", err);
             result(null, err);
             return;
         }
@@ -79,7 +70,6 @@ Movie.delete = (movie_id, result) => {
         }
 
         // Movie deleted successfully
-        console.log("deleted movie with movie_id: ", movie_id);
         result(null, res);
         return;
     });

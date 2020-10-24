@@ -14,7 +14,6 @@ function Login(props) {
   useEffect(() =>{
     // Update the document title using the browser API
     document.title = `ACP | Login`;
-    console.log(props.history)
   });
 
   async function login(e){
@@ -42,7 +41,7 @@ function Login(props) {
           )
           setInvalidLogin(false);
           setError(false);
-          
+
           //redirect to home page upon successful login
           history.push("/");
       }
