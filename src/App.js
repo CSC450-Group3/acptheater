@@ -52,6 +52,3 @@ const mapActionsToProps = (dispatch) =>{
 }
 
 export default connect(mapStateToProps,mapActionsToProps)(App);
-
-
-
