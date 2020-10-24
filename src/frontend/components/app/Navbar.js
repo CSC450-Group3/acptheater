@@ -14,29 +14,21 @@ import MailIcon from '@material-ui/icons/Mail';
 import { Link } from "react-router-dom";
 
 
-const navbarStyle = makeStyles((theme) => ({
+const navbarStyle = makeStyles((position) => ({
   nav: {
     flexGrow: 1
   },
   menuButton: {
-    marginRight: theme.spacing(0),
-  },
-  title: {
-    display: 'none',
-  },
-  navColor: {
-    color: 'inherit',
-  },
-  navbar: {
-    display: 'none',
+    marginRight: position.spacing(0),
+    color: '#1890ff',
   },
 }));
 
 function Navbar(props) {
   const classes = navbarStyle();
-  const [anchorEl1, setAnchorEl1] = useState(null);
-  const [anchorEl2, setAnchorEl2] = useState(null);
-  const [anchorEl3, setAnchorEl3] = useState(null);
+  const [anchorEl1, setAnchorEl1] = React.useState(null);
+  const [anchorEl2, setAnchorEl2] = React.useState(null);
+  const [anchorEl3, setAnchorEl3] = React.useState(null);
   
   const isNavMenuOpen = Boolean(anchorEl1);
   const isProfileMenuOpen = Boolean(anchorEl2);
@@ -132,7 +124,6 @@ function Navbar(props) {
               aria-label="user account"
               aria-haspopup="true"
               onClick={handleManageMenuOpen}
-              color="inherit"
           >
             Manage
           </Button>
@@ -146,7 +137,6 @@ function Navbar(props) {
             aria-label="user account"
             aria-haspopup="true"
             onClick={handleProfileMenuOpen}
-            color="inherit"
           >
             <AccountCircle />
           </IconButton>
@@ -167,7 +157,6 @@ function Navbar(props) {
               aria-label="user account"
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color="inherit"
             >
               <AccountCircle />
             </IconButton>
@@ -177,18 +166,17 @@ function Navbar(props) {
   }
   return (
     <div className={classes.nav}>
-      <AppBar position="static">
+      <AppBar style={{ background: '#000000' }} position="static">
         <Toolbar>
           <IconButton
             edge="start" className={classes.menuButton}
-            color="inherit"
             aria-label="nav account"
             aria-haspopup="true"
             onClick={handleNavMenuOpen}
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.acptheater} variant="p" noWrap>
+          <Typography variant="p" noWrap>
             ACP Theater
           </Typography>
           <div className={classes.nav} />
