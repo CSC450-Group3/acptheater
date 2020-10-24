@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 function UserCreation() {
     return (
@@ -177,7 +178,7 @@ function UserCreation() {
                         <p></p>
                         <div>
                             <button>Cancel</button>
-                            <button>Save</button>
+                            <button><Link to='/Login'>Save</Link ></button>
                         </div>
                     </form>
                 </div>
