@@ -177,7 +177,7 @@ function UserCreation() {
                         <p></p>
                         <p></p>
                         <div>
-                            <button>Cancel</button>
+                            <button><Link to='/'>Cancel</Link ></button>
                             <button><Link to='/Login'>Save</Link ></button>
                         </div>
                     </form>
