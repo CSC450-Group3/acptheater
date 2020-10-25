@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Input, Row, Col, Card, Tag, Spin, Modal, Typography, Button } from 'antd';
+import { Layout, Row, Col, Card, Tag, Spin, Modal, Typography, Button } from 'antd';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import 'antd/dist/antd.css';
 
 const { Content } = Layout;
-const { /* something here */ } = Input;
 const { Meta } = Card;
 const TextTitle = Typography.title;
 
-const MovieCard = ({title, imdbID, poster_url, ShowDetails, DetailRequest, ActivateModal}) => {
+const MovieCard = ({title, poster_url, ShowDetails, DetailRequest, ActivateModal}) => {
 
-    const clickHandler = () => {
+    const clickHandler = async() => {
 
         ActivateModal(true);
         DetailRequest(true);
 
-        fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=cde43fc8`)
-        .then(resp => resp)
-        .then(resp => resp.json())
-        .then(response => {
-            DetailRequest(false);
-            ShowDetails(response);
+        await axios.get('api/movie/' + '2' )
+        .then( res =>{
+            const movie = [res.data];
+            console.log(movie);
+                DetailRequest(false);
+                ShowDetails([res.data]);
+        })
+        .catch( err => {
+            console.log(err);
         })
 
 /*Something with our database call */
@@ -91,20 +93,19 @@ const Loader = () => (
 
 function Showtimes() {
 
-    const [data, setData] = useState(null);
+    const [data, setData] = useState(true);
     const [activateModal, setActivateModal] = useState(false);
     const [details, setShowDetails] = useState(false);
     const [detailRequest, setDetailRequest] = useState(false);
     const [activateForm, setActivateForm] = useState(false);
 
     useEffect(async () =>{
-        setData(null);
 
         await axios.get('api/movie/' + '2' )
         .then( res =>{
-            const movie = res.data;
+            const movie = [res.data];
             console.log(movie);
-            setData(movie)
+            setData([res.data])
         })
         .catch( err => {
             console.log(err);
@@ -117,16 +118,16 @@ function Showtimes() {
                 <Content>
                     <div style={{ background: '#282c34', padding: 60, minHeight: 300 }}>
                         <Row justify="center">
-                            { data !== null && data.length > 0 && data.map((result, movie) => (
+                            { /*data.map((movie) => (
                                 <MovieCard 
                                     ShowDetails={setShowDetails} 
                                     DetailRequest={setDetailRequest}
                                     ActivateModal={setActivateModal}
                                     ActivateForm={setActivateForm}
-                                    key={movie} 
-                                    {...result} 
+                                    key={movie}
+                                    {...movie}
                                 />
-                            ))}
+                            ))*/}
                         </Row>
                     </div>
                     <Modal
