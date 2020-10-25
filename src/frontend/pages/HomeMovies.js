@@ -1,43 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Layout, Input, Row, Col, Card, Tag, Spin, Modal, Typography, Button } from 'antd';
 import { Link } from "react-router-dom";
 import 'antd/dist/antd.css';
 
 const { Content } = Layout;
-const { Search } = Input;
+const { /* something here */ } = Input;
 const { Meta } = Card;
 const TextTitle = Typography.Title;
 
-
-const SearchBox = ({searchHandler}) => {
-    return (
-        <Row>
-            <Col span={12} offset={6}>
-                <Search
-                    placeholder="Search for movies to schedule!"
-                    enterButton="Search"
-                    size="large"
-                    onSearch={value => searchHandler(value)}
-                />
-            </Col>
-        </Row>
-    )
-}
-
-const MovieCard = ({Title, imdbID, Poster, ShowDetails, DetailRequest, ActivateModal}) => {
+const MovieCard = ({/* GetTitle, imdbID, Poster, ShowDetails, DetailRequest, ActivateModal from info in database for Scheduled movies */}) => {
 
     const clickHandler = () => {
-        
-        ActivateModal(true);
-        DetailRequest(true);
-
-        fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=cde43fc8`)
-        .then(resp => resp)
-        .then(resp => resp.json())
-        .then(response => {
-            DetailRequest(false);
-            ShowDetails(response);
-        })
+        /* Get Movie cards from info in database for Scheduled movies */
     }
 
     return (
@@ -54,7 +28,7 @@ const MovieCard = ({Title, imdbID, Poster, ShowDetails, DetailRequest, ActivateM
                     onClick={() => clickHandler()}
                 >
                     <Meta
-                        title={Title}
+                        title={/* Get Title from info in database for Scheduled movies */}
                     />
                 </Card>
             </div>
@@ -62,34 +36,34 @@ const MovieCard = ({Title, imdbID, Poster, ShowDetails, DetailRequest, ActivateM
     )
 }
 
-const MovieDetail = ({Title, Actors, Released, Rated, Runtime, Genre, Poster, Plot, }) => {
+const MovieDetail = (/* Get Title, Actors, Released, Rated, Runtime, Genre, Poster, Plot, } from info in database for Scheduled movies */) => {
     return (
         <Row>
             <Col span={11}>
                 <img 
                     src={Poster === 'N/A' ? 'https://placehold.it/198x264&text=Image+Not+Found' : Poster} 
-                    alt={Title} 
+                    alt={/* Get poster from info in database for Scheduled movies */} 
                 />
             </Col>
             <Col span={13}>
                 <Row >
                     <Col>
-                        <TextTitle>{Title}</TextTitle>
+                        <TextTitle>{/* Get title from info in database for Scheduled movies */}</TextTitle>
                     </Col>
                 </Row>
                 <Row style={{marginBottom: '.7em'}}>
-                    <Col>{Actors}</Col>
+                    <Col>{/* Get actors from info in database for Scheduled movies */}</Col>
                 </Row>
                 <Row style={{marginBottom: '.7em'}}>
                     <Col>
-                        <Tag>{Released}</Tag>
-                        <Tag>{Rated}</Tag> 
-                        <Tag>{Runtime}</Tag> 
-                        <Tag>{Genre}</Tag>                        
+                        <Tag>{/* Get released from info in database for Scheduled movies */}</Tag>
+                        <Tag>{/* Get rated from info in database for Scheduled movies */}</Tag> 
+                        <Tag>{/* Get runtime from info in database for Scheduled movies */}</Tag> 
+                        <Tag>{/* Get genre from info in database for Scheduled movies */}</Tag>                        
                     </Col>
                 </Row>
                 <Row>
-                    <Col>{Plot}</Col>
+                    <Col>{/* Get plot from info in database for Scheduled movies */}</Col>
                 </Row>
             </Col>
         </Row>
@@ -102,46 +76,20 @@ const Loader = () => (
     </div>
 )
 
-function Movies() {
+function HomeMovies() {
 
-    const [data, setData] = useState(null);
-    const [error, setError] = useState(null);
-    const [query, setQuery] = useState('');
     const [activateModal, setActivateModal] = useState(false);
     const [details, setShowDetails] = useState(false);
     const [detailRequest, setDetailRequest] = useState(false);
     const [activateForm, setActivateForm] = useState(false);
-
-    useEffect(() => {
-        setError(null);
-        setData(null);
-
-        fetch(`http://www.omdbapi.com/?s=${query}&apikey=cde43fc8`)
-        .then(resp => resp)
-        .then(resp => resp.json())
-        .then(response => {
-            if (response.Response === 'False') {
-                setError(response.Error);
-            }
-            else {
-                setData(response.Search);
-            }
-        })
-        .catch(({message}) => {
-            setError(message);
-        })
-    }, [query]);
-
     
     return (
-        <div className="Movies">
+        <div className="HomeMovies">
             <Layout className="layout">
                 <Content>
                     <div style={{ background: '#282c34', padding: 60, minHeight: 300 }}>
-                        <SearchBox searchHandler={setQuery} />
-                        <br />
                         <Row justify="center">
-                            { data !== null && data.length > 0 && data.map((result, index) => (
+                            { /* Get Movie cards from info in database for Scheduled movies */ (
                                 <MovieCard 
                                     ShowDetails={setShowDetails} 
                                     DetailRequest={setDetailRequest}
@@ -150,7 +98,7 @@ function Movies() {
                                     key={index} 
                                     {...result} 
                                 />
-                            ))}
+                            )}
                         </Row>
                     </div>
                     <Modal
@@ -164,7 +112,7 @@ function Movies() {
                             <Button key="cancel" onClick={() => setActivateModal(false)}>
                                 Cancel
                             </Button>,
-                            <Button key="schedule" onClick={() =>setActivateForm(true)}><Link to='/ScheduleForm'>Schedule Movie</Link ></Button>
+                            <Button key="schedule" onClick={() =>setActivateForm(true)}><Link to='/PurchaseTickets'>Purchase Tickets</Link ></Button>
                           ]}
                         >
                         { detailRequest === false ?
@@ -178,4 +126,4 @@ function Movies() {
     );
 }
 
-export default Movies;
+export default HomeMovies;
