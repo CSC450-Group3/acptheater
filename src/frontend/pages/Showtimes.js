@@ -35,7 +35,7 @@ const MovieCard = ({title, imdbID, poster_url, ShowDetails, DetailRequest, Activ
                     cover={
                         <img
                             alt={title}
-                            src={poster_url === 'N/A' ? 'https://placehold.it/198x264&text=Image+Not+Found' : Poster}
+                            src={poster_url === 'N/A' ? 'https://placehold.it/198x264&text=Image+Not+Found' : poster_url}
                         />
                     }
                     onClick={() => clickHandler()}
@@ -91,21 +91,25 @@ const Loader = () => (
 
 function Showtimes() {
 
+    const [data, setData] = useState(null);
     const [activateModal, setActivateModal] = useState(false);
     const [details, setShowDetails] = useState(false);
     const [detailRequest, setDetailRequest] = useState(false);
     const [activateForm, setActivateForm] = useState(false);
 
     useEffect(async () =>{
+        setData(null);
+
         await axios.get('api/movie/' + '2' )
         .then( res =>{
             const movie = res.data;
             console.log(movie);
+            setData(movie)
         })
         .catch( err => {
             console.log(err);
         })
-    }, [movie]);
+    }, []);
     
     return (
         <div className="Showtimes">
