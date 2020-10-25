@@ -50,9 +50,9 @@ function PurchaseTickets() {
 			onOk={() => setBackToMovies(true)}
 			width={400}
 			footer={[
-				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/HomeMovies'>Cancel</Link >
+				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Showtimes'>Cancel</Link >
 				</Button>,
-				<Button key="purchase" onClick={() =>setBackToMovies(true)}><Link to='/HomeMovies'>Purchase Tickets</Link ></Button>
+				<Button key="purchase" onClick={() =>setBackToMovies(true)}><Link to='/Showtimes'>Purchase Tickets</Link ></Button>
 				]}
 			>
 			<form>
