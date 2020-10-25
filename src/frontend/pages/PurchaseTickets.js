@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Modal, Button } from 'antd';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import 'antd/dist/antd.css';
 
 function PurchaseTickets() {
 
@@ -58,7 +57,7 @@ const [seatingChart, setSeatingChart] = useState(false);
 			footer={[
 				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Showtimes'>Cancel</Link >
 				</Button>,
-				<Button key="purchase" onClick={() =>setSeatingChart(true)}><Link to='/Showtimes'>Purchase Tickets</Link ></Button>
+				<Button key="purchase" onClick={() =>setSeatingChart(true)}><Link to='/SeatingChart'>Purchase Tickets</Link ></Button>
 				]}
 			>
 			<form>
