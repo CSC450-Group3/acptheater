@@ -9,44 +9,7 @@ const [activateModal, setActivateModal] = useState(true);
 const [seatingChart, setSeatingChart] = useState(false);
 
     return (
-        <div className="PurchaseForm">
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		
+        <div className="PurchaseForm">		
 		<Modal
 			title='Purchase Ticket Form'
 			centered
