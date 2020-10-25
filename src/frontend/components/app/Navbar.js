@@ -14,30 +14,22 @@ import MailIcon from '@material-ui/icons/Mail';
 import { Link } from "react-router-dom";
 
 
-const navbarStyle = makeStyles((theme) => ({
+const navbarStyle = makeStyles((position) => ({
   nav: {
     flexGrow: 1
   },
   menuButton: {
-    marginRight: theme.spacing(0),
-  },
-  title: {
-    display: 'none',
-  },
-  navColor: {
-    color: 'inherit',
-  },
-  navbar: {
-    display: 'none',
+    marginRight: position.spacing(0),
+    color: '#1890ff',
   },
 }));
 
 function Navbar(props) {
   const classes = navbarStyle();
-  const [anchorEl1, setAnchorEl1] = useState(null);
-  const [anchorEl2, setAnchorEl2] = useState(null);
-  const [anchorEl3, setAnchorEl3] = useState(null);
-  
+  const [anchorEl1, setAnchorEl1] = React.useState(null);
+  const [anchorEl2, setAnchorEl2] = React.useState(null);
+  const [anchorEl3, setAnchorEl3] = React.useState(null);
+
   const isNavMenuOpen = Boolean(anchorEl1);
   const isProfileMenuOpen = Boolean(anchorEl2);
   const isManageMenuOpen = Boolean(anchorEl3);
@@ -76,7 +68,7 @@ function Navbar(props) {
     onClose={handleNavMenuClose}
   >
     <MenuItem onClick={handleNavMenuClose}><Link to='/'>Home</Link ></MenuItem>
-    <MenuItem onClick={handleNavMenuClose}>Movies</MenuItem>
+    <MenuItem onClick={handleNavMenuClose}><Link to='/HomeMovies'>Movies</Link></MenuItem>
     <MenuItem onClick={handleNavMenuClose}>Concessions</MenuItem>
     <MenuItem onClick={handleNavMenuClose}>Showtimes</MenuItem>
   </Menu>
@@ -113,8 +105,9 @@ function Navbar(props) {
 
 
   function displayByLoginStatus(user_id, user_type){
+    console.log("User_id", user_id)
     //No user is logged in
-    if(user_id == ""){
+    if(user_id === ""){
       return(
         <div className="noUser">
           <Button color="inherit"><Link to='/SignUp'>SignUp</Link ></Button>
@@ -131,7 +124,6 @@ function Navbar(props) {
               aria-label="user account"
               aria-haspopup="true"
               onClick={handleManageMenuOpen}
-              color="inherit"
           >
             Manage
           </Button>
@@ -145,7 +137,6 @@ function Navbar(props) {
             aria-label="user account"
             aria-haspopup="true"
             onClick={handleProfileMenuOpen}
-            color="inherit"
           >
             <AccountCircle />
           </IconButton>
@@ -166,7 +157,6 @@ function Navbar(props) {
               aria-label="user account"
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color="inherit"
             >
               <AccountCircle />
             </IconButton>
@@ -176,25 +166,24 @@ function Navbar(props) {
   }
   return (
     <div className={classes.nav}>
-      <AppBar position="static">
+      <AppBar style={{ background: '#000000' }} position="static">
         <Toolbar>
           <IconButton
             edge="start" className={classes.menuButton}
-            color="inherit"
             aria-label="nav account"
             aria-haspopup="true"
             onClick={handleNavMenuOpen}
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.acptheater} variant="p" noWrap>
+          <Typography variant="p" noWrap>
             ACP Theater
           </Typography>
           <div className={classes.nav} />
-          <div className={classes.menuOptions}>    
+          <div className={classes.menuOptions}>
             {displayByLoginStatus(props.user.user_id, props.user.type)}
           </div>
-          
+
         </Toolbar>
       </AppBar>
       {navMenu}
