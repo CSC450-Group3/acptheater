@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
-import { Layout, Input, Row, Col, Card, Tag, Spin, Modal, Typography, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Layout, Row, Col, Card, Tag, Spin, Modal, Typography, Button } from 'antd';
 import { Link } from "react-router-dom";
+import axios from 'axios';
 import 'antd/dist/antd.css';
 
 const { Content } = Layout;
-const { /* something here */ } = Input;
 const { Meta } = Card;
-const TextTitle = Typography.Title;
+const TextTitle = Typography.title;
 
-const MovieCard = ({/* GetTitle, imdbID, Poster, ShowDetails, DetailRequest, ActivateModal from info in database for Scheduled movies */}) => {
+const MovieCard = ({title, poster_url, ShowDetails, DetailRequest, ActivateModal}) => {
 
-    const clickHandler = () => {
-        /* Get Movie cards from info in database for Scheduled movies */
+    const clickHandler = async() => {
+
+        ActivateModal(true);
+        DetailRequest(true);
+
+        await axios.get('api/movie/' + '2' )
+        .then( res =>{
+            const movie = [res.data];
+            console.log(movie);
+                DetailRequest(false);
+                ShowDetails([res.data]);
+        })
+        .catch( err => {
+            console.log(err);
+        })
+
+/*Something with our database call */
     }
 
     return (
@@ -21,14 +36,14 @@ const MovieCard = ({/* GetTitle, imdbID, Poster, ShowDetails, DetailRequest, Act
                     style={{ width: 300 }}
                     cover={
                         <img
-                            alt={Title}
-                            src={Poster === 'N/A' ? 'https://placehold.it/198x264&text=Image+Not+Found' : Poster}
+                            alt={title}
+                            src={poster_url === 'N/A' ? 'https://placehold.it/198x264&text=Image+Not+Found' : poster_url}
                         />
                     }
                     onClick={() => clickHandler()}
                 >
                     <Meta
-                        title={/* Get Title from info in database for Scheduled movies */}
+                        title={title}
                     />
                 </Card>
             </div>
@@ -36,34 +51,34 @@ const MovieCard = ({/* GetTitle, imdbID, Poster, ShowDetails, DetailRequest, Act
     )
 }
 
-const MovieDetail = (/* Get Title, Actors, Released, Rated, Runtime, Genre, Poster, Plot, } from info in database for Scheduled movies */) => {
+const MovieDetail = ({title, cast, release_date, rated, duration, genre, poster_url, plot }) => {
     return (
         <Row>
             <Col span={11}>
                 <img 
-                    src={Poster === 'N/A' ? 'https://placehold.it/198x264&text=Image+Not+Found' : Poster} 
-                    alt={/* Get poster from info in database for Scheduled movies */} 
+                    src={poster_url === 'N/A' ? 'https://placehold.it/198x264&text=Image+Not+Found' : poster_url} 
+                    alt={title} 
                 />
             </Col>
             <Col span={13}>
                 <Row >
                     <Col>
-                        <TextTitle>{/* Get title from info in database for Scheduled movies */}</TextTitle>
+                        <TextTitle>{title}</TextTitle>
                     </Col>
                 </Row>
                 <Row style={{marginBottom: '.7em'}}>
-                    <Col>{/* Get actors from info in database for Scheduled movies */}</Col>
+                    <Col>{cast}</Col>
                 </Row>
                 <Row style={{marginBottom: '.7em'}}>
                     <Col>
-                        <Tag>{/* Get released from info in database for Scheduled movies */}</Tag>
-                        <Tag>{/* Get rated from info in database for Scheduled movies */}</Tag> 
-                        <Tag>{/* Get runtime from info in database for Scheduled movies */}</Tag> 
-                        <Tag>{/* Get genre from info in database for Scheduled movies */}</Tag>                        
+                        <Tag>{release_date}</Tag>
+                        <Tag>{rated}</Tag> 
+                        <Tag>{duration}</Tag> 
+                        <Tag>{genre}</Tag>                        
                     </Col>
                 </Row>
                 <Row>
-                    <Col>{/* Get plot from info in database for Scheduled movies */}</Col>
+                    <Col>{plot}</Col>
                 </Row>
             </Col>
         </Row>
@@ -76,29 +91,43 @@ const Loader = () => (
     </div>
 )
 
-function HomeMovies() {
+function Showtimes() {
 
+    const [data, setData] = useState(true);
     const [activateModal, setActivateModal] = useState(false);
     const [details, setShowDetails] = useState(false);
     const [detailRequest, setDetailRequest] = useState(false);
     const [activateForm, setActivateForm] = useState(false);
+
+    useEffect(async () =>{
+
+        await axios.get('api/movie/' + '2' )
+        .then( res =>{
+            const movie = [res.data];
+            console.log(movie);
+            setData([res.data])
+        })
+        .catch( err => {
+            console.log(err);
+        })
+    }, []);
     
     return (
-        <div className="HomeMovies">
+        <div className="Showtimes">
             <Layout className="layout">
                 <Content>
                     <div style={{ background: '#282c34', padding: 60, minHeight: 300 }}>
                         <Row justify="center">
-                            { /* Get Movie cards from info in database for Scheduled movies */ (
+                            { /*data.map((movie) => (
                                 <MovieCard 
                                     ShowDetails={setShowDetails} 
                                     DetailRequest={setDetailRequest}
                                     ActivateModal={setActivateModal}
                                     ActivateForm={setActivateForm}
-                                    key={index} 
-                                    {...result} 
+                                    key={movie}
+                                    {...movie}
                                 />
-                            )}
+                            ))*/}
                         </Row>
                     </div>
                     <Modal
@@ -126,4 +155,4 @@ function HomeMovies() {
     );
 }
 
-export default HomeMovies;
+export default Showtimes;
