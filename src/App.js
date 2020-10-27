@@ -19,13 +19,13 @@ class App extends Component{
 
     return (
       <Router>
-        <Navbar user={user} />
+        <Navbar user={user} logoffAction={logoffAction} />
         <div className="App">
           <Route exact path="/"><Home /> </Route>
           <Route exact path="/Home"><Home /> </Route>
           <Route exact path="/Movies"><Movies /> </Route>
           <Route exact path="/ScheduleForm"><ScheduleForm /> </Route>
-          <Route exact path="/SignUp"><SignUp /> </Route>
+          <Route exact path="/SignUp"><SignUp history={history} /> </Route>
           <Route exact path="/Login"><Login  loginAction={loginAction} history={history}/> </Route>
         </div>
           <Footer/>
