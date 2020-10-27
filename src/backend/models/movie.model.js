@@ -27,7 +27,7 @@ Movie.create = (newMovie, result) => {
 };
 
 Movie.findById = (movie_id, result) => {
-    sql.query(`SELECT title, director, CAST(cast AS CHAR), CAST(plot AS CHAR), duration, rated, poster_URL, genre, release_date FROM movie WHERE movie_id = ${movie_id}`, (err, res) => {
+    sql.query(`SELECT movie_id, title, director, CAST(cast AS CHAR) AS cast, CAST(plot AS CHAR) AS plot, duration, rated, poster_URL, genre, release_date FROM movie WHERE movie_id = ${movie_id}`, (err, res) => {
         if(err){
             result(err, null);
             return;
@@ -46,7 +46,7 @@ Movie.findById = (movie_id, result) => {
 
 
 Movie.getAll = result => {
-    sql.query("Select title, director, CAST(cast AS CHAR), CAST(plot AS CHAR), duration, rated, poster_URL, genre, release_date from movie", (err, res) => {
+    sql.query("Select movie_id, title, director, CAST(cast AS CHAR) AS cast, CAST(plot AS CHAR) AS plot, duration, rated, poster_URL, genre, release_date from movie", (err, res) => {
         if(err){
             result(err, null);
             return;
