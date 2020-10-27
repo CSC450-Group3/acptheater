@@ -90,6 +90,20 @@ exports.validate = (req, res) => {
     })
 }
 
+// Find user by email
+exports.findByEmail = (req, res) => {
+    User.getByEmail(req.params.email, (err, data) => {
+        if(err){
+                res.status(500).send({
+                    message: `Error retreiving user with email ${req.params.email}.`
+                });
+        }
+        else{
+            res.send(data);
+        }
+    })
+}
+
 // Update an existing user by ID
 exports.update = (req, res) =>{
     //Validate request

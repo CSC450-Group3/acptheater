@@ -13,13 +13,11 @@ Ticket.create = (newTicket, result) => {
     sql.query("INSERT INTO movieticket SET ?", newTicket, (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //Ticket created successfully
-        console.log("Created movie ticket: ", {movie_ticket_id: res.insertId, ...newTicket});
         result(null, {movie_ticket_id: res.insertId, ...newTicket });
     });
 };
@@ -37,14 +35,12 @@ Ticket.findById = (movie_ticket_id, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         // Ticket is found 
         if(res.length){
-            console.log("found ticket: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -66,13 +62,11 @@ Ticket.getAllByShowing = (showing_id, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //Ticket found
-        console.log("tickets: ", res);
         result(null, res);
     });
 };
@@ -86,7 +80,6 @@ Ticket.updateById = (movie_ticket_id, ticket, result) => {
         (err, res) => {
             //Error encountered
             if(err){
-                console.log("error:", err);
                 result(null, err);
                 return;
             }
@@ -98,7 +91,6 @@ Ticket.updateById = (movie_ticket_id, ticket, result) => {
             }
 
             //ticket updated successfully
-            console.log("updated ticket: ", {movie_ticket_id: movie_ticket_id, ...ticket});
             result(null, {movie_ticket_id: movie_ticket_id, ...ticket});
         }
     );
@@ -109,7 +101,6 @@ Ticket.delete = (movie_ticket_id, result) => {
     sql.query("DELETE FROM movieticket WHERE movie_ticket_id = ?", movie_ticket_id, (err, res) =>{
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(null, err);
             return;
         }
@@ -121,7 +112,6 @@ Ticket.delete = (movie_ticket_id, result) => {
         }
 
         // Ticket deleted successfully
-        console.log("deleted ticket with movie_ticket_id: ", movie_ticket_id);
         result(null, res);
     });
 }
