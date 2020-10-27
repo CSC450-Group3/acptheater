@@ -118,7 +118,7 @@ function Showtimes() {
                 <Content>
                     <div style={{ background: '#282c34', padding: 60, minHeight: 300 }}>
                         <Row justify="center">
-                            { /*data.map((movie) => (
+                            {Object.keys(data).map((movie) => (
                                 <MovieCard 
                                     ShowDetails={setShowDetails} 
                                     DetailRequest={setDetailRequest}
@@ -127,7 +127,7 @@ function Showtimes() {
                                     key={movie}
                                     {...movie}
                                 />
-                            ))*/}
+                            ))}
                         </Row>
                     </div>
                     <Modal
