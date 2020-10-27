@@ -9,7 +9,7 @@ import SignUp from './frontend/pages/SignUp';
 import Login from './frontend/pages/Login';
 import Navbar from './frontend/components/app/Navbar';
 import Footer from './frontend/components/app/Footer';
-import {loginAction, logoffAction, updateAccountAction} from "./frontend/actions/userAction.js";
+import {loginAction, logoffAction, LOG_OFF, updateAccountAction} from "./frontend/actions/userAction.js";
 import './App.css';
 
 class App extends Component{
@@ -19,13 +19,13 @@ class App extends Component{
 
     return (
       <Router>
-        <Navbar user={user} />
+        <Navbar user={user} logoffAction={logoffAction} />
         <div className="App">
           <Route exact path="/"><Home /> </Route>
           <Route exact path="/Home"><Home /> </Route>
           <Route exact path="/Movies"><Movies /> </Route>
           <Route exact path="/ScheduleForm"><ScheduleForm /> </Route>
-          <Route exact path="/SignUp"><SignUp /> </Route>
+          <Route exact path="/SignUp"><SignUp history={history} /> </Route>
           <Route exact path="/Login"><Login  loginAction={loginAction} history={history}/> </Route>
         </div>
           <Footer/>

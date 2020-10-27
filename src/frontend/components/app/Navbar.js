@@ -58,6 +58,19 @@ function Navbar(props) {
     setAnchorEl3(null);
   };
 
+
+  const handleLogOut = () => {
+    //close all menus
+    setAnchorEl1(null);
+    setAnchorEl2(null);
+    setAnchorEl3(null);
+
+    //log user out of redux store
+    props.logoffAction(
+      props.user.user_id
+    )
+  }
+
   const navMenu = (
     <Menu
     anchorEl={anchorEl1}
@@ -85,7 +98,7 @@ function Navbar(props) {
     >
       <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleProfileMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleProfileMenuClose}>Sign Out</MenuItem>
+      <MenuItem onClick={handleLogOut}><Link to='/'>Sign Out</Link></MenuItem>
     </Menu>
   );
 
@@ -115,7 +128,7 @@ function Navbar(props) {
         </div>
       )
     }
-    //dmin is logged in
+    //admin is logged in
     if(user_type === "A"){
       return(
         <div>

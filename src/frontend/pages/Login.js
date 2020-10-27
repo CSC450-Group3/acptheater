@@ -26,7 +26,7 @@ function Login(props) {
     })
     .then(function(res) {
       //user found successfully
-      if(res.status == 200){
+      if(res.status === 200){
         const user = res.data
           //sent logged in user to the redux store
           props.loginAction(
@@ -47,7 +47,7 @@ function Login(props) {
       }
     })
     .catch(function (err) {
-        if(err.message == "Request failed with status code 404"){
+        if(err.message === "Request failed with status code 404"){
           // Invalid credentials were entered
           setInvalidLogin(true);
           setError(false);

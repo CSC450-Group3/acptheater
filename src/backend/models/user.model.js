@@ -84,6 +84,27 @@ User.validateCredentials = (credentials, result) => {
 };
 
 
+// Get user by email
+User.getByEmail = (email, result) => {
+    sql.query("SELECT user_id, first_name, last_name, middle_name, DATE_FORMAT(birthday, '%c/%e/%Y') AS birthday, email, password, type, disabled "+
+                "FROM user " +
+                "WHERE email = ?", 
+    [email], 
+    (err, res) => {
+        //Error encountered
+        if(err){
+            result(err, null);
+            return;
+        }
+
+        //return results
+        result(null, res);
+        return;
+    });
+};
+
+
+
 // Update an existing User by ID
 User.updateById = (user_id, user, result) => {
     sql.query(

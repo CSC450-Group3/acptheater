@@ -10,6 +10,9 @@ router.post("/create", user.create);
 // Validate user user credentials
 router.post("/authenticate", user.validate);
 
+// Get user by email
+router.get("/email/:email", user.findByEmail);
+
 // Get user by user_id
 router.get("/:user_id", user.findOne);
 
