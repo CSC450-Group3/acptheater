@@ -9,7 +9,7 @@ import SignUp from './frontend/pages/SignUp';
 import Login from './frontend/pages/Login';
 import Navbar from './frontend/components/app/Navbar';
 import Footer from './frontend/components/app/Footer';
-import {loginAction, logoffAction, LOG_OFF, updateAccountAction} from "./frontend/actions/userAction.js";
+import {loginAction, logoffAction, updateAccountAction} from "./frontend/actions/userAction.js";
 import './App.css';
 
 class App extends Component{
