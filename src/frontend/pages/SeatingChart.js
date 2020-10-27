@@ -18,9 +18,8 @@ const [nextPage, setNextPage] = useState(false);
 			onOk={() => setNextPage(true)}
 			width={400}
 			footer={[
-				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Showtimes'>Cancel</Link >
-				</Button>,
-				<Button key="chooseSeat" onClick={() =>setNextPage(true)}><Link to='/NextPage'>Continue</Link ></Button>
+				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Showtimes'>Cancel</Link > </Button>,
+				<Button key="chooseSeat" onClick={() => setNextPage(true)}><Link to='/NextPage'>Confirm Seat</Link > </Button>
 				]}
 			>
 			<form>

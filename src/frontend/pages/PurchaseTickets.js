@@ -18,9 +18,8 @@ const [seatingChart, setSeatingChart] = useState(false);
 			onOk={() => setSeatingChart(true)}
 			width={400}
 			footer={[
-				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Showtimes'>Cancel</Link >
-				</Button>,
-				<Button key="purchase" onClick={() =>setSeatingChart(true)}><Link to='/SeatingChart'>Purchase Tickets</Link ></Button>
+				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Showtimes'>Cancel</Link > </Button>,
+				<Button key="purchase" onClick={() => setSeatingChart(true)}><Link to='/SeatingChart'>Select Seat</Link > </Button>
 				]}
 			>
 			<form>
