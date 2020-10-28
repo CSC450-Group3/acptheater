@@ -12,15 +12,19 @@ const MovieCard = ({title, poster_url, movie_id, ShowDetails, DetailRequest, Act
 
     const clickHandler = async() => {
 
-        ActivateModal(true);
+							
         DetailRequest(true);
+        console.log("title: ", title)
+        console.log("poster_url: ", poster_url)
+        console.log("movie_id: ", movie_id)
 
-        await axios.get('api/movie/' + movie_id[0] )
+        await axios.get('api/movie/' + movie_id )
         .then( res =>{
             const movie = res.data;
             console.log(movie);
                 DetailRequest(false);
                 ShowDetails(movie);
+                ActivateModal(true);
         })
         .catch( err => {
             console.log(err);
@@ -62,7 +66,7 @@ const MovieDetail = ({title, cast, release_date, rated, duration, genre, poster_
             <Col span={13}>
                 <Row >
                     <Col>
-                        <TextTitle>{title}</TextTitle>
+                        {title}
                     </Col>
                 </Row>
                 <Row style={{marginBottom: '.7em'}}>
@@ -94,7 +98,7 @@ function Showtimes() {
 
     const [data, setData] = useState([]);
     const [activateModal, setActivateModal] = useState(false);
-    const [details, setShowDetails] = useState(false);
+    const [details, setShowDetails] = useState([]);
     const [detailRequest, setDetailRequest] = useState(false);
     const [activateForm, setActivateForm] = useState(false);
 
@@ -117,17 +121,17 @@ function Showtimes() {
                 <Content>
                     <div style={{ background: '#282c34', padding: 60, minHeight: 300 }}>
                         <Row justify="center">
-                            {Object.keys(data).map((key) => (
-                                    <MovieCard 
-                                        ShowDetails={setShowDetails} 
-                                        DetailRequest={setDetailRequest}
-                                        ActivateModal={setActivateModal}
-                                        ActivateForm={setActivateForm}
-                                        key={data[key].movie_id}
-                                        title = {data[key].title}
-                                        movie_id = {data[key].movie_id}
-                                        poster_url = {data[key].poster_URL}
-                                    />
+                        {Object.keys(data).map((key) => (
+                                <MovieCard 
+                                    ShowDetails={setShowDetails} 
+                                    DetailRequest={setDetailRequest}
+                                    ActivateModal={setActivateModal}
+                                    ActivateForm={setActivateForm}
+                                    key={data[key].movie_id}
+                                    title = {data[key].title}
+                                    movie_id = {data[key].movie_id}
+                                    poster_url = {data[key].poster_URL}
+                                />
                             ))}
                             
                         </Row>
@@ -141,11 +145,21 @@ function Showtimes() {
                         width={800}
                         footer={[
                             <Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Showtimes'>Cancel</Link > </Button>,
+
                             <Button key="schedule" onClick={() =>setActivateForm(true)}><Link to='/PurchaseTickets'>Purchase Tickets</Link > </Button>
                           ]}
                         >
-                        { detailRequest === false ?
-                            (<MovieDetail {...details} />) :
+                        { detailRequest === false && details.length !==0 ?
+                            (<MovieDetail 
+                                title={details.title} 
+                                cast={details.cast}
+                                release_date={details.release_date}
+                                rated={details.rated} 
+                                duration={details.duration}
+                                genre={details.genre}
+                                poster_url={details.poster_URL}
+                                plot={details.plot}
+                             />) :
                             (<Loader />) 
                         }
                     </Modal>

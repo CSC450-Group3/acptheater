@@ -18,9 +18,8 @@ const [backToMovies, setBackToMovies] = useState(false);
 			onOk={() => setBackToMovies(true)}
 			width={215}
 			footer={[
-				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Movies'>Cancel</Link >
-				</Button>,
-				<Button key="schedule" onClick={() =>setBackToMovies(true)}><Link to='/Movies'>Schedule</Link ></Button>
+				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Movies'>Cancel</Link > </Button>,
+				<Button key="schedule" onClick={() =>setBackToMovies(true)}><Link to='/Movies'>Schedule</Link > </Button>
 				]}
 			>
 			<form>
