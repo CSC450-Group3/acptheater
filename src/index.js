@@ -6,9 +6,26 @@ import * as serviceWorker from './serviceWorker';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import rootReducer from "./frontend/reducers";
+import { Store } from '@material-ui/icons';
+import { loadState, saveState } from './localStorage';
+
+//load state from local storage
+const persistedState = loadState();
 
 //create our Redux Store
-const store = createStore(rootReducer);
+const store = createStore(
+  rootReducer, 
+  persistedState
+);
+
+//update the local storage state when there are changes
+store.subscribe(()=>{
+  saveState({
+    user: store.getState().user
+  });
+})
+
+
 
 ReactDOM.render(
   <React.StrictMode>
