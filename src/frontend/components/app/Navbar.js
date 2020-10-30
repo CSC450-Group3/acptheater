@@ -117,7 +117,6 @@ function Navbar(props) {
 
 
   function displayByLoginStatus(user_id, user_type){
-    console.log("User_id", user_id)
     //No user is logged in
     if(user_id === ""){
       return(
@@ -204,5 +203,4 @@ function Navbar(props) {
     </div>
   );
 }
-
 export default Navbar;
