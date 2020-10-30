@@ -161,10 +161,8 @@ function Movies() {
                         onOk={() => setActivateForm(true)}
                         width={800}
                         footer={[
-                            <Button key="cancel" onClick={() => setActivateModal(false)}>
-                                Cancel
-                            </Button>,
-                            <Button key="schedule" onClick={() =>setActivateForm(true)}><Link to='/ScheduleForm'>Schedule Movie</Link ></Button>
+                            <Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Movies'>Cancel</Link> </Button>,
+                            <Button key="schedule" onClick={() =>setActivateForm(true)}><Link to='/ScheduleForm'>Schedule Movie</Link > </Button>
                           ]}
                         >
                         { detailRequest === false ?

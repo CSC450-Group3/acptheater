@@ -129,7 +129,7 @@ function Navbar(props) {
     //admin is logged in
     if(user_type === "A"){
       return(
-        <div>
+        <div className={classes.menuButton}>
           <Button
               edge="end" className={classes.menuButton}
               aria-label="user account"
@@ -157,7 +157,7 @@ function Navbar(props) {
     // Customer is logged in
     else{
       return(
-        <div className="loggedInUser">
+        <div className={classes.menuButton}>
             <IconButton aria-label="show messages" color="inherit">
               <Badge badgeContent={1} color="secondary">
                 <MailIcon />
@@ -203,5 +203,4 @@ function Navbar(props) {
     </div>
   );
 }
-
 export default Navbar;
