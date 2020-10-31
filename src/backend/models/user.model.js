@@ -26,13 +26,11 @@ User.create = (newUser, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //User created successfully
-        console.log("Created user: ", {user_id: res.insertId, ...newUser});
         result(null, { user_id: res.insertId, ...newUser});
     });
 };
@@ -46,14 +44,12 @@ User.findById = (user_id, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         // User is found 
         if(res.length){
-            console.log("found user: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -64,21 +60,20 @@ User.findById = (user_id, result) => {
 };
 
 // Validate username/email and password
-User.validateCredentials = (email, password, result) => {
-    sql.query(`SELECT user_id, first_name, last_name, middle_name, DATE_FORMAT(birthday, '%c/%e/%Y') AS birthday, email, password, type, disabled 
-                FROM user 
-                WHERE email = '${email}' AND password = SHA1('${password}')`, 
+User.validateCredentials = (credentials, result) => {
+    sql.query("SELECT user_id, first_name, last_name, middle_name, DATE_FORMAT(birthday, '%c/%e/%Y') AS birthday, email, password, type, disabled "+
+                "FROM user " +
+                "WHERE email = ? AND password = SHA1(?)", 
+    [credentials.email, credentials.password], 
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //User found with matching credentials
         if(res.length){
-            console.log("found user: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -87,6 +82,27 @@ User.validateCredentials = (email, password, result) => {
         result({kind: "not_found"}, null);
     });
 };
+
+
+// Get user by email
+User.getByEmail = (email, result) => {
+    sql.query("SELECT user_id, first_name, last_name, middle_name, DATE_FORMAT(birthday, '%c/%e/%Y') AS birthday, email, password, type, disabled "+
+                "FROM user " +
+                "WHERE email = ?", 
+    [email], 
+    (err, res) => {
+        //Error encountered
+        if(err){
+            result(err, null);
+            return;
+        }
+
+        //return results
+        result(null, res);
+        return;
+    });
+};
+
 
 
 // Update an existing User by ID
@@ -101,7 +117,6 @@ User.updateById = (user_id, user, result) => {
         (err, res) => {
             //Error encountered
             if(err){
-                console.log("error:", err);
                 result(null, err);
                 return;
             }
@@ -113,7 +128,6 @@ User.updateById = (user_id, user, result) => {
             }
 
             //User updated successfully
-            console.log("updated user: ", {user_id: user_id, ...user});
             result(null, {user_id: user_id, ...user});
         }
     );
@@ -124,7 +138,6 @@ User.delete = (user_id, result) => {
     sql.query("DELETE FROM user WHERE user_id = ?", user_id, (err, res) =>{
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(null, err);
             return;
         }
@@ -136,7 +149,6 @@ User.delete = (user_id, result) => {
         }
 
         // User deleted successfully
-        console.log("deleted user with user_id: ", user_id);
         result(null, res);
     });
 }

@@ -11,13 +11,11 @@ Screen.create = (newScreen, result) => {
     sql.query("INSERT INTO screen SET ? ", [newScreen], (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //screen created successfully
-        console.log("Created screen: ", {screen_id: res.insertId, ...newScreen});
         result(null, { screen_id: res.insertId, ...newScreen});
     });
 };
@@ -28,14 +26,12 @@ Screen.findById = (screen_id, result) => {
     sql.query(`SELECT * FROM screen WHERE screen_id = ${screen_id}`, (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         // screen is found 
         if(res.length){
-            console.log("found screen: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -50,13 +46,11 @@ Screen.getAll = result => {
     sql.query("Select * FROM screen", (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //Screens found
-        console.log("Screens: ", res);
         result(null, res);
     });
 };
@@ -70,7 +64,6 @@ Screen.updateById = (screen_id, screen, result) => {
         (err, res) => {
             //Error encountered
             if(err){
-                console.log("error:", err);
                 result(null, err);
                 return;
             }
@@ -82,7 +75,6 @@ Screen.updateById = (screen_id, screen, result) => {
             }
 
             //screen updated successfully
-            console.log("updated screen: ", {screen_id: screen_id, ...screen});
             result(null, {screen_id: screen_id, ...screen});
         }
     );
@@ -93,7 +85,6 @@ Screen.delete = (screen_id, result) => {
     sql.query("DELETE FROM screen WHERE screen_id = ?", screen_id, (err, res) =>{
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(null, err);
             return;
         }
@@ -105,7 +96,6 @@ Screen.delete = (screen_id, result) => {
         }
 
         // screen deleted successfully
-        console.log("deleted screen with screen_id: ", screen_id);
         result(null, res);
     });
 }

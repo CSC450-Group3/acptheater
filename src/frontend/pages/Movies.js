@@ -137,7 +137,7 @@ function Movies() {
         <div className="Movies">
             <Layout className="layout">
                 <Content>
-                    <div style={{ background: '#4a576e', padding: 60, minHeight: 300 }}>
+                    <div style={{ background: '#282c34', padding: 60, minHeight: 300 }}>
                         <SearchBox searchHandler={setQuery} />
                         <br />
                         <Row justify="center">
@@ -161,10 +161,8 @@ function Movies() {
                         onOk={() => setActivateForm(true)}
                         width={800}
                         footer={[
-                            <Button key="cancel" onClick={() => setActivateModal(false)}>
-                                Cancel
-                            </Button>,
-                            <Button key="schedule" onClick={() =>setActivateForm(true)}><Link to='/ScheduleForm'>Schedule Movie</Link ></Button>
+                            <Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Movies'>Cancel</Link> </Button>,
+                            <Button key="schedule" onClick={() =>setActivateForm(true)}><Link to='/ScheduleForm'>Schedule Movie</Link > </Button>
                           ]}
                         >
                         { detailRequest === false ?

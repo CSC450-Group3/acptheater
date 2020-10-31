@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const footerStyle = makeStyles(() => ({
     footer: {
-        background: '#3f51b5',
+        background: '#000000',
         color: '#fff',
         textAlign: 'center'
     }

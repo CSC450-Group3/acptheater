@@ -14,13 +14,11 @@ Seat.create = (newSeat, result) => {
     sql.query("INSERT INTO seat SET ? ", [newSeat], (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //seat created successfully
-        console.log("Created seat: ", {seat_id: res.insertId, ...newSeat});
         result(null, { seat_id: res.insertId, ...newSeat});
     });
 };
@@ -43,13 +41,11 @@ Seat.massCreate = (data, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //seat created successfully
-        console.log("Created seats: ", {seats_created: res.affectedRows, screen_id: data.screen_id, rows: data.rows, columns: data.columns});
         result(null, { seats_created: res.affectedRows, screen_id: data.screen_id, rows: data.rows, columns: data.columns});
     });
 };
@@ -61,14 +57,12 @@ Seat.findById = (seat_id, result) => {
     sql.query(`SELECT * FROM seat WHERE seat_id = ${seat_id}`, (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         // seat is found 
         if(res.length){
-            console.log("found seat: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -80,7 +74,7 @@ Seat.findById = (seat_id, result) => {
 
 
 // Find all seats by screen
-Seat.getAll = (screen_id, result) => {
+Seat.getAllByScreen = (screen_id, result) => {
     sql.query(
         "SELECT * " +
         "FROM seat " +
@@ -89,13 +83,39 @@ Seat.getAll = (screen_id, result) => {
     [screen_id], (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //Seats found
-        console.log("Seats: ", res);
+        result(null, res);
+    });
+};
+
+
+
+// Find all seat availablibilty by showing_id
+Seat.getAllAvailability = (showing_id, result) => {
+    sql.query(
+        "SELECT s.*, " +
+                "CASE " +
+                    "WHEN mt.movie_ticket_id IS NOT NULL THEN 1 " +
+                    "ELSE 0  " +
+                "END AS booked " +
+        "FROM showing sh " +
+            "INNER JOIN screen sc on sc.screen_id = sh.screen_id " +
+            "INNER JOIN seat s on s.screen_id = sc.screen_id " + 
+            "LEFT JOIN movieticket mt ON mt.seat_id = s.seat_id AND mt.showing_id = sh.showing_id " +
+        "WHERE sh.showing_id = ? " +
+        "ORDER BY row_name, seat_number ",
+    [showing_id], (err, res) => {
+        //Error encountered
+        if(err){
+            result(err, null);
+            return;
+        }
+
+        //Seats found
         result(null, res);
     });
 };
@@ -112,7 +132,6 @@ Seat.updateById = (seat_id, seat, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error:", err);
             result(null, err);
             return;
         }
@@ -124,7 +143,6 @@ Seat.updateById = (seat_id, seat, result) => {
         }
 
         //seat updated successfully
-        console.log("updated seat: ", {seat_id: seat_id, ...seat});
         result(null, {seat_id: seat_id, ...seat});
     });
 }
@@ -134,7 +152,6 @@ Seat.delete = (seat_id, result) => {
     sql.query("DELETE FROM seat WHERE seat_id = ?", seat_id, (err, res) =>{
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(null, err);
             return;
         }
@@ -146,7 +163,6 @@ Seat.delete = (seat_id, result) => {
         }
 
         // seat deleted successfully
-        console.log("deleted seat with seat_id: ", seat_id);
         result(null, res);
     });
 }
@@ -158,7 +174,6 @@ Seat.deleteAll = (screen_id, result) => {
     sql.query("DELETE FROM seat WHERE screen_id = ?", screen_id, (err, res) =>{
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(null, err);
             return;
         }
@@ -170,7 +185,6 @@ Seat.deleteAll = (screen_id, result) => {
         }
 
         // seat deleted successfully
-        console.log("deleted seat with screen_id: ", screen_id);
         result(null, res);
     });
 }

@@ -14,13 +14,11 @@ Showing.create = (newShowing, result) => {
     sql.query("INSERT INTO showing SET ?", newShowing, (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //Showing created successfully
-        console.log("Created showing: ", {showing_id: res.insertId, ...newShowing});
         result(null, { showing_id: res.insertId, ...newShowing });
     });
 };
@@ -37,14 +35,12 @@ Showing.findById = (showing_id, result) => {
         (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         // Showing is found 
         if(res.length){
-            console.log("found showing: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -66,13 +62,11 @@ Showing.getByDate = (date, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
         
         //Showing found
-        console.log(`showings on ${date}: `, res);
         result(null, res);
     });
 };
@@ -92,13 +86,11 @@ Showing.getUpcoming = result => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //Future showings found
-        console.log("Upcoming showings: ", res);
         result(null, res);
     });
 };
@@ -112,7 +104,6 @@ Showing.updateById = (showing_id, showing, result) => {
         (err, res) => {
             //Error encountered
             if(err){
-                console.log("error:", err);
                 result(null, err);
                 return;
             }
@@ -124,7 +115,6 @@ Showing.updateById = (showing_id, showing, result) => {
             }
 
             //Showing updated successfully
-            console.log("Updated showing: ", {showing_id: showing_id, ...showing});
             result(null, {showing_id: showing_id, ...showing});
         }
     );
@@ -135,7 +125,6 @@ Showing.delete = (showing_id, result) => {
     sql.query("DELETE FROM showing WHERE showing_id = ?", showing_id, (err, res) =>{
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(null, err);
             return;
         }
@@ -147,7 +136,6 @@ Showing.delete = (showing_id, result) => {
         }
 
         // Showing deleted successfully
-        console.log("deleted showing with showing_id: ", showing_id);
         result(null, res);
     });
 }

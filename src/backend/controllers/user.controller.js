@@ -58,9 +58,22 @@ exports.findOne = (req, res) => {
 
 // Validate User login
 exports.validate = (req, res) => {
-    User.validateCredentials(req.params.email, req.params.password, (err, data) => {
+    //Validate the request
+    if(!req.body){
+        res.status(400).send({
+            message: "Content cannot be empty."
+        });
+    }
+
+    // Create the user object
+    const credentials = new Object({
+        email: req.body.email,
+        password: req.body.password
+    });
+
+    User.validateCredentials(credentials, (err, data) => {
         if(err){
-            if(err.kind === "not_found"){
+            if(err.kind == "not_found"){
                 res.status(404).send({
                     message: "User not found with the given credentials."
                 });
@@ -70,6 +83,20 @@ exports.validate = (req, res) => {
                     message: "Error retreiving user."
                 });
             }
+        }
+        else{
+            res.send(data);
+        }
+    })
+}
+
+// Find user by email
+exports.findByEmail = (req, res) => {
+    User.getByEmail(req.params.email, (err, data) => {
+        if(err){
+                res.status(500).send({
+                    message: `Error retreiving user with email ${req.params.email}.`
+                });
         }
         else{
             res.send(data);

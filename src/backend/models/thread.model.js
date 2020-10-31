@@ -15,13 +15,11 @@ Thread.create = (newThread, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //Thread created successfully
-        console.log("Created thread: ", {thread_id: res.insertId, ...newThread});
         result(null, { thread_id: res.insertId, ...newThread });
 
         //Create thread participant record for user creating thread
@@ -29,13 +27,12 @@ Thread.create = (newThread, result) => {
         `VALUES(${res.insertId}, ${newThread.user_id})`, (err, res2) => {
             //Error encountered
             if(err){
-                console.log("error: ", err);
                 result(err, null);
                 return;
             }
     
             //Thread participant created successfully
-            console.log(`Created thread participant with thread_id: ${res.insertId} , user_id: ${newThread.user_id}`);
+            //console.log(`Created thread participant with thread_id: ${res.insertId} , user_id: ${newThread.user_id}`);
         });
     });
 };
@@ -51,14 +48,12 @@ Thread.findById = (thread_id, result) => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         // Thread is found 
         if(res.length){
-            console.log("found thread: ", res[0]);
             result(null, res[0]);
             return;
         }
@@ -71,7 +66,6 @@ Thread.findById = (thread_id, result) => {
 // Get thread records by user 
 Thread.getAllByUser = (user_id, includeResolved,  result) => {
     var queryString;
-    console.log(includeResolved)
     if(includeResolved === 'true'){
         queryString = "SELECT DISTINCT t.* " +
             "FROM thread t " +
@@ -89,17 +83,14 @@ Thread.getAllByUser = (user_id, includeResolved,  result) => {
         "ORDER BY t.thread_id"
     }
 
-    console.log(queryString);
     sql.query(queryString, [user_id], (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //Threads found
-        console.log("Threads: ", res);
         result(null, res);
     });
 };
@@ -113,13 +104,11 @@ Thread.getAll = result => {
     (err, res) => {
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(err, null);
             return;
         }
 
         //Thread found
-        console.log("Thread: ", res);
         result(null, res);
     });
 };
@@ -130,7 +119,6 @@ Thread.updateById = (thread_id, thread, result) => {
     (err, res) => {
             //Error encountered
             if(err){
-                console.log("error:", err);
                 result(null, err);
                 return;
             }
@@ -142,7 +130,6 @@ Thread.updateById = (thread_id, thread, result) => {
             }
 
             //Thread updated successfully
-            console.log("updated thread: ", {thread_id: thread_id, ...thread});
             result(null, {thread_id: thread_id, ...thread});
         }
     );
@@ -153,7 +140,6 @@ Thread.delete = (thread_id, result) => {
     sql.query("DELETE FROM thread WHERE thread_id = ?", thread_id, (err, res) =>{
         //Error encountered
         if(err){
-            console.log("error: ", err);
             result(null, err);
             return;
         }
@@ -165,7 +151,6 @@ Thread.delete = (thread_id, result) => {
         }
 
         // Thread deleted successfully
-        console.log("deleted thread with thread_id: ", thread_id);
         result(null, res);
     });
 }
