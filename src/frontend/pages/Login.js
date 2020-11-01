@@ -3,7 +3,6 @@ import axios from 'axios';
 import Alert from '@material-ui/lab/Alert';
 import { withRouter } from "react-router-dom";
 
-
 function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -99,9 +98,9 @@ function Login(props) {
           <label class="label-password">
             <input 
                   value={password}
-                  type="text" 
+                  type="password"
                   name="password" 
-                  placeholder="Password" 
+                  placeholder="Password"
                   onChange={event => {
                     setPassword(event.target.value);
                     setError(false); 

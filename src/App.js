@@ -9,6 +9,7 @@ import PurchaseTickets from './frontend/pages/PurchaseTickets';
 import ScheduleForm from './frontend/pages/ScheduleForm';
 import SignUp from './frontend/pages/SignUp';
 import Login from './frontend/pages/Login';
+import UserDashboard from './frontend/pages/UserDashboard';
 import Navbar from './frontend/components/app/Navbar';
 import Footer from './frontend/components/app/Footer';
 import {loginAction, logoffAction, updateAccountAction} from "./frontend/actions/userAction.js";
@@ -28,6 +29,7 @@ class App extends Component{
           <Route exact path="/Movies"><Movies /> </Route>
           <Route exact path="/ScheduleForm"><ScheduleForm /> </Route>
           <Route exact path="/Showtimes"><Showtimes /> </Route>
+          <Route exact path="/UserDashboard"><UserDashboard /> </Route>
           <Route exact path="/PurchaseTickets"><PurchaseTickets /> </Route>									  
           <Route exact path="/SignUp"><SignUp history={history} /> </Route>
           <Route exact path="/Login"><Login  loginAction={loginAction} history={history}/> </Route>
