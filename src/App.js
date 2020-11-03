@@ -10,12 +10,29 @@ import Login from './frontend/pages/Login';
 import Navbar from './frontend/components/app/Navbar';
 import Footer from './frontend/components/app/Footer';
 import {loginAction, logoffAction, updateAccountAction} from "./frontend/actions/userAction.js";
+import {selectMovieToSchedule, clearMovieToSchedule} from "./frontend/actions/adminMovieSelectionAction";
+import {addSchedule, removeSchedule, clearScheudles} from "./frontend/actions/scheduleMovieAction"
+
 import './App.css';
 
 class App extends Component{
   
   render(){
-    const {user, loginAction, logoffAction, updateAccountAction, history} = this.props;
+
+    const {
+      user,
+      movieToSchedule,
+      showings,
+      loginAction,
+      logoffAction, 
+      updateAccountAction, 
+      selectMovieToSchedule, 
+      addSchedule,
+      removeSchedule,
+      clearMovieToSchedule,
+      clearScheudles,
+      history
+    } = this.props;
 
     return (
       <Router>
@@ -23,8 +40,18 @@ class App extends Component{
         <div className="App">
           <Route exact path="/"><Home /> </Route>
           <Route exact path="/Home"><Home /> </Route>
-          <Route exact path="/Movies"><Movies /> </Route>
-          <Route exact path="/ScheduleForm"><ScheduleForm /> </Route>
+          <Route exact path="/Movies"><Movies selectMovieToSchedule={selectMovieToSchedule}/> </Route>
+          <Route exact path="/ScheduleForm">
+            <ScheduleForm  
+              movieToSchedule={movieToSchedule} 
+              clearMovieToSchedule={clearMovieToSchedule}
+              clearScheudles={clearScheudles}
+              showings={showings}
+              addSchedule={addSchedule}
+              removeSchedule={removeSchedule}
+              history={history}
+            /> 
+          </Route>
           <Route exact path="/SignUp"><SignUp history={history} /> </Route>
           <Route exact path="/Login"><Login  loginAction={loginAction} history={history}/> </Route>
         </div>
@@ -35,9 +62,11 @@ class App extends Component{
 }
 
 
-const mapStateToProps =({user}) =>{
+const mapStateToProps =({user, movieToSchedule, showings}) =>{
   return{
-      user
+      user,
+      movieToSchedule,
+      showings
   }
 }
 
@@ -47,7 +76,12 @@ const mapActionsToProps = (dispatch) =>{
   return bindActionCreators({
       loginAction,
       logoffAction,
-      updateAccountAction
+      updateAccountAction,
+      selectMovieToSchedule,
+      addSchedule,
+      removeSchedule,
+      clearMovieToSchedule,
+      clearScheudles
   }, dispatch)
 }
 

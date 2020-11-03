@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Input, Row, Col, Card, Tag, Spin, Modal, Typography, Button } from 'antd';
+import { Layout, Input, Row, Col, Card, Tag, Spin, Modal, Typography, Button, Space } from 'antd';
 import { Link } from "react-router-dom";
 import 'antd/dist/antd.css';
 
@@ -102,8 +102,7 @@ const Loader = () => (
     </div>
 )
 
-function Movies() {
-
+function Movies(props) {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [query, setQuery] = useState('');
@@ -161,10 +160,27 @@ function Movies() {
                         onOk={() => setActivateForm(true)}
                         width={800}
                         footer={[
-                            <Button key="cancel" onClick={() => setActivateModal(false)}>
-                                Cancel
-                            </Button>,
-                            <Button key="schedule" onClick={() =>setActivateForm(true)}><Link to='/ScheduleForm'>Schedule Movie</Link ></Button>
+                            <Space size ='small'>
+                                <Button key="schedule" type = "primary" han onClick={() =>{
+                                        props.selectMovieToSchedule(
+                                            details.Title,
+                                            details.Actors, 
+                                            details.Plot, 
+                                            details.Runtime,
+                                            details.Rated,
+                                            details.Poster,
+                                            details.Genre,
+                                            details.Released
+                                        )
+                                        setActivateForm(true);
+                                    }
+                                }>
+                                    <Link to='/ScheduleForm'>Schedule Movie</Link >
+                                </Button>
+                                <Button key="cancel" onClick={() => setActivateModal(false)}>
+                                    Cancel
+                                </Button>
+                            </Space>
                           ]}
                         >
                         { detailRequest === false ?
