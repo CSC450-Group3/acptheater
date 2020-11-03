@@ -6,6 +6,7 @@ import Home from './frontend/pages/Home';
 import Movies from './frontend/pages/Movies';
 import Showtimes from './frontend/pages/Showtimes';
 import PurchaseTickets from './frontend/pages/PurchaseTickets';
+import SeatingChart from './frontend/pages/SeatingChart';
 import ScheduleForm from './frontend/pages/ScheduleForm';
 import SignUp from './frontend/pages/SignUp';
 import Login from './frontend/pages/Login';
@@ -28,7 +29,8 @@ class App extends Component{
           <Route exact path="/Movies"><Movies /> </Route>
           <Route exact path="/ScheduleForm"><ScheduleForm /> </Route>
           <Route exact path="/Showtimes"><Showtimes /> </Route>
-          <Route exact path="/PurchaseTickets"><PurchaseTickets /> </Route>									  
+          <Route exact path="/PurchaseTickets"><PurchaseTickets /> </Route>		
+          <Route exact path="/SeatingChart"><SeatingChart /> </Route>							  
           <Route exact path="/SignUp"><SignUp history={history} /> </Route>
           <Route exact path="/Login"><Login  loginAction={loginAction} history={history}/> </Route>
         </div>
