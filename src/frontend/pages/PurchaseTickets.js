@@ -11,7 +11,7 @@ const [seatingChart, setSeatingChart] = useState(false);
     return (
         <div className="PurchaseForm">		
 		<Modal
-			title='Purchase Ticket Form'
+			title='Purchase Tickets'
 			centered
 			visible={activateModal}
 			onCancel={() => setActivateModal(false)}
@@ -23,7 +23,23 @@ const [seatingChart, setSeatingChart] = useState(false);
 				]}
 			>
 			<form>
-                <p>This will be the form to purchase Tickets</p>
+				<div>
+					<p>Please select from all options below:</p>
+					<label for="date" style={{padding: 10}}>Date: </label>
+						<select></select>
+					<label for="time" style={{padding: 10}}>Time: </label>
+						<select></select>
+					<label for="viewers" style={{padding: 10}}>Number of Viewers: </label>
+						<select></select>
+						< br/>
+						< br/>
+				</div>
+				<div>
+					<input type="checkbox" id="virtual" />
+						<label for="virtual" style={{padding: 20}}> Virtual Ticket(s)</label>
+					<input type="checkbox" id="theater" />
+						<label for="theater" style={{padding: 20}}> Theater Ticket(s)</label>
+				</div>
 			</form>
 			</Modal>
 
