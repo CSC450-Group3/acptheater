@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import rootReducer from "./frontend/reducers";
 import { loadState, saveState } from './localStorage';
@@ -14,7 +15,8 @@ const persistedState = loadState();
 //create our Redux Store
 const store = createStore(
   rootReducer, 
-  persistedState
+  persistedState,
+  applyMiddleware(thunk)
 );
 
 //update the local storage state when there are changes
@@ -24,7 +26,7 @@ store.subscribe(()=>{
   });
 })
 
-
+//console.log("STORE ", store.getState())
 
 ReactDOM.render(
   <React.StrictMode>
