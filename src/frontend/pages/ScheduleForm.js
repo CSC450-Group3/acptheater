@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Space } from 'antd';
+import { Modal, Button, Space, Popconfirm, message } from 'antd';
 import { Link } from "react-router-dom";
 import Loading from '../components/util/Loading'
 import { Table } from 'antd';
@@ -13,13 +13,13 @@ import { withRouter } from "react-router-dom";
 function ScheduleForm(props) {
 	const {showings, movieToSchedule} = props
 	const [activateModal, setActivateModal] = useState(false);
-	const [activateDeleteModal, setActivateDeleteModal] = useState(false);
 	const [allScreens, setAllScreens] = useState([]); 
 	const [screenID, setScreenID] = useState(null);
 	const [startDate, setStartDate] = useState(null);
 	const [startTime, setStartTime] = useState(null);
 	const [price, setPrice] = useState(null);
 	const [isLoading, setIsLoading] = useState(false)
+	const [keyToDelete, setKeyToDelete] = useState("");
 
 	useEffect( () => {
 		//get all screens at the movie theater
@@ -46,21 +46,22 @@ function ScheduleForm(props) {
 			{ title: 'Showing', dataIndex: 'start_date_time', key: 'start_date_time' },
 			{ title: 'Price', dataIndex: 'price', key: 'price' },
 			{
-				title: 'Action',
-				dataIndex: '',
-				key: 'u',
-				render: () => <a>Update</a>,
-			},
-			{
 			  title: 'Action',
 			  dataIndex: '',
 			  key: 'x',
 			  render: (text, record) => (
-				<Button
-				  onClick={(e) => { displayDeleteModal(record.key); console.log("Record " , record); console.log("E ", e) }}
+				<Popconfirm
+					title="Are you sure delete this schedule?"
+					onConfirm={confirmDelete}
+					okText="Yes"
+					cancelText="No"
+				>
+				<Button danger
+				  	onClick={() => {setKeyToDelete(record.key);}}
 				>
 				 <a> Delete </a>
 				</Button>
+				</Popconfirm>
 			  ),
 			},
 		  ];
@@ -191,26 +192,8 @@ function ScheduleForm(props) {
 	}
 
 
-	function displayDeleteModal(key) {
-		return(
-			<Modal
-				title='Schedule Movie Form'
-				centered
-				visible={activateDeleteModal}
-				width={215}
-				footer={[
-					<Space size='small'>
-						<Button key="confirm"  type="primary"  onClick={() =>props.removeSchedule(key)}>
-							Confirm 
-						</Button>,
-						<Button key="cancel" 
-							onClick={() => setActivateDeleteModal(false)}>Cancel
-						</Button>
-					</Space>
-				]}
-			>
-			</Modal>
-		)
+	function confirmDelete() {
+		props.removeSchedule(keyToDelete)
 	}
 
 	async function handleSubmitSchedules(e){
@@ -256,19 +239,19 @@ function ScheduleForm(props) {
 		 		price: showings[key].price
 		 	})
 		 	.then(function(res) {
-		 		console.log(res.data)
+				 //console.log(res.data)
+				 setIsLoading(false);
+		
+				 //Cleanup move/schedule data and redirect to Movies page
+				 clearData();
+				 props.history.push("/Movies");
 		 	})
 		 	.catch(function (err) {
 				console.log(err)
 				setIsLoading(false);
 		 	})
 		))
-		
-		setIsLoading(false);
-		
-		//Cleanup move/schedule data and redirect to Movies page
-		clearData();
-		props.history.push("/Movies");
+	
 	}
 	 
 	function clearData(){

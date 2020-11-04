@@ -3,7 +3,7 @@ import {CLEAR_SCHEDULES, ADD_SCHEDULE, REMOVE_SCHEDULE} from "../actions/schedul
 const INITIAL_STATE=  {};
 
 export default function scheduleMovieReducer(state = INITIAL_STATE, action ={}){
-    console.log(action.type)
+    //console.log(action.type)
     switch(action.type){
         case ADD_SCHEDULE:{
             //console.log(action.payload)
@@ -20,8 +20,6 @@ export default function scheduleMovieReducer(state = INITIAL_STATE, action ={}){
             
             //add new showing to the showing list with the unique key
             state[showingDetails.key] = newShowing;
-
-            console.log("current ",state)
             return state;
         }
 
@@ -32,12 +30,18 @@ export default function scheduleMovieReducer(state = INITIAL_STATE, action ={}){
 
         case REMOVE_SCHEDULE:{
             //console.log(action)
-            const showingKey = action.payload;
+            const showingKey = action.payload.key;
             const currentShowings = state;
 
             //remove the showing with the given key
-            delete currentShowings[showingKey];
-            return currentShowings;
+            const updatedShowings = Object.keys(currentShowings).reduce((object, key) => {
+                if (key !== showingKey) {
+                  object[key] = currentShowings[key]
+                }
+                return object
+            }, {})
+
+            return updatedShowings;
         }
 
         default: {

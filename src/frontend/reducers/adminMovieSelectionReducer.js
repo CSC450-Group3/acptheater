@@ -13,7 +13,7 @@ const INITIAL_STATE={
 };
 
 export default function adminMovieSelectionReducer(state = INITIAL_STATE, action ={}){
-    console.log(action.type)
+    //console.log(action.type)
     switch(action.type){
         case SELECT_MOVIE:{
             //console.log(action.payload)
