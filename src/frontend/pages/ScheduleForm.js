@@ -8,8 +8,6 @@ import axios from 'axios';
 import { withRouter } from "react-router-dom";
 
 
-
-
 function ScheduleForm(props) {
 	const {showings, movieToSchedule} = props
 	const [activateModal, setActivateModal] = useState(false);
@@ -35,7 +33,6 @@ function ScheduleForm(props) {
 		}
 
 		getScreens();
-
 
 	}, [showings])
 
@@ -108,6 +105,7 @@ function ScheduleForm(props) {
 					]}
 				>
 				<form >
+	
 					<label for="screen">Screen</label><br/>
 					<select 
 						value = {screenID} 
@@ -282,5 +280,3 @@ function ScheduleForm(props) {
 }
 
 export default withRouter(ScheduleForm);
-
-

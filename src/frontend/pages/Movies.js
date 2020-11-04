@@ -102,6 +102,8 @@ const Loader = () => (
     </div>
 )
 
+				   
+
 function Movies(props) {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
