@@ -56,8 +56,6 @@ class App extends Component{
               history={history}
             /> 
           </Route>
-          <Route exact path="/Movies"><Movies /> </Route>
-          <Route exact path="/ScheduleForm"><ScheduleForm /> </Route>
           <Route exact path="/Showtimes"><Showtimes /> </Route>
           <Route exact path="/PurchaseTickets"><PurchaseTickets /> </Route>									  
           <Route exact path="/SeatingChart"><SeatingChart /> </Route>																					  
