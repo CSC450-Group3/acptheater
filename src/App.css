@@ -144,6 +144,23 @@
   color: #61dafb;
 }
 
+.loading {
+  position: absolute;
+  top: 50vh;
+  z-index: 99;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+.loadingWrapper{
+  position: absolute;
+  top: 0;
+  background-color: rgba(0, 0, 0, .4);
+  z-index: 98;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
