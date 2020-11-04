@@ -185,8 +185,7 @@ function UserCreation(props) {
                                 placeholder="password" 
                                 name="password" 
                                 className={classes.input}
-                                required 
-                                minlength="8"
+                                required minlength="8"
                                 onChange={event => setPassword(event.target.value)}  
                             />
                         <p></p>

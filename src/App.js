@@ -10,6 +10,7 @@ import SeatingChart from './frontend/pages/SeatingChart';
 import ScheduleForm from './frontend/pages/ScheduleForm';
 import SignUp from './frontend/pages/SignUp';
 import Login from './frontend/pages/Login';
+import UserDashboard from './frontend/pages/UserDashboard';
 import Navbar from './frontend/components/app/Navbar';
 import Footer from './frontend/components/app/Footer';
 import {loginAction, logoffAction, updateAccountAction} from "./frontend/actions/userAction.js";
