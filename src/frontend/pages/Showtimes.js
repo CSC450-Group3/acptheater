@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Layout, Row, Col, Card, Tag, Spin, Modal, Typography, Button } from 'antd';
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { v4 } from 'node-uuid'; // used to generate unique ID
 import 'antd/dist/antd.css';
 
 const { Content } = Layout;
@@ -102,18 +103,22 @@ function Showtimes() {
     const [detailRequest, setDetailRequest] = useState(false);
     const [activateForm, setActivateForm] = useState(false);
 
-    useEffect(async () =>{
+    useEffect(() =>{
 
-        await axios.get('api/movie/getAll')
-        .then( res =>{
-            const movies = res.data;
-            console.log(movies);
-            setData(movies)
-        })
-        .catch( err => {
-            console.log(err);
-        })
-    }, []);
+        async function getActiveMovieShowings(){
+			await axios.get('/api/movie/getAll')
+			.then(function(res) {
+				//screens found successfully
+				setData(res.data)
+			})
+			.catch(function (err) {
+				console.log(err)
+			});
+		}
+
+        getActiveMovieShowings();   
+        
+    }, [data]);
     
     return (
         <div className="Showtimes">
@@ -127,7 +132,7 @@ function Showtimes() {
                                     DetailRequest={setDetailRequest}
                                     ActivateModal={setActivateModal}
                                     ActivateForm={setActivateForm}
-                                    key={data[key].movie_id}
+                                    key={v4()} //gurantee key is unique in case someone creates mutliple movie records
                                     title = {data[key].title}
                                     movie_id = {data[key].movie_id}
                                     poster_url = {data[key].poster_URL}
