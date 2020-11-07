@@ -80,14 +80,40 @@
   color: white;
 }
 
-.userCreationWelcome {
+.signUpWelcome {
+  background-image: url("/images/theaterCurtains.jpeg");
+  background-color: #cccccc;
+  height: 700px; /* You must set a specified height */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+.signUpHeader {
   background-color: #282c34;
-  min-height: 35vh;
-  display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(20px + 2vmin);
+  color: rgb(0, 0, 0);
+  width: 100%;
+  padding: 25px 15px;
+  text-align: center;
+  border-radius: 25px;
+  border: 3px solid #000000;
+  color: white;
+}
+
+.userCreationWelcome {
+  background-color: #282c34;
+  width: 60%;
+  height: 20%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1%;
+  border: 3px solid #000000;
+  border-radius: 25px;
+  font-size: calc(5px + 2vmin);
   color: white;
 }
 
@@ -95,28 +121,17 @@
   display: flex;
 }
 
-.userCreationColumn {
-  flex: 100%;
+.userCreationForm {
+  background-color: #282c34;
   margin: 25px;
-  background-color: #282c34;
-  border: 3px solid black;
-  padding: 10px 10px;
-  text-align: center;
-}
-
-.signUpWelcome {
-  background-color: #282c34;
-  min-height: 35vh;
-  display: flex;
-  flex-direction: column;
+  padding: 40px 15px;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-  margin: auto;
-  width: 90%;
-  padding: 70px 0;
   text-align: center;
+  border-radius: 25px;
+  border: 3px solid #000000;
+  font-size: calc(5px + 2vmin);
+  color: white;
 }
 
 .login {
@@ -125,12 +140,28 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(3px + 2vmin);
   color: black;
   margin: auto;
-  width: 25%;
-  padding: 70px 0;
+  width: 20%;
+  padding: 75px;
   text-align: center;
+  border-radius: 25px;
+  border: 3px solid #000000;
+  background: #ffffff;
+  padding: 70px;
+  margin: auto;
+  width: flex;
+  height: flex;
+}
+
+.loginBody {
+  background-image: url("/images/loginLights.jpeg");
+  background-color: #cccccc;
+  height: 700px; /* You must set a specified height */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
 }
 
 .row {
