@@ -76,8 +76,8 @@ function Login(props) {
     }
   }
   return (
-    <body class="login">
-      <form method="post" onSubmit={login}>
+    <body class="loginBody">
+      <form method="post" class="login" onSubmit={login}>
         <h1>Sign In</h1>
         <div>
           <label class="label-email">
@@ -109,8 +109,11 @@ function Login(props) {
                   required />
           </label>
         </div>
+        <p></p>
         {failedLogin(isInvalidLogin, isError)}
         <input type="submit" value="Log In" />
+        <p></p>
+        <p></p>
         <div>
           <a href="#">Forgot password?</a>
         </div>

@@ -95,8 +95,7 @@ function Navbar(props) {
       open={isProfileMenuOpen}
       onClose={handleProfileMenuClose}
     >
-      <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleProfileMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleProfileMenuClose}><Link to='/UserDashboard'>Profile</Link></MenuItem>
       <MenuItem onClick={handleLogOut}><Link to='/'>Sign Out</Link></MenuItem>
     </Menu>
   );
@@ -121,8 +120,8 @@ function Navbar(props) {
     if(user_id === ""){
       return(
         <div className="noUser">
-          <Button color="inherit"><Link to='/SignUp'>SignUp</Link ></Button>
-          <Button color="inherit"><Link to='/Login'>Login</Link ></Button>
+          <Button color="inherit"><Link to='/SignUp'>Sign Up</Link ></Button>
+          <Button color="inherit"><Link to='/Login'>Sign In</Link ></Button>
         </div>
       )
     }
