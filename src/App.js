@@ -41,29 +41,31 @@ class App extends Component{
 
     return (
       <Router>
-        <Navbar user={user} logoffAction={logoffAction} />
         <div className="App">
-          <Route exact path="/"><Home /> </Route>
-          <Route exact path="/Home"><Home /> </Route>
-          <Route exact path="/Movies"><Movies selectMovieToSchedule={selectMovieToSchedule}/> </Route>
-          <Route exact path="/ScheduleForm">
-            <ScheduleForm  
-              movieToSchedule={movieToSchedule} 
-              clearMovieToSchedule={clearMovieToSchedule}
-              clearScheudles={clearScheudles}
-              showings={showings}
-              addSchedule={addSchedule}
-              removeSchedule={removeSchedule}
-              history={history}
-            /> 
-          </Route>
-          <Route exact path="/Showtimes"><Showtimes /> </Route>
-          <Route exact path="/PurchaseTickets"><PurchaseTickets /> </Route>									  
-          <Route exact path="/SeatingChart"><SeatingChart /> </Route>																					  
-          <Route exact path="/SignUp"><SignUp history={history} /> </Route>
-          <Route exact path="/Login"><Login  loginAction={loginAction} history={history}/> </Route>
-        </div>
+          <Navbar user={user} logoffAction={logoffAction} />
+          <div className="content"  style={{ minHeight: "90vh" }}>
+            <Route exact path="/"><Home /> </Route>
+            <Route exact path="/Home"><Home /> </Route>
+            <Route exact path="/Movies"><Movies selectMovieToSchedule={selectMovieToSchedule}/> </Route>
+            <Route exact path="/ScheduleForm">
+              <ScheduleForm  
+                movieToSchedule={movieToSchedule} 
+                clearMovieToSchedule={clearMovieToSchedule}
+                clearScheudles={clearScheudles}
+                showings={showings}
+                addSchedule={addSchedule}
+                removeSchedule={removeSchedule}
+                history={history}
+              /> 
+            </Route>
+            <Route exact path="/Showtimes"><Showtimes /> </Route>
+            <Route exact path="/PurchaseTickets"><PurchaseTickets /> </Route>									  
+            <Route exact path="/SeatingChart"><SeatingChart /> </Route>																					  
+            <Route exact path="/SignUp"><SignUp history={history} /> </Route>
+            <Route exact path="/Login"><Login  loginAction={loginAction} history={history}/> </Route>
+          </div>
           <Footer/>
+        </div>
       </Router>
     );
   }
@@ -80,7 +82,7 @@ const mapStateToProps =({user, movieToSchedule, showings}) =>{
 
 //Reference: https://www.youtube.com/watch?v=JLBPJzl92os
 const mapActionsToProps = (dispatch) =>{
-  //bind the user profile actions
+  //bind the actions
   return bindActionCreators({
       loginAction,
       logoffAction,

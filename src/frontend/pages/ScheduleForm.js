@@ -6,9 +6,36 @@ import { Table } from 'antd';
 import { v4 } from 'node-uuid'; // used to generate unique ID
 import axios from 'axios';
 import { withRouter } from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
+
+const formStyle = makeStyles(() => ({
+    footer: {
+        background: '#000000',
+        color: '#fff',
+        textAlign: 'center',
+        position: 'absolute',
+        bottom: 0,
+        width: "100%",
+	},
+	scheduleTable: {
+		width: '80vw',
+		textAlign: 'center',
+	},
+	tableWrapper: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center' 
+	},
+	formActionBar:{
+		position:"absolute", 
+		left: '10vw',
+		bottom:70,
+	} 
+}));
 
 
 function ScheduleForm(props) {
+	const classes = formStyle();
 	const {showings, movieToSchedule} = props
 	const [activateModal, setActivateModal] = useState(false);
 	const [allScreens, setAllScreens] = useState([]); 
@@ -70,9 +97,9 @@ function ScheduleForm(props) {
 		})
 
 		return(
-			<Table columns={columns} dataSource={myData} />
-			// Object.keys(showings)
-			// .map((key) => <p>{showings[key].start_date_time}</p>)
+			<div className={classes.tableWrapper}>
+				<Table columns={columns} dataSource={myData}  pagination={{ pageSize: 10 }} scroll={{ y: "calc(75vh - 150px)" }} className={classes.scheduleTable}/>
+			</div>
 		)
 	}
 
@@ -259,23 +286,23 @@ function ScheduleForm(props) {
 	
 	return (
 		<div className="ScheduleForm">
-		<h1>Scheduling Movie {movieToSchedule.title}</h1>
-		<form method="post" onSubmit={handleSubmitSchedules}>
-			{displayTable(showings)}
-			<div style={{margin:10}}>
-			<Space size='small'>
-				<Button key="schedule"  type="primary"  onClick = {() => {
-						setActivateModal(true);
-					}
-				}>Add Schedule</Button>
-				<Button key="save" htmlType="submit" >Save</Button>
-				<Button key="cancel"  onClick ={()=>clearData()}><Link to="/Movies">Cancel</Link></Button>
-			</Space>
-			</div>
-			{dispalyScheduleModal()}
-			{displayLoading()}
-		</form>		
-	</div>
+			<h1>Scheduling Movie {movieToSchedule.title}</h1>
+			<form  className="Schedule-Form"method="post" onSubmit={handleSubmitSchedules}>
+				{displayTable(showings)}
+				<div  className={classes.formActionBar}>
+					<Space size='small'>
+						<Button key="schedule"  type="primary"  onClick = {() => {
+								setActivateModal(true);
+							}
+						}>Add Schedule</Button>
+						<Button key="save" htmlType="submit" >Save</Button>
+						<Button key="cancel"  onClick ={()=>clearData()}><Link to="/Movies">Cancel</Link></Button>
+					</Space>
+				</div>
+				{dispalyScheduleModal()}
+				{displayLoading()}
+			</form>		
+		</div>
   );
 }
 
