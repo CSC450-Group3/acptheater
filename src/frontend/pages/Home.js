@@ -1,3 +1,5 @@
+//Alex Yahn, Caitlin Landrus, Patrick Garry
+
 import React from 'react';
 
 function Home() {
