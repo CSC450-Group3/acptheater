@@ -10,7 +10,10 @@ router.post("/create", movie.create);
 //Get all movies
 router.get("/getAll", movie.findAll);
 
-//Get customer by ID
+//Get movie by showing date
+router.get("/date/:date", movie.findByDate);
+
+//Get movie by ID
 router.get("/:movie_id", movie.findOne);
 
 //Delete movie by ID

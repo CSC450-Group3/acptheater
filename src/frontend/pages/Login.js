@@ -3,7 +3,6 @@ import axios from 'axios';
 import Alert from '@material-ui/lab/Alert';
 import { withRouter } from "react-router-dom";
 
-
 function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -77,8 +76,8 @@ function Login(props) {
     }
   }
   return (
-    <body class="login">
-      <form method="post" onSubmit={login}>
+    <body class="loginBody">
+      <form method="post" class="login" onSubmit={login}>
         <h1>Sign In</h1>
         <div>
           <label class="label-email">
@@ -99,9 +98,9 @@ function Login(props) {
           <label class="label-password">
             <input 
                   value={password}
-                  type="text" 
+                  type="password"
                   name="password" 
-                  placeholder="Password" 
+                  placeholder="Password"
                   onChange={event => {
                     setPassword(event.target.value);
                     setError(false); 
@@ -110,8 +109,11 @@ function Login(props) {
                   required />
           </label>
         </div>
+        <p></p>
         {failedLogin(isInvalidLogin, isError)}
         <input type="submit" value="Log In" />
+        <p></p>
+        <p></p>
         <div>
           <a href="#">Forgot password?</a>
         </div>

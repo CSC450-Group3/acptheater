@@ -54,6 +54,29 @@ exports.findOne = (req, res) => {
     })
 }
 
+
+// Find all movies playing on a given date
+exports.findByDate = (req, res) => {
+    Movie.getByDate(req.params.date, (err, data) => {
+        if(err){
+            if(err.kind === "not_found"){
+                res.status(404).send({
+                    message: `No movie found for date ${req.params.date}.`
+                });
+            }
+            else{
+                res.status(500).send({
+                    message: `Error retreiving movie for date ${req.params.date}.`
+                });
+            }
+        }
+        else{
+            res.send(data);
+        }
+    })
+}
+
+
 // Get all movies 
 exports.findAll = (req, res) => {
     Movie.getAll((err, data) => {

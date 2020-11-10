@@ -45,6 +45,28 @@ Movie.findById = (movie_id, result) => {
 };
 
 
+// Get all movie records by showing date
+Movie.getByDate = (date, result) => {
+    sql.query(
+        "SELECT DISTINCT m.movie_id, m.title, m.director, CAST(m.cast AS CHAR) AS cast, CAST(m.plot AS CHAR) AS plot, m.duration, m.rated, m.poster_URL, m.genre, " +
+        "DATE_FORMAT(m.release_date, '%c/%e/%Y') AS release_date " +
+        "FROM  showing s " +
+            "INNER JOIN movie m ON m.movie_id = s.movie_id " +
+        "WHERE CAST(s.start_date_time AS DATE) = ?", 
+    [date], 
+    (err, res) => {
+        //Error encountered
+        if(err){
+            result(err, null);
+            return;
+        }
+        
+        //Showing found
+        result(null, res);
+    });
+};
+
+
 Movie.getAll = result => {
     sql.query("Select movie_id, title, director, CAST(cast AS CHAR) AS cast, CAST(plot AS CHAR) AS plot, duration, rated, poster_URL, genre, release_date from movie", (err, res) => {
         if(err){
