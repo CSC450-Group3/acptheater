@@ -1,3 +1,5 @@
+//Alex Yahn, Caitlin Landrus, Patrick Garry
+
 import React, { useState } from 'react';
 import { v4 } from 'node-uuid'; // used to generate unique ID
 import MovieCard from '../components/movie/MovieCard';
@@ -11,6 +13,7 @@ function Home(props) {
   //props data from redux store
   const activeMovies = props.scheduledMovies;
   const customerMovie = props.customerMovie;
+
 
   return (
     <div>
