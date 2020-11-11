@@ -89,7 +89,7 @@ class App extends Component {
             </Route>
             <Route exact path="/PurchaseTickets"><PurchaseTickets /> </Route>
             <Route exact path="/SeatingChart"><SeatingChart /> </Route>
-            <Route exact path="/UserDashboard"><UserDashboard /> </Route>
+            <Route exact path="/UserDashboard"><UserDashboard user={user} updateAccountAction={updateAccountAction}/> </Route>
             <Route exact path="/SignUp"><SignUp history={history} /> </Route>
             <Route exact path="/Login"><Login loginAction={loginAction} history={history} /> </Route>
           </div>
