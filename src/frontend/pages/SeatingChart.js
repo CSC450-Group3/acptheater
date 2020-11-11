@@ -6,7 +6,7 @@ import axios from 'axios';
 function SeatingChart() {
 
 const [activateModal, setActivateModal] = useState(true);
-const [nextPage, setNextPage] = useState(false);
+const [payment, setPayment] = useState(false);
 
     return (
         <div className="SeatingChart">
@@ -15,11 +15,11 @@ const [nextPage, setNextPage] = useState(false);
 			centered
 			visible={activateModal}
 			onCancel={() => setActivateModal(false)}
-			onOk={() => setNextPage(true)}
+			onOk={() => setPayment(true)}
 			width={400}
 			footer={[
 				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Showtimes'>Cancel</Link > </Button>,
-				<Button key="chooseSeat" onClick={() => setNextPage(true)}><Link to='/NextPage'>Confirm Seats</Link > </Button>
+				<Button key="chooseSeat" onClick={() => setPayment(true)}><Link to='/Payment'>Confirm Seats</Link > </Button>
 				]}
 			>
 				<form>
