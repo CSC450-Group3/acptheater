@@ -31,7 +31,7 @@ const MovieCard = ({Title, imdbID, Poster, ShowDetails, DetailRequest, ActivateM
         ActivateModal(true);
         DetailRequest(true);
 
-        fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=cde43fc8`)
+        fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=cde43fc8`)
         .then(resp => resp)
         .then(resp => resp.json())
         .then(response => {
