@@ -107,30 +107,73 @@ User.getByEmail = (email, result) => {
 
 // Update an existing User by ID
 User.updateById = (user_id, user, result) => {
-    sql.query(
-        `UPDATE user 
-            SET email = '${user.email}', 
-                password = SHA1('${user.password}') , 
-                type = '${user.type}', 
-                disabled = ${user.disabled}
-        WHERE user_id = ${user_id}`,
-        (err, res) => {
-            //Error encountered
-            if(err){
-                result(null, err);
-                return;
-            }
+    //update all user fields
+    if(user.password !== null){
+        sql.query(
+            `UPDATE user 
+                SET 
+                    first_name = '${user.first_name}',
+                    last_name = '${user.last_name}',
+                    middle_name = CASE WHEN  ISNULL(${user.middle_name}) THEN null ELSE '${user.middle_name}' END,
+                    birthday='${user.birthday}',
+                    email = '${user.email}', 
+                    password = SHA1('${user.password}') , 
+                    type = '${user.type}', 
+                    disabled = ${user.disabled}
+            WHERE user_id = ${user_id}`,
+            (err, res) => {
+                //Error encountered
+                if(err){
+                    console.log(err)
+                    result(null, err);
+                    return;
+                }
 
-            // No user found with given ID
-            if(res.affectedRows == 0){
-                result({kind: "not_found"}, null);
-                return; 
-            }
+                // No user found with given ID
+                if(res.affectedRows == 0){
+                    result({kind: "not_found"}, null);
+                    return; 
+                }
 
-            //User updated successfully
-            result(null, {user_id: user_id, ...user});
-        }
-    );
+                //User updated successfully
+                result(null, {user_id: user_id, ...user});
+            }
+            
+        );
+    }
+    else{
+        //do not change the password if a new password was not changed
+        sql.query(
+            `UPDATE user 
+                SET 
+                    first_name = '${user.first_name}',
+                    last_name = '${user.last_name}',
+                    middle_name = CASE WHEN  ISNULL(${user.middle_name}) THEN null ELSE '${user.middle_name}' END,
+                    birthday='${user.birthday}',
+                    email = '${user.email}', 
+                    type = '${user.type}', 
+                    disabled = ${user.disabled}
+            WHERE user_id = ${user_id}`,
+            (err, res) => {
+                //Error encountered
+                if(err){
+                    result(null, err);
+                    return;
+                }
+
+                // No user found with given ID
+                if(res.affectedRows == 0){
+                    result({kind: "not_found"}, null);
+                    return; 
+                }
+
+                //User updated successfully
+                result(null, {user_id: user_id, ...user});
+            }
+            
+        );
+
+    }
 }
 
 // Delete an existing user by ID
