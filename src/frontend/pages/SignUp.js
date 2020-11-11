@@ -4,6 +4,8 @@ import axios from 'axios';
 import { withRouter } from "react-router-dom";
 import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
+import {isoDate} from '../helper/FormatDate'
+import {validateDate, displayDateAlert, duplicateEmailAlert} from '../helper/UserValidation'
 
 
 const style = makeStyles(() => ({
@@ -32,7 +34,6 @@ function UserCreation(props) {
 
     async function signUp(e) {
         e.preventDefault();
-
         // Check if user email already exists
         await axios.get('/api/user/email/' + email)
             .then(function (res) {
@@ -51,57 +52,24 @@ function UserCreation(props) {
                 first_name: firstName,
                 last_name: lastName,
                 middle_name: null,
-                birthday: birthday,
+                birthday: isoDate(birthday),
                 email: email,
                 password: password,
                 type: 'C', // hard code customer
                 diabled: null //new accounts are not disabled
             })
-                .then(function (res) {
-                    //user created successfully
-                    if (res.status === 200) {
-                        const user = res.data
-                        //console.log(user)
-                        //redirect to login screen upon successful creation
-                        history.push("/Login");
-                    }
-                })
-                .catch(function (err) {
-                    // print error
-                    console.log(err);
-                });
-        }
-    }
-
-    function duplicateEmail(sameEmailError) {
-        if (sameEmailError) {
-            return (
-                <Alert severity="error">
-                    User with the entered email already exists.
-                </Alert>
-            )
-        }
-    }
-
-    function validateDate(DOB) {
-        const currentDate = new Date();
-        const birthday = new Date(DOB)
-
-        //make sure birthday isn't a future date
-        if (birthday > currentDate) {
-            return true;
-        }
-        else return false;
-    }
-
-    function displayDateError(DOB) {
-        //show error if birthday is in the future
-        if (validateDate(DOB)) {
-            return (
-                <Alert severity="error">
-                    Birthday cannot be in the future.
-                </Alert>
-            )
+            .then(function (res) {
+                //user created successfully
+                if (res.status === 200) {
+                    const user = res.data
+                    //redirect to login screen upon successful creation
+                    history.push("/Login");
+                }
+            })
+            .catch(function (err) {
+                // print error
+                console.log(err);
+            });
         }
     }
 
@@ -141,7 +109,7 @@ function UserCreation(props) {
                                 }
                                 }
                             />
-                            {duplicateEmail(sameEmailError)}
+                            {duplicateEmailAlert(sameEmailError)}
                         </div>
                         <p></p>
                         <p></p>
@@ -175,7 +143,7 @@ function UserCreation(props) {
                                 className={classes.input}
                                 onChange={event => setBirthday(event.target.value)}
                             />
-                            {displayDateError(birthday)}
+                            {displayDateAlert(birthday)}
                         </div>
                         <p></p>
                         <p></p>
@@ -205,7 +173,7 @@ function UserCreation(props) {
                         <p></p>
                         <p></p>
                         <div>
-                            <button type="button" class="btn btn-primary"><Link to='/Login'>Save</Link ></button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                             <button><Link to='/'>Cancel</Link ></button>
                         </div>
                     </form>

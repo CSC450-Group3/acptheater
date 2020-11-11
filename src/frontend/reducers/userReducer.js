@@ -48,18 +48,36 @@ export default function userReducer(state = INITIAL_STATE, action ={}){
             //console.log(action)
             const userDetails = action.payload;
             if(state.user_ID === userDetails.user_ID){
-                //update profile with the new user information
-                const user = {
-                    "user_id": userDetails.user_id,
-                    "first_name": userDetails.first_name,
-                    "last_name":userDetails.last_name,
-                    "middle_name":userDetails.middle_name,
-                    "birthday": userDetails.birthday,
-                    "email":userDetails.email,
-                    "password": userDetails.password,
-                    "type": userDetails.type,
-                    "disabled": null //leaving the disabled value null until we decide if a user will have this ability
-                };
+                var user;
+                if(userDetails.password !== null){
+                    //update profile with the new user information
+                    user = {
+                        "user_id": userDetails.user_id,
+                        "first_name": userDetails.first_name,
+                        "last_name":userDetails.last_name,
+                        "middle_name":userDetails.middle_name,
+                        "birthday": userDetails.birthday,
+                        "email":userDetails.email,
+                        "password": userDetails.password,
+                        "type": userDetails.type,
+                        "disabled": null //leaving the disabled value null until we decide if a user will have this ability
+                    };
+                }
+                else{
+                    //password is null meaning it didn't change
+                    user = {
+                        "user_id": userDetails.user_id,
+                        "first_name": userDetails.first_name,
+                        "last_name":userDetails.last_name,
+                        "middle_name":userDetails.middle_name,
+                        "birthday": userDetails.birthday,
+                        "email":userDetails.email,
+                        "password": state.password,
+                        "type": userDetails.type,
+                        "disabled": null //leaving the disabled value null until we decide if a user will have this ability
+                    };
+
+                }
 
                 return user;
             }

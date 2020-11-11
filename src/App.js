@@ -7,7 +7,7 @@ import Movies from './frontend/pages/Movies';
 import Showtimes from './frontend/pages/Showtimes';
 import PurchaseTickets from './frontend/pages/PurchaseTickets';
 import SeatingChart from './frontend/pages/SeatingChart';
-import Payment from './frontend/pages/Payment';
+import Payment from './frontend/pages/Payment';	
 import Confirmation from "./frontend/pages/Confirmation";
 import ScheduleForm from './frontend/pages/ScheduleForm';
 import SignUp from './frontend/pages/SignUp';
@@ -93,7 +93,7 @@ class App extends Component {
             <Route exact path="/SeatingChart"><SeatingChart /> </Route>
             <Route exact path="/Payment"><Payment /> </Route>
             <Route exact path="/Confirmation"><Confirmation /> </Route>
-            <Route exact path="/UserDashboard"><UserDashboard /> </Route>
+            <Route exact path="/UserDashboard"><UserDashboard user={user} updateAccountAction={updateAccountAction}/> </Route>
             <Route exact path="/SignUp"><SignUp history={history} /> </Route>
             <Route exact path="/Login"><Login loginAction={loginAction} history={history} /> </Route>
           </div>
