@@ -15,6 +15,8 @@ router.get("/:showing_id", showing.findOne);
 // Get showing by date
 router.get("/date/:date", showing.findByDate);
 
+// Get all date(s) for showings on or after a specified date
+router.get("/dateList/date/:date", showing.findShowingDates);
 
 // Update showing with a given showing_id
 router.put("/:showing_id/update", showing.update);

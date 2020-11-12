@@ -2,12 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { Layout, Input, Row, Col, Card, Tag, Spin, Modal, Typography, Button, Space } from 'antd';
 import { Link } from "react-router-dom";
 import 'antd/dist/antd.css';
+import { makeStyles } from '@material-ui/core/styles';
 
 const { Content } = Layout;
 const { Search } = Input;
 const { Meta } = Card;
 const TextTitle = Typography.Title;
 
+const scheduleMovieStyles = makeStyles(() => ({
+    movies: {
+        background: '#282c34', 
+        minHeight: "90vh",
+    },
+    header:{
+        color:"white",
+    },
+    content:{ background: '#282c34', 
+        padding: 60,
+        minHeight: 300 ,
+    },
+}));
 
 const SearchBox = ({searchHandler}) => {
     return (
@@ -105,6 +119,7 @@ const Loader = () => (
 				   
 
 function Movies(props) {
+    const classes = scheduleMovieStyles();
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [query, setQuery] = useState('');
@@ -135,10 +150,11 @@ function Movies(props) {
 
     
     return (
-        <div className="Movies">
+        <div className={classes.movies}>
+            <h1 className={classes.header}>Schedule Movies</h1>
             <Layout className="layout">
                 <Content>
-                    <div style={{ background: '#282c34', padding: 60, minHeight: 300 }}>
+                    <div className={classes.content}>
                         <SearchBox searchHandler={setQuery} />
                         <br />
                         <Row justify="center">

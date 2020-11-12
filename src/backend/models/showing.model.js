@@ -96,6 +96,24 @@ Showing.getUpcoming = result => {
 };
 
 
+// Get the date of current and upcoming showings
+Showing.getShowingDates = (date, result) => {
+    sql.query(
+            "SELECT DISTINCT  DATE_FORMAT(CAST(start_date_time AS DATE),'%c/%e/%Y' ) AS showing_date from showing " +
+            "WHERE  CAST(start_date_time AS DATE) >= ?", 
+    [date], (err, res) => {
+        //Error encountered
+        if(err){
+            result(err, null);
+            return;
+        }
+
+        //showing dates found
+        result(null, res);
+    });
+};
+
+
 // Update an existing showing by ID
 Showing.updateById = (showing_id, showing, result) => {
     sql.query(
