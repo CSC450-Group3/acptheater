@@ -1,7 +1,7 @@
 import React from 'react';
 import { Spin, Space } from 'antd';
 
-function Loading() {
+function LoadingPage() {
     return (
         <div className = "loadingWrapper">
             <div className = "loading">
@@ -13,4 +13,4 @@ function Loading() {
     )
 };
 
-export default Loading;
+export default LoadingPage;

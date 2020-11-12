@@ -28,11 +28,9 @@ function Navbar(props) {
   const classes = navbarStyle();
   const [anchorEl1, setAnchorEl1] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
-  const [anchorEl3, setAnchorEl3] = React.useState(null);
 
   const isNavMenuOpen = Boolean(anchorEl1);
   const isProfileMenuOpen = Boolean(anchorEl2);
-  const isManageMenuOpen = Boolean(anchorEl3);
 
   const handleNavMenuOpen = (event) => {
     setAnchorEl1(event.currentTarget);
@@ -40,10 +38,6 @@ function Navbar(props) {
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl2(event.currentTarget);
-  };
-
-  const handleManageMenuOpen = (event) => {
-    setAnchorEl3(event.currentTarget);
   };
 
   const handleNavMenuClose = () => {
@@ -54,16 +48,11 @@ function Navbar(props) {
     setAnchorEl2(null);
   };
 
-  const handleManageMenuClose = () => {
-    setAnchorEl3(null);
-  };
-
 
   const handleLogOut = () => {
     //close all menus
     setAnchorEl1(null);
     setAnchorEl2(null);
-    setAnchorEl3(null);
 
     //log user out of redux store
     props.logoffAction(
@@ -82,7 +71,6 @@ function Navbar(props) {
   >
     <MenuItem onClick={handleNavMenuClose}><Link to='/'>Home</Link ></MenuItem>
     <MenuItem onClick={handleNavMenuClose}><Link to='/Showtimes'>Showtimes</Link></MenuItem>
-    <MenuItem onClick={handleNavMenuClose}>Concessions</MenuItem>
   </Menu>
   )
 
@@ -98,20 +86,6 @@ function Navbar(props) {
       <MenuItem onClick={handleProfileMenuClose}><Link to='/UserDashboard'>Profile</Link></MenuItem>
       <MenuItem onClick={handleLogOut}><Link to='/'>Sign Out</Link></MenuItem>
     </Menu>
-  );
-
-  const manageMenu = (
-    <Menu
-    anchorEl={anchorEl3}
-    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-    keepMounted
-    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-    open={isManageMenuOpen}
-    onClose={handleManageMenuClose}
-  >
-    <MenuItem onClick={handleManageMenuClose}><Link to='/Movies'>Movies</Link ></MenuItem>
-    <MenuItem onClick={handleManageMenuClose}>Seats</MenuItem>
-  </Menu>
   );
 
 
@@ -133,9 +107,8 @@ function Navbar(props) {
               edge="end" className={classes.menuButton}
               aria-label="user account"
               aria-haspopup="true"
-              onClick={handleManageMenuOpen}
           >
-            Manage
+            <Link to='/Movies'>Manage Movies</Link >
           </Button>
           <IconButton aria-label="show messages" color="inherit">
             <Badge badgeContent={1} color="secondary">
@@ -198,7 +171,6 @@ function Navbar(props) {
       </AppBar>
       {navMenu}
       {userMenu}
-      {manageMenu}
     </div>
   );
 }

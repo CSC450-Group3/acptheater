@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Space, Popconfirm, message } from 'antd';
 import { Link } from "react-router-dom";
-import Loading from '../components/util/Loading'
+import LoadingPage from '../components/util/LoadingPage'
 import { Table } from 'antd';
 import { v4 } from 'node-uuid'; // used to generate unique ID
 import axios from 'axios';
+import {isoDate} from '../helper/FormatDate'
 import { withRouter } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -106,7 +107,7 @@ function ScheduleForm(props) {
 	function displayLoading(){
 		if(isLoading){
 			return(
-				<Loading />
+				<LoadingPage />
 			)
 		}
 	}
@@ -228,8 +229,7 @@ function ScheduleForm(props) {
 		var duration = (movieToSchedule.duration).replace(/[^0-9]/g,''); 
 
 		//format the date to yyyy-mm-dd format for storing in mysql 
-		var date = new Date(movieToSchedule.release_date);
-		var release_date = date.toISOString().substring(0,10);
+		var release_date = isoDate(movieToSchedule.release_date);
 		var movie_id = 0;
 
 		//create movie record
