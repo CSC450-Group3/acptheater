@@ -132,7 +132,7 @@ function Movies(props) {
         setError(null);
         setData(null);
 
-        fetch(`http://www.omdbapi.com/?s=${query}&apikey=cde43fc8`)
+        fetch(`https://www.omdbapi.com/?s=${query}&apikey=cde43fc8`)
         .then(resp => resp)
         .then(resp => resp.json())
         .then(response => {
