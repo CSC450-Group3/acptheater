@@ -57,7 +57,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Navbar user={user} logoffAction={logoffAction} />
+          <Navbar user={user} logoffAction={logoffAction} history={history} />
           <div className="content" style={{ minHeight: "90vh" }}>
             <Route exact path="/">
               <Home 
@@ -65,6 +65,7 @@ class App extends Component {
                 selectMovieToWatch={selectMovieToWatch} 
                 customerMovie={customerMovie} 
                 clearMovieToWatch={clearMovieToWatch}
+                user={user}
                 history={history}
               /> 
             </Route>
@@ -86,6 +87,7 @@ class App extends Component {
                 selectMovieToWatch={selectMovieToWatch} 
                 customerMovie={customerMovie} 
                 clearMovieToWatch={clearMovieToWatch}
+                user={user}
                 history={history}
               /> 
             </Route>

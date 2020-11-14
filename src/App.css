@@ -208,3 +208,16 @@
     transform: rotate(360deg);
   }
 }
+
+
+.card-no-content > .ant-card-body{
+  height: 0;
+  overflow: hidden;
+  padding:0;
+}
+
+.card-with-title >.ant-card-body{
+  max-height: 20;
+  overflow: hidden;
+  padding:0;
+}

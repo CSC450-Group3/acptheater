@@ -2,19 +2,20 @@
 
 import React, { useState } from 'react';
 import { v4 } from 'node-uuid'; // used to generate unique ID
-import MovieCard from '../components/movie/MovieCard';
-import MovieDetailPurchaseModal from '../components/movie/MovieDetailPurchaseModal'
+import MoviePurchaseCard from '../components/movie/MoviePurchaseCard';
+import MovieDetailPurchaseModal from '../components/movie/MovieDetailPurchaseModal';
+import RequireLoginModal from '../components/user/RequireLoginModal';
 
 function Home(props) {
-  const [activateModal, setActivateModal] = useState(false);
+  const [activateDetailModal, setActivateDetailModal] = useState(false);
+  const [activateLoginModal, setActivateLoginModal] = useState(false);
   const [detailRequest, setDetailRequest] = useState(false);
   const [activateForm, setActivateForm] = useState(false);
 
   //props data from redux store
   const activeMovies = props.scheduledMovies;
   const customerMovie = props.customerMovie;
-
-
+  
   return (
     <div>
       <div className="welcome">
@@ -36,9 +37,10 @@ function Home(props) {
           <div className="row">
             {Object.keys(activeMovies).map(key => (
               <div className="column" key={v4()} >
-                <MovieCard
+                <MoviePurchaseCard
                   selectMovieToWatch={props.selectMovieToWatch}
-                  setActivateModal={setActivateModal}
+                  setActivateDetailModal={setActivateDetailModal}
+                  setActivateLoginModal={setActivateLoginModal}
                   setDetailRequest={setDetailRequest}
                   key={v4()}
                   movie_id={activeMovies[key].movie_id}
@@ -50,6 +52,8 @@ function Home(props) {
                   poster_url={activeMovies[key].poster_URL}
                   genre={activeMovies[key].genre}
                   release_date={activeMovies[key].release_date}
+                  user={props.user}
+                  history={props.history}
                 />
               </div>
             ))}
@@ -66,10 +70,18 @@ function Home(props) {
           poster_url={customerMovie.poster_url}
           plot={customerMovie.plot}
           detailRequest={detailRequest}
-          activateModal={activateModal}
-          setActivateModal={setActivateModal}
+          activateModal={activateDetailModal}
+          setActivateModal={setActivateDetailModal}
           setActivateForm={setActivateForm}
           clearMovieToWatch={props.clearMovieToWatch}
+          setActivateLoginModal={setActivateLoginModal}
+          user={props.user}
+          history={props.history}
+        />
+
+        <RequireLoginModal
+          activateLoginModal={activateLoginModal} 
+          setActivateLoginModal={setActivateLoginModal}
         />
 
       </div>

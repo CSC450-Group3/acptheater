@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,7 +12,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import { Link } from "react-router-dom";
-
+import { withRouter } from "react-router-dom";
 
 const navbarStyle = makeStyles((position) => ({
   nav: {
@@ -58,6 +58,9 @@ function Navbar(props) {
     props.logoffAction(
       props.user.user_id
     )
+    
+    //Send user home upon logout
+    props.history.push("/")
   }
 
   const navMenu = (
@@ -174,4 +177,4 @@ function Navbar(props) {
     </div>
   );
 }
-export default Navbar;
+export default withRouter(Navbar);
