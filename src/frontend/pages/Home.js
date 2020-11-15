@@ -5,6 +5,7 @@ import { v4 } from 'node-uuid'; // used to generate unique ID
 import MoviePurchaseCard from '../components/movie/MoviePurchaseCard';
 import MovieDetailPurchaseModal from '../components/movie/MovieDetailPurchaseModal';
 import RequireLoginModal from '../components/user/RequireLoginModal';
+import {isoDate} from '../helper/FormatDate';
 
 function Home(props) {
   const [activateDetailModal, setActivateDetailModal] = useState(false);
@@ -15,6 +16,7 @@ function Home(props) {
   //props data from redux store
   const activeMovies = props.scheduledMovies;
   const customerMovie = props.customerMovie;
+  const today = isoDate();
   
   return (
     <div>
@@ -52,6 +54,7 @@ function Home(props) {
                   poster_url={activeMovies[key].poster_URL}
                   genre={activeMovies[key].genre}
                   release_date={activeMovies[key].release_date}
+                  selected_date={today}
                   user={props.user}
                   history={props.history}
                 />

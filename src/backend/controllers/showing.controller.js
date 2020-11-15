@@ -29,9 +29,9 @@ exports.create = (req, res) => {
     });
 };
 
-// Find Showing by Id
+// Find Showing by Showing Id
 exports.findOne = (req, res) => {
-    Showing.findById(req.params.showing_id, (err, data) => {
+    Showing.getById(req.params.showing_id, (err, data) => {
         if(err){
             if(err.kind === "not_found"){
                 res.status(404).send({
@@ -41,6 +41,50 @@ exports.findOne = (req, res) => {
             else{
                 res.status(500).send({
                     message: `Error retreiving showing with showing_id ${req.params.showing_id}.`
+                });
+            }
+        }
+        else{
+            res.send(data);
+        }
+    })
+}
+
+
+// Find Showing by Movie Id
+exports.findByMovie = (req, res) => {
+    Showing.getByMovie(req.params.movie_id, (err, data) => {
+        if(err){
+            if(err.kind === "not_found"){
+                res.status(404).send({
+                    message: `Showing not found with movie_id ${req.params.movie_id}.`
+                });
+            }
+            else{
+                res.status(500).send({
+                    message: `Error retreiving showing with movie_id ${req.params.movie_id}.`
+                });
+            }
+        }
+        else{
+            res.send(data);
+        }
+    })
+}
+
+
+// Find Showing Time Status by Movie and Date
+exports.findShowtimeStatus = (req, res) => {
+    Showing.getShowtimeStatus(req.params.movie_id, req.params.date, (err, data) => {
+        if(err){
+            if(err.kind === "not_found"){
+                res.status(404).send({
+                    message: `Showing times not found with movie_id ${req.params.movie_id} and date ${date}.`
+                });
+            }
+            else{
+                res.status(500).send({
+                    message: `Error retreiving showing times with movie_id  ${req.params.movie_id} and date ${date}.`
                 });
             }
         }

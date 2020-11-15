@@ -5,7 +5,7 @@ import MovieCard from './MovieCard';
 import { withRouter } from "react-router-dom";
 
 const MoviePurcahseCard = ({ 
-        movie_id, title, cast, plot, duration, rated, poster_url, genre, release_date, 
+        movie_id, title, cast, plot, duration, rated, poster_url, genre, release_date, selected_date,
         setActivateDetailModal, selectMovieToWatch, setDetailRequest, 
         user, history, setActivateLoginModal
     }) => {
@@ -17,7 +17,7 @@ const MoviePurcahseCard = ({
         setDetailRequest(true)
         setActivateDetailModal(true)
         //set the movie details for the movie the customer selected		
-        selectMovieToWatch(movie_id, title, cast, plot, duration, rated, poster_url, genre, release_date)
+        selectMovieToWatch(movie_id, title, cast, plot, duration, rated, poster_url, genre, release_date, selected_date)
         setDetailRequest(false)
     }
 
@@ -25,6 +25,7 @@ const MoviePurcahseCard = ({
         // go to purchase tickets if user is logged in
         console.log(isUserLoggedIn);
         if (isUserLoggedIn){
+            selectMovieToWatch(movie_id, title, cast, plot, duration, rated, poster_url, genre, release_date, selected_date)
             history.push("\PurchaseTickets")
         }
         // prompt user to login

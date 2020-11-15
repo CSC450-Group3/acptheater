@@ -221,3 +221,7 @@
   overflow: hidden;
   padding:0;
 }
+
+.ant-card-head-title{
+  text-align: center;
+}

@@ -52,7 +52,7 @@ function Showtimes(props) {
     const [detailRequest, setDetailRequest] = useState(false);
     const [activateForm, setActivateForm] = useState(false);
     const [dates, setDates] = useState([]);
-    const [selectedDate, setSelectedDates] = useState(today);
+    const [selectedDate, setSelectedDate] = useState(today);
     const [moviesToDispaly, setMoviesToDisplay] = useState({});
     
     useEffect(() =>{
@@ -75,8 +75,6 @@ function Showtimes(props) {
         loadMovieDates();
     }, [])
 
-    console.log(activeMoviesToday)
-
     async function loadMoviesByDate(date){
         await axios.get('/api/movie/date/' + isoDate(date))
             .then(function(res) {
@@ -89,7 +87,7 @@ function Showtimes(props) {
     }
 
     const handleSelectChange = async(e) =>{
-        setSelectedDates(e.target.value)
+        setSelectedDate(e.target.value)
         console.log(e.target.value)
         loadMoviesByDate(e.target.value)
     }
@@ -143,6 +141,7 @@ function Showtimes(props) {
                             poster_url={activeMoviesToday[key].poster_URL}
                             genre={activeMoviesToday[key].genre}
                             release_date={activeMoviesToday[key].release_date}
+                            selected_date={selectedDate}
                             user={props.user}
                             history={props.history}
                           />
@@ -172,6 +171,7 @@ function Showtimes(props) {
                                 poster_url={moviesToDispaly[key].poster_URL}
                                 genre={moviesToDispaly[key].genre}
                                 release_date={moviesToDispaly[key].release_date}
+                                selected_date={selectedDate}
                                 user={props.user}
                                 history={props.history}
                             />                            
@@ -208,7 +208,7 @@ function Showtimes(props) {
                         history={props.history}
                     />
                 </Content>
-                
+
                 <RequireLoginModal
                     activateLoginModal={activateLoginModal} 
                     setActivateLoginModal={setActivateLoginModal}

@@ -9,7 +9,8 @@ const INITIAL_STATE={
     rated: "", 
     poster_url: "", 
     genre: "",
-    release_date:""
+    release_date:"",
+    selected_date:""
 };
 
 export default function adminMovieSelectionReducer(state = INITIAL_STATE, action ={}){
@@ -21,7 +22,7 @@ export default function adminMovieSelectionReducer(state = INITIAL_STATE, action
 
             //update the state with the passed in movie data
             const movie = {
-                "id": movieDetails.movie_id,
+                "movie_id": movieDetails.movie_id,
                 "title": movieDetails.title,
                 "cast":movieDetails.cast,
                 "plot":movieDetails.plot,
@@ -29,7 +30,8 @@ export default function adminMovieSelectionReducer(state = INITIAL_STATE, action
                 "rated":movieDetails.rated,
                 "poster_url": movieDetails.poster_url,
                 "genre": movieDetails.genre,
-                "release_date": movieDetails.release_date
+                "release_date": movieDetails.release_date,
+                "selected_date": movieDetails.selected_date
             };
 
             return movie;

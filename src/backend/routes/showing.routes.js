@@ -12,6 +12,12 @@ router.get("/upcoming", showing.findUpcoming);
 // Get showing by showing_id
 router.get("/:showing_id", showing.findOne);
 
+// Get showing by movie_id
+router.get("/movie/:movie_id", showing.findByMovie);
+
+// Get showing by movie_id
+router.get("/movie/:movie_id/date/:date", showing.findShowtimeStatus);
+
 // Get showing by date
 router.get("/date/:date", showing.findByDate);
 
