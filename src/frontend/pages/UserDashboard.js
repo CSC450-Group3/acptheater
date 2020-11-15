@@ -5,9 +5,9 @@ import Tab from '@material-ui/core/Tab';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
-import {isoDate} from '../helper/FormatDate';
+import { isoDate } from '../helper/FormatDate';
 import axios from 'axios';
-import {validateDate, displayDateAlert, duplicateEmailAlert} from '../helper/UserValidation'
+import { validateDate, displayDateAlert, duplicateEmailAlert } from '../helper/UserValidation'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,113 +35,123 @@ export default function UserDashboard(props) {
     setValue(newValue);
   };
 
-  const handleProfileUpdate = async(e) =>{
+  const handleProfileUpdate = async (e) => {
     e.preventDefault();
 
-     // Check if user email already exists
-     await axios.get('/api/user/email/' + email)
-     .then(function (res) {
-          //email address already exists for a different user
-          if (res.data.length > 0 && res.data[0].user_id != props.user.user_id) {
-            setSameEmailError(true);
-          }
-          // update user if there isn't any errors
-          else if (sameEmailError !== true && validateDate(birthday) !== true) {
-            props.updateAccountAction(
-              props.user.user_id, 
-              firstName, 
-              lastName, 
-              middleName, 
-              birthday, 
-              email, 
-              password, 
-              props.user.type
-            )
+    // Check if user email already exists
+    await axios.get('/api/user/email/' + email)
+      .then(function (res) {
+        //email address already exists for a different user
+        if (res.data.length > 0 && res.data[0].user_id != props.user.user_id) {
+          setSameEmailError(true);
         }
-     })
-     .catch(function (err) {
-         console.log(err)
-     });
+        // update user if there isn't any errors
+        else if (sameEmailError !== true && validateDate(birthday) !== true) {
+          props.updateAccountAction(
+            props.user.user_id,
+            firstName,
+            lastName,
+            middleName,
+            birthday,
+            email,
+            password,
+            props.user.type
+          )
+        }
+      })
+      .catch(function (err) {
+        console.log(err)
+      });
   }
 
-
   return (
-    <div className={classes.root}>
+    <div className={classes.root} class="userDash">
       <TabContext value={value}>
         <AppBar className={classes.menuButton} position="static">
           <TabList className={classes.menuButton} onChange={handleChange} aria-label="dashboard tabs" centered>
-            <Tab label="Tickets" value="1" />
+            <Tab label="Upcoming" value="1" />
             <Tab label="Profile" value="2" />
             <Tab label="History" value="3" />
             <Tab label="Messaging" value="4" />
           </TabList>
         </AppBar>
-        <TabPanel value="1"><marquee behavior="scroll" direction="left">UPCOMING SHOWINGS - LIVE LINKS</marquee></TabPanel>
 
-        <TabPanel value="2"><div class="column" className="userCreationColumn">
+        <TabPanel value="1">
+          <marquee behavior="scroll" direction="left">UPCOMING SHOWINGS - LIVE LINKS</marquee>
+        </TabPanel>
 
-          <form  method="post" onSubmit={handleProfileUpdate}>
-            <div>
-              <input
-                value={email}
-                type="email"
-                placeholder="Email"
-                name="email"
-                required
-                className={classes.input}
-                onChange={event => {
+        <TabPanel value="2" class="userUpdateDash">
+          <h1 class="userCreationAlreadyMember">User Information</h1>
+          <hr></hr>
+          <div class="column" className="userCreationColumn">
+            <p></p>
+            <form method="post" onSubmit={handleProfileUpdate}>
+              <div>
+                <input
+                  value={email}
+                  type="email"
+                  placeholder="Email"
+                  name="email"
+                  required
+                  className={classes.input}
+                  onChange={event => {
                     setEmail(event.target.value);
-                    setSameEmailError(false); 
+                    setSameEmailError(false);
                   }
-                } 
-              />
-              {duplicateEmailAlert(sameEmailError)}
-            </div>
-            <p></p>
-            <p></p>
-            <div>
-              <input
-                value={firstName}
-                type="text"
-                placeholder="First Name"
-                name="fName"
-                required
-                className={classes.input}
-                onChange={event => setFirstName(event.target.value)}
-              />
-              <input
-                value={lastName}
-                type="text"
-                placeholder="Last Name"
-                name="lName"
-                required
-                className={classes.input}
-                onChange={event => setLastName(event.target.value)}
-              />
-            </div>
-            <p></p>
-            <p></p>
-            <div>
-              <input
-                value={birthday} 
-                type="date"
-                required
-                className={classes.input}
-                onChange={event => setBirthday(event.target.value)}
-              />
-              {displayDateAlert(birthday)}
-            </div>
-            <p></p>
-            <p></p>
-            <div>
-              <button type ="submit" >Update</button>
-            </div>
-          </form>
-        </div></TabPanel>
+                  }
+                />
+                {duplicateEmailAlert(sameEmailError)}
+              </div>
+              <p></p>
+              <p></p>
+              <div>
+                <input
+                  value={firstName}
+                  type="text"
+                  placeholder="First Name"
+                  name="fName"
+                  required
+                  className={classes.input}
+                  onChange={event => setFirstName(event.target.value)}
+                />
+                <input
+                  value={lastName}
+                  type="text"
+                  placeholder="Last Name"
+                  name="lName"
+                  required
+                  className={classes.input}
+                  onChange={event => setLastName(event.target.value)}
+                />
+              </div>
+              <p></p>
+              <p></p>
+              <div>
+                <input
+                  value={birthday}
+                  type="date"
+                  required
+                  className={classes.input}
+                  onChange={event => setBirthday(event.target.value)}
+                />
+                {displayDateAlert(birthday)}
+              </div>
+              <p></p>
+              <p></p>
+              <div>
+                <button type="submit" >Update</button>
+              </div>
+            </form>
+          </div>
+        </TabPanel>
 
-        <TabPanel value="3"><marquee behavior="scroll" direction="left">HISTORY</marquee></TabPanel>
+        <TabPanel value="3">
+          <marquee behavior="scroll" direction="left">HISTORY</marquee>
+        </TabPanel>
 
-        <TabPanel value="4"><marquee behavior="scroll" direction="left">MESSAGING</marquee></TabPanel>
+        <TabPanel value="4">
+          <marquee behavior="scroll" direction="left">MESSAGING</marquee>
+        </TabPanel>
       </TabContext>
     </div>
   );

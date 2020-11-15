@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { withRouter } from "react-router-dom";
-import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
-import {isoDate} from '../helper/FormatDate'
-import {validateDate, displayDateAlert, duplicateEmailAlert} from '../helper/UserValidation'
-
+import { isoDate } from '../helper/FormatDate'
+import { validateDate, displayDateAlert, duplicateEmailAlert } from '../helper/UserValidation'
 
 const style = makeStyles(() => ({
     input: {
@@ -25,7 +23,6 @@ function UserCreation(props) {
     const [termsConditions, setTermsConditions] = useState(0);
     const [sameEmailError, setSameEmailError] = useState(null);
     const [history] = useState(props.history);
-
 
     useEffect(() => {
         // Update the document title using the browser API
@@ -58,61 +55,28 @@ function UserCreation(props) {
                 type: 'C', // hard code customer
                 diabled: null //new accounts are not disabled
             })
-            .then(function (res) {
-                //user created successfully
-                if (res.status === 200) {
-                    const user = res.data
-                    //redirect to login screen upon successful creation
-                    history.push("/Login");
-                }
-            })
-            .catch(function (err) {
-                // print error
-                console.log(err);
-            });
+                .then(function (res) {
+                    //user created successfully
+                    if (res.status === 200) {
+                        const user = res.data
+                        //redirect to login screen upon successful creation
+                        history.push("/Login");
+                    }
+                })
+                .catch(function (err) {
+                    // print error
+                    console.log(err);
+                });
         }
     }
 
     return (
-        <body class="signUpWelcome">
-            <h1 class="signUpHeader">Become A Part Of The ACP Theatres Family</h1>
-
-            <div class="row" className="userCreationRow">
-                <div class="column" className="userCreationWelcome">
-                    <p>
-                        Turn your already wonderful ACP Theatres experience
-                        up to the next level by customizing your own member
-                        profile today!
-                        <br></br><br></br>
-                        To create your ACP Theatre account, simply enter your
-                        Email, first and last name, birthday, and password.
-                        <br></br><br></br>
-                        In creating a your member account, you will be the first
-                        to recieve important updates, deals, specials, and offers.
-                    </p>
-                </div>
-
-                <div class="column" className="userCreationForm">
-
+        <body class="userCreationWelcome">
+                <div class="userCreationForm">
+                    <h1 class="userCreationHeader">Become A Part Of The <br></br>ACP Theatres Family</h1>
+                    <hr></hr>
                     <form action="home.html" method="post" onSubmit={signUp}>
-                        <div>
-                            <input
-                                value={email}
-                                type="email"
-                                placeholder="Email"
-                                name="email"
-                                required
-                                className={classes.input}
-                                onChange={event => {
-                                    setEmail(event.target.value);
-                                    setSameEmailError(false);
-                                }
-                                }
-                            />
-                            {duplicateEmailAlert(sameEmailError)}
-                        </div>
-                        <p></p>
-                        <p></p>
+
                         <div>
                             <input
                                 value={firstName}
@@ -135,9 +99,28 @@ function UserCreation(props) {
                         </div>
                         <p></p>
                         <p></p>
-                        <div>
+                        <div class="userCreationInputs">
+                            <input
+                                value={email}
+                                type="email"
+                                placeholder="Email"
+                                name="email"
+                                required
+                                className={classes.input}
+                                onChange={event => {
+                                    setEmail(event.target.value);
+                                    setSameEmailError(false);
+                                }
+                                }
+                            />
+                            {duplicateEmailAlert(sameEmailError)}
+                        </div>
+                        <p></p>
+                        <p></p>
+                        <div class="userCreationInputs">
                             <input
                                 value={birthday}
+
                                 type="date"
                                 required
                                 className={classes.input}
@@ -147,15 +130,17 @@ function UserCreation(props) {
                         </div>
                         <p></p>
                         <p></p>
-                        <input
-                            value={password}
-                            type="password"
-                            placeholder="password"
-                            name="password"
-                            className={classes.input}
-                            required minlength="8"
-                            onChange={event => setPassword(event.target.value)}
-                        />
+                        <div class="userCreationInputs">
+                            <input
+                                value={password}
+                                type="password"
+                                placeholder="password"
+                                name="password"
+                                className={classes.input}
+                                required minlength="8"
+                                onChange={event => setPassword(event.target.value)}
+                            />
+                        </div>
                         <p></p>
                         <p></p>
                         <div>
@@ -172,13 +157,16 @@ function UserCreation(props) {
                         </div>
                         <p></p>
                         <p></p>
-                        <div>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                            <button><Link to='/'>Cancel</Link ></button>
+                        <div class="userButtons">
+                            <button type="submit">Save</button>
+                            <button>Cancel</button>
                         </div>
                     </form>
                 </div>
-            </div>
+                <p></p>
+                <div class="userCreationAlreadyMember">
+                    Already have an account? <Link to='/Login'>Login here</Link >.
+                </div>
         </body>
     );
 }

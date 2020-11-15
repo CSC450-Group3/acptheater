@@ -73,6 +73,21 @@ exports.findByDate = (req, res) => {
     })
 }
 
+
+//find all dates with showings on or after the given date
+exports.findShowingDates = (req, res) => {
+    Showing.getShowingDates(req.params.date, (err, data) => {
+        if(err){
+            res.status(500).send({
+                message: `Error retreiving showing for date ${req.params.date}.`
+            });
+        }
+        else{
+            res.send(data);
+        }
+    })
+}
+
 // Find all upcoming tickets by user
 exports.findUpcoming = (req, res) => {
     Showing.getUpcoming((err, data) => {
