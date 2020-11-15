@@ -71,7 +71,6 @@ function Home(props) {
           setActivateForm={setActivateForm}
           clearMovieToWatch={props.clearMovieToWatch}
         />
-
       </div>
 
       <div className="beverages">
@@ -84,44 +83,44 @@ function Home(props) {
       <div className="food">
         <h1>Food</h1>
         <marquee behavior="scroll" direction="left">
-          <div className="row">
+          <div className="rowFood">
 
-            <div className="column">
+            <div className="columnFood">
               <p><img src={process.env.PUBLIC_URL + '/images/popcorn.jpeg'} alt="popcorn" margin="auto" width="75%" /></p>
               <p>Popcorn</p>
               <p>Description / Sizes</p>
               <p>Price(s)</p>
             </div>
 
-            <div className="column">
+            <div className="columnFood">
               <p><img src={process.env.PUBLIC_URL + '/images/nachos.jpeg'} alt="nachos" margin="auto" width="75%" /></p>
               <p>Nachos</p>
               <p>Description</p>
               <p>Price</p>
             </div>
 
-            <div className="column">
+            <div className="columnFood">
               <p><img src={process.env.PUBLIC_URL + '/images/candy.jpeg'} alt="candy" margin="auto" alight width="75%" /></p>
               <p>Candy</p>
               <p>Description</p>
               <p>Price</p>
             </div>
 
-            <div className="column">
+            <div className="columnFood">
               <p><img src={process.env.PUBLIC_URL + '/images/popcorn.jpeg'} alt="popcorn" margin="auto" width="75%" /></p>
               <p>Popcorn</p>
               <p>Description / Sizes</p>
               <p>Price(s)</p>
             </div>
 
-            <div className="column">
+            <div className="columnFood">
               <p><img src={process.env.PUBLIC_URL + '/images/nachos.jpeg'} alt="nachos" margin="auto" width="75%" /></p>
               <p>Nachos</p>
               <p>Description</p>
               <p>Price</p>
             </div>
 
-            <div className="column">
+            <div className="columnFood">
               <p><img src={process.env.PUBLIC_URL + '/images/candy.jpeg'} alt="candy" margin="auto" alight width="75%" /></p>
               <p>Candy</p>
               <p>Description</p>
@@ -130,13 +129,6 @@ function Home(props) {
           </div>
 
         </marquee>
-      </div>
-
-      <div className="seating">
-        <h1>
-          State of the Art Seating
-          <img src={process.env.PUBLIC_URL + '/images/seats.jpeg'} alt="seats" width="75%" />
-        </h1>
       </div>
     </div>
   );

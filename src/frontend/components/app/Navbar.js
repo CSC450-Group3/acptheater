@@ -48,7 +48,6 @@ function Navbar(props) {
     setAnchorEl2(null);
   };
 
-
   const handleLogOut = () => {
     //close all menus
     setAnchorEl1(null);
