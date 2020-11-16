@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'antd';
+import { Button, Radio, Col, Card, Row } from 'antd';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { isoDate } from '../helper/FormatDate'
-import { Radio, Col, Card, Row } from 'antd';
 import 'antd/dist/antd.css';
 import MovieCard from '../components/movie/MovieCard';
 import Alert from '@material-ui/lab/Alert';
@@ -55,7 +54,6 @@ function PurchaseTickets(props) {
 	const [history] = useState(props.history);
 	const [timeError, setTimeError] = useState(false)
 
-	console.log(props)
 	useEffect(() => {
 		// load all showing dates for a given movie on or after today
 		async function loadShowings() {
@@ -78,7 +76,6 @@ function PurchaseTickets(props) {
 
 	async function loadShowingTimes(date) {
 		//load movie times and time status
-		console.log('/api/showing/movie/' + customerMovie.movie_id + '/date/' + isoDate(date))
 		await axios.get('/api/showing/movie/' + customerMovie.movie_id + '/date/' + isoDate(date))
 			.then(function (res) {
 				setMovieTimes(res.data);
@@ -86,7 +83,7 @@ function PurchaseTickets(props) {
 				//map a copy of the data into key/value form for easy access of show time
 				{
 					Object.keys(res.data).map((key) => (
-						console.log(movieTimesObj[(res.data)[key].showing_id] = (res.data)[key])
+						movieTimesObj[(res.data)[key].showing_id] = (res.data)[key]
 					))
 				}
 			})
@@ -203,7 +200,6 @@ function PurchaseTickets(props) {
 				<form method="post" onSubmit={handleSubmit}>
 					<Card
 						className={classes.card}
-						class="purchase-card"
 						title="Purchase Ticket"
 						style={{ width: "80vw", margin: "auto", marginBottom: 20 }}
 

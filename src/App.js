@@ -21,6 +21,7 @@ import { addSchedule, removeSchedule, clearScheudles } from "./frontend/actions/
 import { loadActiveMovies } from './frontend/actions/showtimeAction';
 import { selectMovieToWatch, clearMovieToWatch } from './frontend/actions/customerMovieSelectionAction';
 import { clearSelectedTicket, setSelectedTicketInfo } from './frontend/actions/selectTicketActions';
+import {addSeat, removeSeat, clearSeats} from './frontend/actions/seatAction';
 
 import './App.css';
 
@@ -36,18 +37,23 @@ class App extends Component {
 			// data
 			customerMovie,
 			movieToSchedule,
+			selectedTicket,
 			scheduledMovies,
 			showings,
 			user,
+			selectedSeats,
 			//actions
 			addSchedule,
+			addSeat,
 			clearMovieToSchedule,
 			clearMovieToWatch,
 			clearScheudles,
 			clearSelectedTicket,
+			clearSeats,
 			loginAction,
 			logoffAction,
 			removeSchedule,
+			removeSeat,
 			selectMovieToSchedule,
 			selectMovieToWatch,
 			setSelectedTicketInfo,
@@ -102,7 +108,16 @@ class App extends Component {
 								history={history}
 							/>
 						</Route>
-						<Route exact path="/SeatingChart"><SeatingChart /> </Route>
+						<Route exact path="/SeatingChart">
+							<SeatingChart 
+								selectedTicket={selectedTicket} 
+								selectedSeats={selectedSeats}
+								addSeat={addSeat}
+								removeSeat={removeSeat}
+								clearSeats={clearSeats}
+								history={history}
+							/> 
+						</Route>
 						<Route exact path="/Payment"><Payment /> </Route>
 						<Route exact path="/Confirmation"><Confirmation /> </Route>
 						<Route exact path="/UserDashboard"><UserDashboard user={user} updateAccountAction={updateAccountAction} /> </Route>
@@ -117,14 +132,15 @@ class App extends Component {
 }
 
 
-const mapStateToProps = ({ user, movieToSchedule, showings, scheduledMovies, customerMovie, selectedTicket }) => {
+const mapStateToProps = ({ user, movieToSchedule, showings, scheduledMovies, customerMovie, selectedTicket, selectedSeats }) => {
 	return {
 		user,
 		movieToSchedule,
 		showings,
 		scheduledMovies,
 		customerMovie,
-		selectedTicket
+		selectedTicket,
+		selectedSeats
 	}
 }
 
@@ -144,7 +160,10 @@ const mapActionsToProps = (dispatch) => {
 		clearMovieToWatch,
 		clearScheudles,
 		clearSelectedTicket,
-		setSelectedTicketInfo
+		setSelectedTicketInfo,
+		addSeat,
+		removeSeat,
+		clearSeats
 	}, dispatch)
 }
 
