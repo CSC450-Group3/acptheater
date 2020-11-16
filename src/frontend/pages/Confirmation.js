@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-function Confirmation() {
+function Confirmation(props) {
     return (
         <div style={{backgroundColor: '#282c34', paddingTop: 75}}>
             <h1>Your order has been successfully processed and your seats are confirmed! < br/> Thank you for your purchase.</h1>
