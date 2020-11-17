@@ -1,13 +1,9 @@
 import React, {useState} from 'react';
 
-
-
 const SeatButton = ({ seat_id, blocked, booked, row_name, seat_number, handleSeatClick }) => {
     const [selected, setSelected]=useState(false)
-
-
-
     const seat = row_name.concat(seat_number)
+
     if (blocked === 1 || booked === 1) {
         return (
             <div>

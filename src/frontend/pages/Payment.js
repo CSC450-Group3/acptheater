@@ -5,17 +5,24 @@ import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { withRouter } from "react-router-dom";
 import { calculateTotalPrice } from '../helper/PaymentCalculation'
+import PaymentSummary from '../components/payment/PaymentSummary';
+
 
 const styles = makeStyles((theme) => ({
 	PaymentForm: {
 		background: '#282c34',
 		minHeight: "90vh",
 	},
+	container:{
+		maxWidth: 900,
+		margin: "auto"
+	},
 	content: {
 		background: '#282c34',
 		padding: 60,
 		minHeight: 300,
-		textAlign: "left"
+		textAlign: "left",
+		align: "center"
 	},
 	actionBar: {
 		textAlign: "left",
@@ -39,27 +46,12 @@ function Payment(props) {
 	const tickets = [];
 	const errors = [];
 
-	function displayTicketInfo() {
-		const tickets = [];
-		if (selectedTicket.ticket_type === "theater") {
-			Object.keys(selectedSeats).map(key => (
-				tickets.push(<p key={selectedSeats[key].row_name + selectedSeats[key].seat_number}>Seat Number: {selectedSeats[key].row_name}{selectedSeats[key].seat_number}  &nbsp; Price: ${selectedTicket.price}</p>)
-			))
-		}
-		else {
-			tickets.push(<p>Virtual Tickets: {selectedTicket.number_of_viewers}</p>)
-		}
-		return (tickets);
-	}
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		// attempt to save transaction
 		await createTransaction();
-
 	}
-
 
 	async function createTransaction() {
 		await axios.post('api/transaction/create', {
@@ -122,7 +114,7 @@ function Payment(props) {
 			});
 	}
 
-	const handleCancel = () =>{
+	const handleCancel = () => {
 		//clean up data and reroute to showtime page 
 		clearMovieTicketSelections();
 		history.push("/Showtimes")
@@ -146,48 +138,50 @@ function Payment(props) {
 						]}
 					>
 						<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-							<Col span={14} >
+							<Col span={16} >
 								<div>
-									<h4>Billing Information</h4>
-									<label for="name" className={classes.label} >Name on Card: </label>
+									<h3>Billing Information</h3>
+									<label htmlFor="name" className={classes.label} >Name on Card: </label>
 									<input type="text" required id="name" placeholder="Name" />
 
-									<label for="address" className={classes.label} >Billing Address: </label>
+									<label htmlFor="address" className={classes.label} >Billing Address: </label>
 									<input type="text" required id="address" placeholder="Address" />
 									< br />
 									< br />
-									<label for="city" className={classes.label} >City: </label>
+									<label htmlFor="city" className={classes.label} >City: </label>
 									<input type="text" required id="city" placeholder="City" />
 
-									<label for="state" className={classes.label} >State: </label>
+									<label htmlFor="state" className={classes.label} >State: </label>
 									<input type="text" required id="state" placeholder="State" />
 									< br />
 									< br />
-									<label for="zip" className={classes.label} >Zipcode: </label>
+									<label htmlFor="zip" className={classes.label} >Zipcode: </label>
 									<input type="text" required id="zip" placeholder="Zipcode" />
 									< br />
 									< br />
 									< br />
-									<h4>Credit Card Information</h4>
-									<label for="card" className={classes.label} >Card Number: </label>
+									<h3>Credit Card Information</h3>
+									<label htmlFor="card" className={classes.label} >Card Number: </label>
 									<input type="text" required id="card" placeholder="Card Number" />
 
-									<label for="exp" className={classes.label} >Expiration: </label>
+									<label htmlFor="exp" className={classes.label} >Expiration: </label>
 									<input type="text" required id="expiration" placeholder="MM/YY" />
 									< br />
 									< br />
-									<label for="cvv" className={classNames(classes.label, classes.cvv)} >CVV: </label>
+									<label htmlFor="cvv" className={classNames(classes.label, classes.cvv)} >CVV: </label>
 									<input type="text" required id="cvv" placeholder="CVV" />
 									< br />
 									< br />
 
 								</div>
 							</Col>
-							<Col span={6}  >
-								<h4>Purchase Summary</h4>
-								<p>Selected Movie: {customerMovie.title}</p>
-								{displayTicketInfo()}
-								<p>Total Price: ${total_price}</p>
+							<Col span={8}  >
+								<PaymentSummary
+									title={customerMovie.title}
+									total_price={total_price}
+									selectedSeats={selectedSeats}
+									selectedTicket={selectedTicket}
+								/>
 							</Col>
 						</Row>
 					</Card>

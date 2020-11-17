@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import SeatButton from '../components/seat/SeatButton';
 import { withRouter } from "react-router-dom";
 import Alert from '@material-ui/lab/Alert';
+import { v4 } from 'node-uuid'; // used to generate unique ID
 
 const styles = makeStyles((theme) => ({
 	SeatingChart: {
@@ -82,8 +83,6 @@ function SeatingChart(props) {
 
 	const handleSubmit = e => {
 		e.preventDefault(); 
-
-		console.log("here")
 
 		if(Object.keys(selectedSeats).length === 0){
 			setSeatError(true);
@@ -165,7 +164,7 @@ function SeatingChart(props) {
 
 		while (j < columns) {
 			cols.push(
-				<Col span={1} xs={{ order: 1 }} sm={{ order: 2 }} md={{ order: 3 }} lg={{ order: 4 }}>
+				<Col span={1} xs={{ order: 1 }} sm={{ order: 2 }} md={{ order: 3 }} lg={{ order: 4 }} key={v4()}>
 					<SeatButton
 						key={(loadedSeatData[visitedSeat]).seat_id}
 						seat_id={(loadedSeatData[visitedSeat]).seat_id}

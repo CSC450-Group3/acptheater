@@ -52,6 +52,7 @@ class App extends Component {
 			clearSeats,
 			loginAction,
 			logoffAction,
+			loadActiveMovies,
 			removeSchedule,
 			removeSeat,
 			selectMovieToSchedule,
@@ -95,6 +96,7 @@ class App extends Component {
 								showings={showings}
 								addSchedule={addSchedule}
 								removeSchedule={removeSchedule}
+								loadActiveMovies={loadActiveMovies}
 								history={history}
 							/>
 						</Route>
@@ -146,7 +148,14 @@ class App extends Component {
 								clearSeats={clearSeats}
 							/> 
 						</Route>
-						<Route exact path="/Confirmation"><Confirmation /> </Route>
+						<Route exact path="/Confirmation">
+							<Confirmation  
+								customerMovie={customerMovie}
+								selectedSeats={selectedSeats}
+								selectedTicket={selectedTicket}
+								clearMovieTicketSelections={clearMovieTicketSelections}
+							/> 
+						</Route>
 						<Route exact path="/UserDashboard"><UserDashboard user={user} updateAccountAction={updateAccountAction} /> </Route>
 						<Route exact path="/SignUp"><SignUp history={history} /> </Route>
 						<Route exact path="/Login"><Login loginAction={loginAction} history={history} /> </Route>

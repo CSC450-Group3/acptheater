@@ -192,7 +192,7 @@ function PurchaseTickets(props) {
 		if (ticketType === "virtual") {
 			return (
 				<div className={classes.formField}>
-					<label for="viewers" style={{ padding: 10 }}>Number of Viewers: </label>
+					<label htmlFor="viewers" style={{ padding: 10 }}>Number of Viewers: </label>
 					<input
 						type="number"
 						min="1"
@@ -228,7 +228,7 @@ function PurchaseTickets(props) {
 									<p>Please select from all options below:</p>
 
 									<div className={classes.formField}>
-										<label for="date" style={{ padding: 10 }}>Date: </label>
+										<label htmlFor="date" style={{ padding: 10 }}>Date: </label>
 										<select
 											value={selectedDate}
 											name="date"
@@ -250,7 +250,7 @@ function PurchaseTickets(props) {
 										<br />
 									</div>
 									<div className={classes.formField}>
-										<label for="time" style={{ padding: 10 }}>Time: </label>
+										<label htmlFor="time" style={{ padding: 10 }}>Time: </label>
 										<br />
 										<Radio.Group onChange={onTimeChange} style={{ padding: 10 }} required >
 											{Object.keys(movieTimes).map((key) => (

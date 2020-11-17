@@ -25,7 +25,7 @@ const MoviePurcahseCard = ({
         // go to purchase tickets if user is logged in
         if (isUserLoggedIn){
             selectMovieToWatch(movie_id, title, cast, plot, duration, rated, poster_url, genre, release_date, selected_date)
-            history.push("\PurchaseTickets")
+            history.push("/PurchaseTickets")
         }
         // prompt user to login
         else{
