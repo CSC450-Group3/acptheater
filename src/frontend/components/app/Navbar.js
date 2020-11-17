@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -26,8 +26,8 @@ const navbarStyle = makeStyles((position) => ({
 
 function Navbar(props) {
   const classes = navbarStyle();
-  const [anchorEl1, setAnchorEl1] = React.useState(null);
-  const [anchorEl2, setAnchorEl2] = React.useState(null);
+  const [anchorEl1, setAnchorEl1] = useState(null);
+  const [anchorEl2, setAnchorEl2] = useState(null);
 
   const isNavMenuOpen = Boolean(anchorEl1);
   const isProfileMenuOpen = Boolean(anchorEl2);
@@ -47,7 +47,6 @@ function Navbar(props) {
   const handleProfileMenuClose = () => {
     setAnchorEl2(null);
   };
-
 
   const handleLogOut = () => {
     //close all menus
@@ -115,7 +114,7 @@ function Navbar(props) {
           </Button>
           <IconButton aria-label="show messages" color="inherit">
             <Badge badgeContent={1} color="secondary">
-              <MailIcon />
+              <Link to= "/UserDashboard"><MailIcon /> </Link >
             </Badge>
           </IconButton>
           <IconButton
