@@ -11,7 +11,7 @@ const SeatButton = ({ seat_id, blocked, booked, row_name, seat_number, handleSea
     if (blocked === 1 || booked === 1) {
         return (
             <div>
-                <button className="seat" disabled value={seat_id}>
+                <button className="seat-disabled" disabled value={seat_id}>
                         {seat}
                 </button>
             </div>

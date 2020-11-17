@@ -82,7 +82,7 @@ Showing.getByMovie = (movie_id, result) => {
 // Find showtime status by Movie ID and Date
 Showing.getShowtimeStatus = (movie_id, date, result) => {
     sql.query( 
-            `SELECT DISTINCT s.showing_id, DATE_FORMAT(s.start_date_time, '%c/%e/%Y') AS date, DATE_FORMAT(s.start_date_time, '%h:%i %p') AS time, s.start_date_time,
+            `SELECT DISTINCT s.showing_id, DATE_FORMAT(s.start_date_time, '%c/%e/%Y') AS date, DATE_FORMAT(s.start_date_time, '%h:%i %p') AS time, s.start_date_time, s.price,
                 CASE 
                     WHEN s.start_date_time <= NOW() THEN 1 
                     ELSE 0 

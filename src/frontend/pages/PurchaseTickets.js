@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Radio, Col, Card, Row } from 'antd';
-import { Link } from "react-router-dom";
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { isoDate } from '../helper/FormatDate'
@@ -43,7 +42,7 @@ const showtimeStyles = makeStyles((theme) => ({
 
 function PurchaseTickets(props) {
 	const classes = showtimeStyles();
-	const customerMovie = props.customerMovie;
+	const {customerMovie , selectedTicket, setSelectedTicketInfo, clearSelectedTicket, clearMovieTicketSelections, history} = props;
 	const [dates, setDates] = useState([]);
 	const [movieTimes, setMovieTimes] = useState([]);
 	const [movieTimesObj] = useState({});
@@ -51,7 +50,6 @@ function PurchaseTickets(props) {
 	const [selectedDate, setSelectedDate] = useState(customerMovie.selected_date)
 	const [selectedShowingID, setselectedShowingID] = useState(null);
 	const [ticketType, setTicketType] = useState("theater")
-	const [history] = useState(props.history);
 	const [timeError, setTimeError] = useState(false)
 
 	useEffect(() => {
@@ -117,17 +115,30 @@ function PurchaseTickets(props) {
 
 		// all other fields should be required by default
 		if (selectedShowingID !== null) {
-			props.setSelectedTicketInfo(
+			setSelectedTicketInfo(
 				selectedShowingID,
 				selectedDate,
 				movieTimesObj[selectedShowingID].time,
 				numberOfViewers,
-				ticketType
+				ticketType,
+				movieTimesObj[selectedShowingID].price
 			)
 
-			history.push("/SeatingChart")
+			if(ticketType === "theater"){
+				history.push("/SeatingChart")
+			}
+			else{
+				history.push("/Payment")
+			}
 		}
 	}
+
+	const handleCancel = () =>{
+		//clean up data and reroute to showtime page 
+		clearMovieTicketSelections();
+		history.push("/Showtimes")
+	}
+
 
 	/**
 	 * Time radio buttons. Shows active if the time is on or after the 
@@ -206,7 +217,7 @@ function PurchaseTickets(props) {
 						actions={[
 							<div className={classes.actionBar}>
 								<Button key="purchase" type="primary" htmlType="submit" className={classes.actionBar} >Confirm </Button>
-								<Button key="cancel" className={classes.actionBar}><Link to='/Showtimes'>Cancel</Link ></Button>
+								<Button key="cancel" className={classes.actionBar} onClick={handleCancel}>Cancel</Button>
 							</div>
 						]}
 

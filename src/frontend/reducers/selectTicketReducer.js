@@ -6,7 +6,8 @@ const INITIAL_STATE=  {
     time:"",
     number_of_viewers:"",
     virtual_ticket:"",
-    theater_ticket:""
+    theater_ticket:"",
+    price:""
 };
 
 export default function selectTicketReducer(state = INITIAL_STATE, action ={}){
@@ -20,6 +21,7 @@ export default function selectTicketReducer(state = INITIAL_STATE, action ={}){
                 time: action.payload.time,
                 number_of_viewers: action.payload.number_of_viewers,
                 ticket_type: action.payload.ticket_type,
+                price: action.payload.price,
             }
             return ticket;
         }

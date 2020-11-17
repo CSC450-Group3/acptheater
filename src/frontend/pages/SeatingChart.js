@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Radio, Col, Card, Row } from 'antd';
-import { Link } from "react-router-dom";
+import { Button, Col, Card, Row } from 'antd';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import SeatButton from '../components/seat/SeatButton';
 import { withRouter } from "react-router-dom";
 import Alert from '@material-ui/lab/Alert';
 
-
-const seatStyles = makeStyles((theme) => ({
+const styles = makeStyles((theme) => ({
 	SeatingChart: {
 		background: '#282c34',
 		minHeight: "90vh",
@@ -43,12 +41,11 @@ const seatStyles = makeStyles((theme) => ({
 
 
 function SeatingChart(props) {
-	const selectedSeats = props.selectedSeats;
-	const classes = seatStyles();
+	const {selectedSeats, selectedTicket, addSeat, removeSeat, clearSeats, clearMovieToWatch, clearSelectedTicket, history, clearMovieTicketSelections} = props;
+	const classes = styles();
 	const columns = 20;
 	const rows = 10;
 	var visitedSeat = 0;
-	const selectedTicket = props.selectedTicket;
 	const [activateModal, setActivateModal] = useState(true);
 	const [payment, setPayment] = useState(false);
 	const [loadedSeatData, setLoadedSeatData] = useState([]);
@@ -93,7 +90,7 @@ function SeatingChart(props) {
 		}
 
 		if(Object.keys(selectedSeats).length !== 0){
-			props.history.push("/Payments")
+			history.push("/Payment")
 		}
 	}
 
@@ -106,7 +103,7 @@ function SeatingChart(props) {
 
 		// add the seat if it doesn't exist
 		if (selectedSeats[seat_id] === undefined) {
-			props.addSeat(
+			addSeat(
 				seat_id,
 				objSeatData[seat_id].screen_id,
 				objSeatData[seat_id].blocked,
@@ -118,9 +115,17 @@ function SeatingChart(props) {
 		}
 		// remove the seat if it already exist (deselecting seat)
 		else {
-			props.removeSeat(seat_id)
+			removeSeat(seat_id)
 		}
 	}
+
+	
+	const handleCancel = () =>{
+		//clean up data and reroute to showtime page 
+		clearMovieTicketSelections();
+		history.push("/Showtimes")
+	}
+
 
 	/**
 	 * Display an error if no seats are selected
@@ -192,10 +197,9 @@ function SeatingChart(props) {
 					actions={[
 						<div className={classes.actionBar}>
 							<Button key="purchase" type="primary" htmlType="submit" className={classes.actionBar} >Confirm </Button>
-							<Button key="cancel" className={classes.actionBar}><Link to='/Showtimes'>Cancel</Link ></Button>
+							<Button key="cancel" className={classes.actionBar} onClick={handleCancel}>Cancel</Button>
 						</div>
 					]}
-
 				>
 					<h1 className={classes.screen}>___________Screen___________</h1>
 

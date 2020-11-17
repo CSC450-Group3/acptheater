@@ -23,7 +23,6 @@ const MoviePurcahseCard = ({
 
     const handleButtonClick = () =>{
         // go to purchase tickets if user is logged in
-        console.log(isUserLoggedIn);
         if (isUserLoggedIn){
             selectMovieToWatch(movie_id, title, cast, plot, duration, rated, poster_url, genre, release_date, selected_date)
             history.push("\PurchaseTickets")

@@ -62,6 +62,14 @@ class App extends Component {
 			history
 		} = this.props;
 
+		/**
+		 * clears all selected movie details (tickets, seats, movie) from the customer
+		 */
+		function clearMovieTicketSelections(){
+			clearSelectedTicket();
+			clearMovieToWatch();
+			clearSeats();
+		}
 
 		return (
 			<Router>
@@ -102,9 +110,12 @@ class App extends Component {
 						</Route>
 						<Route exact path="/PurchaseTickets">
 							<PurchaseTickets
+								selectedTicket={selectedTicket}
 								customerMovie={customerMovie}
 								setSelectedTicketInfo={setSelectedTicketInfo}
 								clearSelectedTicket={clearSelectedTicket}
+								clearMovieToWatch={clearMovieToWatch}
+								clearMovieTicketSelections={clearMovieTicketSelections}
 								history={history}
 							/>
 						</Route>
@@ -115,10 +126,26 @@ class App extends Component {
 								addSeat={addSeat}
 								removeSeat={removeSeat}
 								clearSeats={clearSeats}
+								clearMovieToWatch={clearMovieToWatch}
+								clearSelectedTicket={clearSelectedTicket}
+								clearMovieTicketSelections={clearMovieTicketSelections}
 								history={history}
+								
 							/> 
 						</Route>
-						<Route exact path="/Payment"><Payment /> </Route>
+						<Route exact path="/Payment">
+							<Payment 
+								user={user}
+								history={history}
+								customerMovie={customerMovie}
+								selectedSeats={selectedSeats}
+								selectedTicket={selectedTicket}
+								clearMovieToWatch={clearMovieToWatch}
+								clearSelectedTicket={clearSelectedTicket}
+								clearMovieTicketSelections={clearMovieTicketSelections}
+								clearSeats={clearSeats}
+							/> 
+						</Route>
 						<Route exact path="/Confirmation"><Confirmation /> </Route>
 						<Route exact path="/UserDashboard"><UserDashboard user={user} updateAccountAction={updateAccountAction} /> </Route>
 						<Route exact path="/SignUp"><SignUp history={history} /> </Route>
