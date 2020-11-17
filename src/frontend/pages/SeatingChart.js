@@ -18,8 +18,12 @@ const [payment, setPayment] = useState(false);
 			onOk={() => setPayment(true)}
 			width={400}
 			footer={[
-				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Showtimes'>Cancel</Link > </Button>,
-				<Button key="chooseSeat" onClick={() => setPayment(true)}><Link to='/Payment'>Confirm Seats</Link > </Button>
+				<Button 
+				type="primary"
+				key="chooseSeat" onClick={() => setPayment(true)}>
+					<Link to='/Payment'>Confirm Seats</Link > 
+					</Button>,
+				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Showtimes'>Cancel</Link > </Button>
 				]}
 			>
 				<form>
