@@ -93,7 +93,7 @@ function Navbar(props) {
     if(user_id === ""){
       return(
         <div className="noUser">
-          <Button color="inherit"><Link to='/SignUp'>Sign Up</Link ></Button>
+          <Button color="inherit"><Link to='/SignUp'>Join Now</Link ></Button>
           <Button color="inherit"><Link to='/Login'>Sign In</Link ></Button>
         </div>
       )

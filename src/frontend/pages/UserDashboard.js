@@ -81,8 +81,8 @@ export default function UserDashboard(props) {
         </TabPanel>
 
         <TabPanel value="2" class="userUpdateDash">
-          <h1 class="userCreationAlreadyMember">User Information</h1>
-          <hr></hr>
+          <h1 >User Information</h1>
+          <hr class="blackHr"></hr>
           <div class="column" className="userCreationColumn">
             <p></p>
             <form method="post" onSubmit={handleProfileUpdate}>
