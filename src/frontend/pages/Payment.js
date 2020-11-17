@@ -84,10 +84,7 @@ function Payment(props) {
 									//transaction created successfully
 									if (res.status === 200) {
 										tickets.push(res.data)
-										//clean up data and reroute to confirmation page if there are no errors
-										clearMovieToWatch();
-										clearSeats();
-										clearSelectedTicket();
+										//go to confirmation page if save is successful
 										history.push("/Confirmation")
 									}
 								})
@@ -108,11 +105,7 @@ function Payment(props) {
 								//transaction created successfully
 								if (res.status === 200) {
 									tickets.push(res.data)
-
-									//clean up data and reroute to confirmation page if there are no errors
-									clearMovieToWatch();
-									clearSeats();
-									clearSelectedTicket();
+									//go to confirmation page if save is successful
 									history.push("/Confirmation")
 								}
 							})
