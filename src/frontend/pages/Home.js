@@ -33,7 +33,7 @@ function Home(props) {
         </h1>
 
         <marquee behavior="scroll" direction="left">
-          <div className="row">
+          <div className="rowFood">
             {Object.keys(activeMovies).map(key => (
               <div className="column" key={v4()} >
                 <MovieCard

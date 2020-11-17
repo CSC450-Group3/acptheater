@@ -18,8 +18,12 @@ const [confirm, setConfirm] = useState(false);
 			onOk={() => setConfirm(true)}
 			width={600}
 			footer={[
-				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Showtimes'>Cancel</Link > </Button>,
-				<Button key="purchase" onClick={() => setConfirm(true)}><Link to='/Confirmation'>Confirm Payment</Link > </Button>
+                <Button 
+                type="primary"
+                key="purchase" onClick={() => setConfirm(true)}>
+                    <Link to='/Confirmation'>Confirm Payment</Link > 
+                    </Button>,
+				<Button key="cancel" onClick={() => setActivateModal(false)}><Link to='/Showtimes'>Cancel</Link > </Button>
 				]}
 			>
 			<form>
