@@ -7,7 +7,7 @@ import Movies from './frontend/pages/Movies';
 import Showtimes from './frontend/pages/Showtimes';
 import PurchaseTickets from './frontend/pages/PurchaseTickets';
 import SeatingChart from './frontend/pages/SeatingChart';
-import Payment from './frontend/pages/Payment';	
+import Payment from './frontend/pages/Payment';
 import Confirmation from "./frontend/pages/Confirmation";
 import ScheduleForm from './frontend/pages/ScheduleForm';
 import SignUp from './frontend/pages/SignUp';
@@ -20,117 +20,187 @@ import { selectMovieToSchedule, clearMovieToSchedule } from "./frontend/actions/
 import { addSchedule, removeSchedule, clearScheudles } from "./frontend/actions/scheduleMovieAction";
 import { loadActiveMovies } from './frontend/actions/showtimeAction';
 import { selectMovieToWatch, clearMovieToWatch } from './frontend/actions/customerMovieSelectionAction';
+import { clearSelectedTicket, setSelectedTicketInfo } from './frontend/actions/selectTicketActions';
+import {addSeat, removeSeat, clearSeats} from './frontend/actions/seatAction';
 
 import './App.css';
 
 class App extends Component {
 
-  componentDidMount() {
-    //loads the movies actively playing today
-    this.props.loadActiveMovies();
-  }
+	componentDidMount() {
+		//loads the movies actively playing today
+		this.props.loadActiveMovies();
+	}
 
-  render() {
-    const {
-      // data
-      customerMovie,
-      movieToSchedule,
-      scheduledMovies,
-      showings,
-      user,
-      //actions
-      addSchedule,
-      clearMovieToSchedule,
-      clearMovieToWatch,
-      clearScheudles,
-      loginAction,
-      logoffAction,
-      removeSchedule,
-      selectMovieToSchedule,
-      selectMovieToWatch,
-      updateAccountAction,
-      //browser history
-      history
-    } = this.props;
+	render() {
+		const {
+			// data
+			customerMovie,
+			movieToSchedule,
+			selectedTicket,
+			scheduledMovies,
+			showings,
+			user,
+			selectedSeats,
+			//actions
+			addSchedule,
+			addSeat,
+			clearMovieToSchedule,
+			clearMovieToWatch,
+			clearScheudles,
+			clearSelectedTicket,
+			clearSeats,
+			loginAction,
+			logoffAction,
+			loadActiveMovies,
+			removeSchedule,
+			removeSeat,
+			selectMovieToSchedule,
+			selectMovieToWatch,
+			setSelectedTicketInfo,
+			updateAccountAction,
+			//browser history
+			history
+		} = this.props;
 
-    
-    return (
-      <Router>
-        <div className="App">
-          <Navbar user={user} logoffAction={logoffAction} />
-          <div className="content" style={{ minHeight: "90vh" }}>
-            <Route exact path="/">
-              <Home 
-                scheduledMovies={scheduledMovies} 
-                selectMovieToWatch={selectMovieToWatch} 
-                customerMovie={customerMovie} 
-                clearMovieToWatch={clearMovieToWatch}
-                history={history}
-              /> 
-            </Route>
-            <Route exact path="/Movies"><Movies selectMovieToSchedule={selectMovieToSchedule} /> </Route>
-            <Route exact path="/ScheduleForm">
-              <ScheduleForm
-                movieToSchedule={movieToSchedule}
-                clearMovieToSchedule={clearMovieToSchedule}
-                clearScheudles={clearScheudles}
-                showings={showings}
-                addSchedule={addSchedule}
-                removeSchedule={removeSchedule}
-                history={history}
-              />
-            </Route>
-            <Route exact path="/Showtimes">
-              <Showtimes 
-                scheduledMovies={scheduledMovies} 
-                selectMovieToWatch={selectMovieToWatch} 
-                customerMovie={customerMovie} 
-                clearMovieToWatch={clearMovieToWatch}
-                history={history}
-              /> 
-            </Route>
-            <Route exact path="/PurchaseTickets"><PurchaseTickets /> </Route>
-            <Route exact path="/SeatingChart"><SeatingChart /> </Route>
-            <Route exact path="/Payment"><Payment /> </Route>
-            <Route exact path="/Confirmation"><Confirmation /> </Route>
-            <Route exact path="/UserDashboard"><UserDashboard user={user} updateAccountAction={updateAccountAction}/> </Route>
-            <Route exact path="/SignUp"><SignUp history={history} /> </Route>
-            <Route exact path="/Login"><Login loginAction={loginAction} history={history} /> </Route>
-          </div>
-          <Footer />
-        </div>
-      </Router>
-    );
-  }
+		/**
+		 * clears all selected movie details (tickets, seats, movie) from the customer
+		 */
+		function clearMovieTicketSelections(){
+			clearSelectedTicket();
+			clearMovieToWatch();
+			clearSeats();
+		}
+
+		return (
+			<Router>
+				<div className="App">
+					<Navbar user={user} logoffAction={logoffAction} history={history} />
+					<div className="content" style={{ minHeight: "90vh" }}>
+						<Route exact path="/">
+							<Home
+								scheduledMovies={scheduledMovies}
+								selectMovieToWatch={selectMovieToWatch}
+								customerMovie={customerMovie}
+								clearMovieToWatch={clearMovieToWatch}
+								user={user}
+								history={history}
+							/>
+						</Route>
+						<Route exact path="/Movies"><Movies selectMovieToSchedule={selectMovieToSchedule} /> </Route>
+						<Route exact path="/ScheduleForm">
+							<ScheduleForm
+								movieToSchedule={movieToSchedule}
+								clearMovieToSchedule={clearMovieToSchedule}
+								clearScheudles={clearScheudles}
+								showings={showings}
+								addSchedule={addSchedule}
+								removeSchedule={removeSchedule}
+								loadActiveMovies={loadActiveMovies}
+								history={history}
+							/>
+						</Route>
+						<Route exact path="/Showtimes">
+							<Showtimes
+								scheduledMovies={scheduledMovies}
+								selectMovieToWatch={selectMovieToWatch}
+								customerMovie={customerMovie}
+								clearMovieToWatch={clearMovieToWatch}
+								user={user}
+								history={history}
+							/>
+						</Route>
+						<Route exact path="/PurchaseTickets">
+							<PurchaseTickets
+								selectedTicket={selectedTicket}
+								customerMovie={customerMovie}
+								setSelectedTicketInfo={setSelectedTicketInfo}
+								clearSelectedTicket={clearSelectedTicket}
+								clearMovieToWatch={clearMovieToWatch}
+								clearMovieTicketSelections={clearMovieTicketSelections}
+								history={history}
+							/>
+						</Route>
+						<Route exact path="/SeatingChart">
+							<SeatingChart 
+								selectedTicket={selectedTicket} 
+								selectedSeats={selectedSeats}
+								addSeat={addSeat}
+								removeSeat={removeSeat}
+								clearSeats={clearSeats}
+								clearMovieToWatch={clearMovieToWatch}
+								clearSelectedTicket={clearSelectedTicket}
+								clearMovieTicketSelections={clearMovieTicketSelections}
+								history={history}
+								
+							/> 
+						</Route>
+						<Route exact path="/Payment">
+							<Payment 
+								user={user}
+								history={history}
+								customerMovie={customerMovie}
+								selectedSeats={selectedSeats}
+								selectedTicket={selectedTicket}
+								clearMovieToWatch={clearMovieToWatch}
+								clearSelectedTicket={clearSelectedTicket}
+								clearMovieTicketSelections={clearMovieTicketSelections}
+								clearSeats={clearSeats}
+							/> 
+						</Route>
+						<Route exact path="/Confirmation">
+							<Confirmation  
+								customerMovie={customerMovie}
+								selectedSeats={selectedSeats}
+								selectedTicket={selectedTicket}
+								clearMovieTicketSelections={clearMovieTicketSelections}
+							/> 
+						</Route>
+						<Route exact path="/UserDashboard"><UserDashboard user={user} updateAccountAction={updateAccountAction} /> </Route>
+						<Route exact path="/SignUp"><SignUp history={history} /> </Route>
+						<Route exact path="/Login"><Login loginAction={loginAction} history={history} /> </Route>
+					</div>
+					<Footer />
+				</div>
+			</Router>
+		);
+	}
 }
 
 
-const mapStateToProps = ({ user, movieToSchedule, showings, scheduledMovies, customerMovie }) => {
-  return {
-    user,
-    movieToSchedule,
-    showings,
-    scheduledMovies,
-    customerMovie
-  }
+const mapStateToProps = ({ user, movieToSchedule, showings, scheduledMovies, customerMovie, selectedTicket, selectedSeats }) => {
+	return {
+		user,
+		movieToSchedule,
+		showings,
+		scheduledMovies,
+		customerMovie,
+		selectedTicket,
+		selectedSeats
+	}
 }
 
 //Reference: https://www.youtube.com/watch?v=JLBPJzl92os
 const mapActionsToProps = (dispatch) => {
-  //bind the actions
-  return bindActionCreators({
-    loadActiveMovies,
-    loginAction,
-    logoffAction,
-    updateAccountAction,
-    selectMovieToSchedule,
-    selectMovieToWatch,
-    addSchedule,
-    removeSchedule,
-    clearMovieToSchedule,
-    clearMovieToWatch,
-    clearScheudles
-  }, dispatch)
+	//bind the actions
+	return bindActionCreators({
+		loadActiveMovies,
+		loginAction,
+		logoffAction,
+		updateAccountAction,
+		selectMovieToSchedule,
+		selectMovieToWatch,
+		addSchedule,
+		removeSchedule,
+		clearMovieToSchedule,
+		clearMovieToWatch,
+		clearScheudles,
+		clearSelectedTicket,
+		setSelectedTicketInfo,
+		addSeat,
+		removeSeat,
+		clearSeats
+	}, dispatch)
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(App);

@@ -82,7 +82,7 @@ con.query(
         " `cast` BLOB NOT NULL, " +
         " `plot` BLOB NOT NULL, " +
         " `duration` INT(3) NOT NULL, " +
-        " `rated` VARCHAR(5) NOT NULL, " +
+        " `rated` VARCHAR(10) NOT NULL, " +
         " `poster_URL` VARCHAR(200) NOT NULL, " +
         " `genre` VARCHAR(150) NOT NULL, " +
         " `release_date` DATE NOT NULL, " +
