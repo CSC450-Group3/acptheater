@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Space, Popconfirm, message } from 'antd';
+import { Modal, Button, Space, Popconfirm } from 'antd';
 import { Link } from "react-router-dom";
 import LoadingPage from '../components/util/LoadingPage'
 import { Table } from 'antd';
@@ -264,12 +264,15 @@ function ScheduleForm(props) {
 		 		price: showings[key].price
 		 	})
 		 	.then(function(res) {
-				 //console.log(res.data)
-				 setIsLoading(false);
-		
-				 //Cleanup move/schedule data and redirect to Movies page
-				 clearData();
-				 props.history.push("/Movies");
+				//console.log(res.data)
+				setIsLoading(false);
+				 
+				//Reload the active movies in the store
+				props.loadActiveMovies()
+
+				//Cleanup move/schedule data and redirect to Movies page
+				clearData();
+				props.history.push("/Movies");
 		 	})
 		 	.catch(function (err) {
 				console.log(err)
