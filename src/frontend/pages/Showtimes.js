@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Row } from 'antd';
-import MovieCard from '../components/movie/MovieCard';
+import MoviePurchaseCard from '../components/movie/MoviePurchaseCard';
 import { v4 } from 'node-uuid'; // used to generate unique ID
 import 'antd/dist/antd.css';
 import MovieDetailPurchaseModal from '../components/movie/MovieDetailPurchaseModal'
+import RequireLoginModal from '../components/user/RequireLoginModal';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import {isoDate} from '../helper/FormatDate';
@@ -46,15 +47,14 @@ function Showtimes(props) {
     const activeMoviesToday =  props.scheduledMovies; 
     const customerMovie = props.customerMovie;
 
-    const [activateModal, setActivateModal] = useState(false);
+    const [activateDetailModal, setActivateDetailModal] = useState(false);
+    const [activateLoginModal, setActivateLoginModal] = useState(false);
     const [detailRequest, setDetailRequest] = useState(false);
     const [activateForm, setActivateForm] = useState(false);
     const [dates, setDates] = useState([]);
-    const [selectedDate, setSelectedDates] = useState(today);
+    const [selectedDate, setSelectedDate] = useState(today);
     const [moviesToDispaly, setMoviesToDisplay] = useState({});
-
-
-
+    
     useEffect(() =>{
         // Update the document title using the browser API
         document.title = `ACP | Showtimes`;
@@ -73,9 +73,7 @@ function Showtimes(props) {
         }
 
         loadMovieDates();
-    }, [today])
-
-    console.log(activeMoviesToday)
+    }, [])
 
     async function loadMoviesByDate(date){
         await axios.get('/api/movie/date/' + isoDate(date))
@@ -89,11 +87,9 @@ function Showtimes(props) {
     }
 
     const handleSelectChange = async(e) =>{
-        setSelectedDates(e.target.value)
+        setSelectedDate(e.target.value)
         console.log(e.target.value)
         loadMoviesByDate(e.target.value)
-        
-
     }
 
     function dateMenu(){
@@ -130,22 +126,25 @@ function Showtimes(props) {
                 <div className={classes.content}>
                     <Row justify="center">
                         {Object.keys(activeMoviesToday).map(key => (
-                            <MovieCard 
-                                selectMovieToWatch={props.selectMovieToWatch}
-                                setActivateModal={setActivateModal}
-                                setDetailRequest={setDetailRequest}
-                                key={v4()} //gurantee key is unique in case someone creates mutliple movie records
-                                movie_id = {activeMoviesToday[key].movie_id}
-                                title = {activeMoviesToday[key].title}
-                                cast = {activeMoviesToday[key].cast}
-                                plot = {activeMoviesToday[key].plot}
-                                duration = {activeMoviesToday[key].duration}
-                                rated = {activeMoviesToday[key].rated}
-                                poster_url = {activeMoviesToday[key].poster_URL}
-                                genre = {activeMoviesToday[key].genre}
-                                release_date = {activeMoviesToday[key].release_date}
-                            />
-                            
+                            <MoviePurchaseCard
+                            selectMovieToWatch={props.selectMovieToWatch}
+                            setActivateDetailModal={setActivateDetailModal}
+                            setActivateLoginModal={setActivateLoginModal}
+                            setDetailRequest={setDetailRequest}
+                            key={v4()}
+                            movie_id={activeMoviesToday[key].movie_id}
+                            title={activeMoviesToday[key].title}
+                            cast={activeMoviesToday[key].cast}
+                            plot={activeMoviesToday[key].plot}
+                            duration={activeMoviesToday[key].duration}
+                            rated={activeMoviesToday[key].rated}
+                            poster_url={activeMoviesToday[key].poster_URL}
+                            genre={activeMoviesToday[key].genre}
+                            release_date={activeMoviesToday[key].release_date}
+                            selected_date={selectedDate}
+                            user={props.user}
+                            history={props.history}
+                          />
                         ))} 
                     </Row>
                 </div>
@@ -157,22 +156,25 @@ function Showtimes(props) {
                 <div className={classes.content}>
                     <Row justify="center">
                         {Object.keys(moviesToDispaly).map(key => (
-                            <MovieCard 
+                            <MoviePurchaseCard
                                 selectMovieToWatch={props.selectMovieToWatch}
-                                setActivateModal={setActivateModal}
+                                setActivateDetailModal={setActivateDetailModal}
+                                setActivateLoginModal={setActivateLoginModal}
                                 setDetailRequest={setDetailRequest}
-                                key={v4()} //gurantee key is unique in case someone creates mutliple movie records
-                                movie_id = {moviesToDispaly[key].movie_id}
-                                title = {moviesToDispaly[key].title}
-                                cast = {moviesToDispaly[key].cast}
-                                plot = {moviesToDispaly[key].plot}
-                                duration = {moviesToDispaly[key].duration}
-                                rated = {moviesToDispaly[key].rated}
-                                poster_url = {moviesToDispaly[key].poster_URL}
-                                genre = {moviesToDispaly[key].genre}
-                                release_date = {moviesToDispaly[key].release_date}
-                            />
-                            
+                                key={v4()}
+                                movie_id={moviesToDispaly[key].movie_id}
+                                title={moviesToDispaly[key].title}
+                                cast={moviesToDispaly[key].cast}
+                                plot={moviesToDispaly[key].plot}
+                                duration={moviesToDispaly[key].duration}
+                                rated={moviesToDispaly[key].rated}
+                                poster_url={moviesToDispaly[key].poster_URL}
+                                genre={moviesToDispaly[key].genre}
+                                release_date={moviesToDispaly[key].release_date}
+                                selected_date={selectedDate}
+                                user={props.user}
+                                history={props.history}
+                            />                            
                         ))} 
                     </Row>
                 </div>
@@ -187,7 +189,7 @@ function Showtimes(props) {
             <Layout className="layout">
                 <Content>
                     {cardContent()}
-                    <MovieDetailPurchaseModal 
+                    <MovieDetailPurchaseModal
                         title={customerMovie.title}
                         cast={customerMovie.cast}
                         release_date={customerMovie.release_date}
@@ -197,12 +199,20 @@ function Showtimes(props) {
                         poster_url={customerMovie.poster_url}
                         plot={customerMovie.plot}
                         detailRequest={detailRequest}
-                        activateModal={activateModal}
-                        setActivateModal={setActivateModal}
+                        activateModal={activateDetailModal}
+                        setActivateModal={setActivateDetailModal}
                         setActivateForm={setActivateForm}
                         clearMovieToWatch={props.clearMovieToWatch}
+                        setActivateLoginModal={setActivateLoginModal}
+                        user={props.user}
+                        history={props.history}
                     />
                 </Content>
+
+                <RequireLoginModal
+                    activateLoginModal={activateLoginModal} 
+                    setActivateLoginModal={setActivateLoginModal}
+                />
             </Layout>
         </div>
     );

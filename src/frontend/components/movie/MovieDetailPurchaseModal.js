@@ -1,14 +1,33 @@
 import React from 'react';
 import { Modal, Button } from 'antd';
-import { Link } from "react-router-dom";
 import Loader from '../util/Loader'
 import MovieDetail from './MovieDetail';
 import 'antd/dist/antd.css';
+import { withRouter } from "react-router-dom";
 
 const MovieDetailPurchaseModal = (
             { title, cast, release_date, rated, duration, genre, poster_url, plot, 
-                detailRequest, activateModal, setActivateModal, setActivateForm, clearMovieToWatch }
-        ) => {
+                detailRequest, activateModal, setActivateModal, setActivateForm, clearMovieToWatch,
+                user, history, setActivateLoginModal
+            }
+) => {
+
+
+    const isUserLoggedIn = user.user_id === "" ? false : true;
+
+    const handleButtonClick = () =>{
+        // go to purchase tickets if user is logged in
+        if (isUserLoggedIn){
+            history.push("PurchaseTickets")
+        }
+        else{
+            //prompt user to login
+            setActivateLoginModal(true)
+            //close deatils modal
+            setActivateModal(false)
+        }
+    }
+
     return (
         <Modal
             title='Details'
@@ -18,7 +37,16 @@ const MovieDetailPurchaseModal = (
             onOk={() => setActivateForm(true)}
             width={800}
             footer={[
-                <Button key="purchase" type="primary" onClick={() =>setActivateForm(true)}><Link to='/PurchaseTickets'>Purchase Tickets</Link ></Button>,
+                <Button 
+                    key="purchase" 
+                    type="primary" 
+                    onClick={() =>{
+                        setActivateForm(true)
+                        handleButtonClick();
+                    }
+                }>
+                    Purchase Tickets
+                </Button>,
                 <Button key="cancel" onClick={() => {
                     clearMovieToWatch(); //clear selected movie details
                     setActivateModal(false); // close the modal
@@ -43,4 +71,4 @@ const MovieDetailPurchaseModal = (
     )
 }
 
-export default MovieDetailPurchaseModal;
+export default withRouter(MovieDetailPurchaseModal);

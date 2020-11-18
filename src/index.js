@@ -22,7 +22,10 @@ const store = createStore(
 //update the local storage state when there are changes
 store.subscribe(()=>{
   saveState({
-    user: store.getState().user
+    user: store.getState().user,
+    customerMovie: store.getState().customerMovie,
+    selectedTicket: store.getState().selectedTicket,
+    selectedSeats: store.getState().selectedSeats,
   });
 })
 

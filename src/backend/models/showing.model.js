@@ -24,11 +24,11 @@ Showing.create = (newShowing, result) => {
 };
 
 
-// Find showing By ID
-Showing.findById = (showing_id, result) => {
+// Find showing By Showing ID
+Showing.getById = (showing_id, result) => {
     sql.query( 
             `SELECT s.showing_id, m.title, m.director, CAST(m.cast AS CHAR) AS cast, CAST(m.plot AS CHAR) AS plot, m.duration, m.rated, m.poster_URL, m.genre, 
-                DATE_FORMAT(m.release_date, '%c/%e/%Y') AS release_date, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %r') AS start_date_time 
+                DATE_FORMAT(m.release_date, '%c/%e/%Y') AS release_date, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %h:%i %p') AS start_date_time 
             FROM  showing s 
                 INNER JOIN movie m ON m.movie_id = s.movie_id 
             WHERE showing_id =  ${showing_id}`, 
@@ -50,11 +50,71 @@ Showing.findById = (showing_id, result) => {
     });
 };
 
+
+// Find Showings By Movie ID
+Showing.getByMovie = (movie_id, result) => {
+    sql.query( 
+            `SELECT DISTINCT DATE_FORMAT(s.start_date_time, '%c/%e/%Y') AS date
+            FROM  showing s 
+                INNER JOIN movie m ON m.movie_id = s.movie_id 
+            WHERE m.movie_id = ${movie_id} 
+            AND CAST(start_date_time AS DATE)>= CAST(NOW() AS DATE)
+            ORDER BY date ASC`, 
+        (err, res) => {
+        //Error encountered
+        if(err){
+            result(err, null);
+            return;
+        }
+
+        // Showing(s) were found 
+        if(res.length){
+            result(null, res);
+            return;
+        }
+
+        //Showings not found
+        result({kind: "not_found"}, null);
+    });
+};
+
+
+// Find showtime status by Movie ID and Date
+Showing.getShowtimeStatus = (movie_id, date, result) => {
+    sql.query( 
+            `SELECT DISTINCT s.showing_id, DATE_FORMAT(s.start_date_time, '%c/%e/%Y') AS date, DATE_FORMAT(s.start_date_time, '%h:%i %p') AS time, s.start_date_time, s.price,
+                CASE 
+                    WHEN s.start_date_time <= NOW() THEN 1 
+                    ELSE 0 
+                END AS disabled
+            FROM showing s 
+                INNER JOIN movie m ON m.movie_id = s.movie_id  
+            WHERE m.movie_id = ${movie_id} 
+                AND CAST(start_date_time AS DATE) = '${date}'
+            ORDER BY start_date_time ASC`, 
+        (err, res) => {
+        //Error encountered
+        if(err){
+            result(err, null);
+            return;
+        }
+
+        // Showing(s) were found 
+        if(res.length){
+            result(null, res);
+            return;
+        }
+
+        //Showings not found
+        result({kind: "not_found"}, null);
+    });
+};
+
 // Get all showing records by date
 Showing.getByDate = (date, result) => {
     sql.query(
         "SELECT s.*, m.title, m.director, CAST(m.cast AS CHAR) AS cast, CAST(m.plot AS CHAR) AS plot, m.duration, m.rated, m.poster_URL, m.genre, " +
-        "DATE_FORMAT(m.release_date, '%c/%e/%Y') AS release_date, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %r') AS start_date_time " +
+        "DATE_FORMAT(m.release_date, '%c/%e/%Y') AS release_date, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %h:%i %p') AS start_date_time " +
         "FROM  showing s " +
         "INNER JOIN movie m ON m.movie_id = s.movie_id " +
         "WHERE CAST(s.start_date_time AS DATE) = ?", 
@@ -75,7 +135,7 @@ Showing.getByDate = (date, result) => {
 Showing.getUpcoming = result => {
     sql.query(
             "SELECT DISTINCT  m.title, m.director, CAST(m.cast as CHAR) AS cast, CAST(m.plot as CHAR) AS plot, m.duration, m.rated, m.poster_URL, " +
-                "m.genre, DATE_FORMAT(m.release_date, '%c/%e/%Y'), s.showing_id, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %r') AS start_date_time  " +
+                "m.genre, DATE_FORMAT(m.release_date, '%c/%e/%Y'), s.showing_id, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %h:%i %p') AS start_date_time  " +
             "FROM  showing s " +
             "INNER JOIN movie m on m.movie_id = s.movie_id " +
             "WHERE CAST(start_date_time AS DATE) > NOW() " + 
