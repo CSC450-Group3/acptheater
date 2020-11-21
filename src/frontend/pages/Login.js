@@ -117,11 +117,11 @@ function Login(props) {
         {failedLogin(isInvalidLogin, isError)}
         <input type="submit" value="Log In" />
         <p></p>
-        <p></p>
-        <div class="loginForgot">
+      </form>
+      <div class="loginForgot">
           <a href="#">Forgot password?</a>
         </div>
-      </form>
+      <p></p>
       <p></p>
       <div class="userCreationAlreadyMember">
         Not with us yet? Create a new account <Link to='/SignUp'>here</Link >.

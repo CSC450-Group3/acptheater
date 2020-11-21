@@ -69,10 +69,9 @@ export default function UserDashboard(props) {
       <TabContext value={value}>
         <AppBar className={classes.menuButton} position="static">
           <TabList className={classes.menuButton} onChange={handleChange} aria-label="dashboard tabs" centered>
-            <Tab label="Upcoming" value="1" />
+            <Tab label="Movies" value="1" />
             <Tab label="Profile" value="2" />
-            <Tab label="History" value="3" />
-            <Tab label="Messaging" value="4" />
+            <Tab label="Messaging" value="3" />
           </TabList>
         </AppBar>
 
@@ -146,11 +145,8 @@ export default function UserDashboard(props) {
         </TabPanel>
 
         <TabPanel value="3">
-          <marquee behavior="scroll" direction="left">HISTORY</marquee>
-        </TabPanel>
-
-        <TabPanel value="4">
-          <marquee behavior="scroll" direction="left">MESSAGING</marquee>
+          <p></p>
+        <img src={process.env.PUBLIC_URL + '/images/chatExample.jpeg'} alt="chatExample" margin="auto" width="75%" />
         </TabPanel>
       </TabContext>
     </div>
