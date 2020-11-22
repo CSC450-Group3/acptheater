@@ -24,9 +24,10 @@ Ticket.create = (newTicket, result) => {
 
 
 // Find Ticket By ID
+// subtract 6 hours to convert to CST
 Ticket.findById = (movie_ticket_id, result) => {
     sql.query(
-        "SELECT mt.*, st.*, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %r') AS start_date_time " +
+        "SELECT mt.*, st.*, DATE_FORMAT(date_sub(s.start_date_time, interval 6 hour), '%c/%e/%Y %r') AS start_date_time " +
         "FROM movieticket mt " +
         "INNER JOIN showing s ON s.showing_id = mt.showing_id " +
         "LEFT JOIN seat st ON st.seat_id = mt.seat_id " +
@@ -51,9 +52,10 @@ Ticket.findById = (movie_ticket_id, result) => {
 };
 
 // Get all Ticket records by showing
+// subtract 6 hours to convert to CST
 Ticket.getAllByShowing = (showing_id, result) => {
     sql.query(
-        "SELECT  mt.*, st.*, DATE_FORMAT(s.start_date_time, '%c/%e/%Y %r') AS start_date_time  " +
+        "SELECT  mt.*, st.*, DATE_FORMAT(date_sub(s.start_date_time, interval 6 hour), '%c/%e/%Y %r') AS start_date_time  " +
         "FROM movieticket mt " +
         "INNER JOIN showing s ON s.showing_id = mt.showing_id " +
         "LEFT JOIN seat st ON st.seat_id = mt.seat_id " +

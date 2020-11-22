@@ -131,7 +131,6 @@ function SeatingChart(props) {
 	 */
 	const SeatAlert = () => {
 		if (seatError) {
-			console.log("here", seatError)
 			return (
 				<Alert severity="error" className={classes.alert}>
 					Error: At least one seat must be selected.

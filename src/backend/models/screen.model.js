@@ -41,6 +41,34 @@ Screen.findById = (screen_id, result) => {
     });
 };
 
+// Find available screens on a given date
+// subtract 6 hours to convert back to CST before removing the timestamp
+Screen.findAvailable = (date, result) => {
+    sql.query(
+        `SELECT * , 
+            CASE WHEN sc.screen_id IN (Select sc1.screen_id
+                FROM screen sc1
+                JOIN showing sh ON sh.screen_id = sc1.screen_id 
+                WHERE CAST( date_sub(sh.start_date_time, interval 6 hour) AS DATE) = '${date}'
+            )
+            THEN 1 
+            ELSE 0 
+            END AS disabled
+        FROM screen sc 
+        `, 
+    (err, res) => {
+        //Error encountered
+        if(err){
+            result(err, null);
+            return;
+        }
+
+        result(null, res);
+        return;
+    });
+};
+
+
 // Find all screens
 Screen.getAll = result => {
     sql.query("Select * FROM screen", (err, res) => {
