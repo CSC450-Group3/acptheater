@@ -54,6 +54,7 @@ exports.findOne = (req, res) => {
 exports.findAllByUser = (req, res) => {
     Transaction.getAllByUser(req.params.user_id, (err, data) => {
         if(err){
+            console.log(err)
             res.status(500).send({
                 message: `Error retreiving transactions for user ${req.params.user_id}.`
             });
