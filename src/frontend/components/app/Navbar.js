@@ -162,7 +162,7 @@ function Navbar(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="p" noWrap>
-            ACP Theater
+            <Link to="/">ACP Theater</Link>
           </Typography>
           <div className={classes.nav} />
           <div className={classes.menuOptions}>
