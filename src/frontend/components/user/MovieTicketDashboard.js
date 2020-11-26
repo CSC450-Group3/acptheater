@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PuchasedMovieTicketCard from '../movie/PuchasedMovieTicketCard'
+import MovieTransactionDetailModal from '../movie/MovieTransactionDetailModal'
 import { Layout, Row } from 'antd';
 import axios from 'axios';
 import { v4 } from 'node-uuid'; // used to generate unique ID
@@ -23,13 +24,14 @@ const styles = makeStyles((theme) => ({
 
 const { Content } = Layout;
 
-const MovieTicketDashboard = ({ user }) => {
+const MovieTicketDashboard = ({ user, history }) => {
     const classes = styles();
     const [purchasedMovieTickets, setPurchasedMovieTickets] = useState([]);
     const [activateTransactionModal, setActivateTransactionModal] = useState(false)
+    const [selectedTransaction, setSelectedTransaction] = useState({})
 
     useEffect(() => {
-        // load current future dates with movies scheduled
+        // load purchased movie tickets by user
         async function loadPurchasedTickets() {
             await axios.get('/api/transaction/user/' + user.user_id)
                 .then(function (res) {
@@ -43,6 +45,33 @@ const MovieTicketDashboard = ({ user }) => {
         loadPurchasedTickets();
     }, [user])
 
+    const displayTransactionModal = () => {
+        //only load this component if there is data to pass to it
+        if (Object.keys(selectedTransaction).length !== 0) {
+            return (
+                <MovieTransactionDetailModal
+                    transaction_id={selectedTransaction.transaction_id}
+                    title={selectedTransaction.title}
+                    cast={selectedTransaction.cast}
+                    release_date={selectedTransaction.release_date}
+                    rated={selectedTransaction.rate}
+                    duration={selectedTransaction.duration}
+                    genre={selectedTransaction.genre}
+                    poster_url={selectedTransaction.poster_url}
+                    plot={selectedTransaction.plot}
+                    status={selectedTransaction.status}
+                    isVirtual={selectedTransaction.isVirtual}
+                    activateTransactionModal={activateTransactionModal}
+                    setActivateTransactionModal={setActivateTransactionModal}
+                    user={user}
+                    history={history}
+
+                />
+            )
+
+        }
+
+    }
 
     // If movies haven't been loaded for a user selected date, show whatever is playing today
     if (Object.keys(purchasedMovieTickets).length !== 0) {
@@ -53,6 +82,8 @@ const MovieTicketDashboard = ({ user }) => {
                         {Object.keys(purchasedMovieTickets).map(key => (
                             <PuchasedMovieTicketCard
                                 key={v4()}
+
+                                transaction_id={purchasedMovieTickets[key].transaction_id}
                                 movie_id={purchasedMovieTickets[key].movie_id}
                                 title={purchasedMovieTickets[key].title}
                                 cast={purchasedMovieTickets[key].cast}
@@ -65,11 +96,12 @@ const MovieTicketDashboard = ({ user }) => {
                                 status={purchasedMovieTickets[key].status}
                                 isVirtual={purchasedMovieTickets[key].isVirtual}
                                 setActivateTransactionModal={setActivateTransactionModal}
-                                
+                                setSelectedTransaction={setSelectedTransaction}
                             />
                         ))}
                     </Row>
                 </div>
+                {displayTransactionModal()}
             </div>
         )
     }

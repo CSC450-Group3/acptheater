@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function UserDashboard(props) {
-	const { user, updateAccountAction } = props;
+	const { user, history, updateAccountAction } = props;
 
 	const classes = useStyles();
 	const [value, setValue] = React.useState('1');
@@ -83,6 +83,7 @@ function UserDashboard(props) {
 					<div>
 						<MovieTicketDashboard
 							user={user}
+							history={history}
 						/>
 					</div>
 				</TabPanel>

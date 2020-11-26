@@ -4,10 +4,24 @@ import 'antd/dist/antd.css';
 import MovieCard from './MovieCard';
 import { withRouter } from "react-router-dom";
 
-const PuchasedMovieTicketCard = ({ transaction_id, movie_id, title, cast, plot, duration, rated, poster_url, genre, release_date, status, isVirtual,
-        setActivateTransactionModal, user, history }) => {
+const PuchasedMovieTicketCard = ({transaction_id, movie_id, title, cast, plot, duration, rated, poster_url, 
+    genre, release_date, status, isVirtual, setActivateTransactionModal, setSelectedTransaction}) => {
 
     const clickHandler = () => {
+        setSelectedTransaction({
+            "transaction_id": transaction_id,
+            "movie_id": movie_id,
+            "title": title,
+            "cast": cast,
+            "plot": plot,
+            "duration": duration,
+            "rated": rated,
+            "poster_url": poster_url,
+            "genre": genre, 
+            "release_date": release_date,
+            "status": status,
+            "isVirtual": isVirtual
+        })
         setActivateTransactionModal(true)
     }
 

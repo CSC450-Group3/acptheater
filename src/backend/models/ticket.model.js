@@ -73,6 +73,39 @@ Ticket.getAllByShowing = (showing_id, result) => {
     });
 };
 
+//Get the ticket details by transaction_id
+Ticket.getByTransaction = (transaction_id, result) =>{
+    sql.query(
+        `SELECT DISTINCT mt.showing_id, DATE_FORMAT(date_sub(s.start_date_time, interval 6 hour), '%c/%e/%Y %r') AS start_date_time , 
+            total_viewers AS number_of_viewers, s.price, t.total_price, sc.screen_name,
+            CASE WHEN total_viewers IS NOT NULL
+                THEN 'virtual'
+                ELSE 'theater'
+            END AS ticket_type
+        FROM movieticket mt 
+        JOIN transaction t on t.transaction_id = mt.transaction_id
+        JOIN showing s on s.showing_id = mt.showing_id
+        JOIN screen sc on sc.screen_id = s.screen_id
+        WHERE mt.transaction_id = ${transaction_id}`,
+    (err, res) => {
+        //Error encountered
+        if(err){
+            result(err, null);
+            return;
+        }
+
+        // Ticket is found 
+        if(res.length){
+            result(null, res[0]);
+            return;
+        }
+
+        //Ticket not found
+        result({kind: "not_found"}, null);
+    });
+
+}
+
 
 // Update an existing Ticket by ID
 Ticket.updateById = (movie_ticket_id, ticket, result) => {

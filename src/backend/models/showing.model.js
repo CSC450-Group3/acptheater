@@ -87,7 +87,7 @@ Showing.getByMovie = (movie_id, result) => {
 // UTC_TIMESTAMP() since we are storing in UTC time
 Showing.getShowtimeStatus = (movie_id, date, result) => {
     sql.query( 
-            `SELECT DISTINCT s.showing_id, DATE_FORMAT(date_sub(s.start_date_time, interval 6 hour), '%c/%e/%Y') AS date, 
+            `SELECT DISTINCT s.showing_id, sc.screen_name, DATE_FORMAT(date_sub(s.start_date_time, interval 6 hour), '%c/%e/%Y') AS date, 
                 DATE_FORMAT(date_sub(s.start_date_time, interval 6 hour), '%h:%i %p') AS time,
                 date_sub(s.start_date_time, interval 6 hour) AS start_date_time, s.price,
                 CASE 
@@ -96,6 +96,7 @@ Showing.getShowtimeStatus = (movie_id, date, result) => {
                 END AS disabled
             FROM showing s 
                 INNER JOIN movie m ON m.movie_id = s.movie_id  
+                INNER JOIN screen sc ON sc.screen_id = s.screen_id
             WHERE m.movie_id = ${movie_id} 
                 AND CAST( date_sub(start_date_time, interval 6 hour) AS DATE) = '${date}'
             ORDER BY start_date_time ASC`, 

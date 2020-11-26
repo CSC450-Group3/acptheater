@@ -81,6 +81,27 @@ exports.findOne = (req, res) => {
     })
 }
 
+// Find seat by transaction_id
+exports.findByTransaction = (req, res) => {
+    Seat.getByTransaction(req.params.transaction_id, (err, data) => {
+        if(err){
+            if(err.kind === "not_found"){
+                res.status(404).send({
+                    message: `Seat not found with transaction_id ${req.params.transaction_id}.`
+                });
+            }
+            else{
+                res.status(500).send({
+                    message: `Error retreiving seat with transaction_id ${req.params.transaction_id}.`
+                });
+            }
+        }
+        else{
+            res.send(data);
+        }
+    })
+}
+
 // Find all seats by screen_id
 exports.findAllByScreen = (req, res) => {
     Seat.getAllByScreen(req.params.screen_id, (err, data) => {

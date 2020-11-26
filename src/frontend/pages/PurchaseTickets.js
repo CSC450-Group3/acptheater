@@ -121,7 +121,8 @@ function PurchaseTickets(props) {
 				movieTimesObj[selectedShowingID].time,
 				numberOfViewers,
 				ticketType,
-				movieTimesObj[selectedShowingID].price
+				movieTimesObj[selectedShowingID].price,
+				movieTimesObj[selectedShowingID].screen_name
 			)
 
 			if(ticketType === "theater"){
