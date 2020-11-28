@@ -8,9 +8,11 @@ import 'antd/dist/antd.css';
 import { makeStyles } from '@material-ui/core/styles';
 
 const styles = makeStyles((theme) => ({
-    MovieTicketDashboard: {
+    root: {
         minHeight: "90vh",
         height: "100%",
+        paddingBottom: 20, 
+        marginBottom: 20
     },
     header: {
         color: "white"
@@ -76,7 +78,7 @@ const MovieTicketDashboard = ({ user, history }) => {
     // If movies haven't been loaded for a user selected date, show whatever is playing today
     if (Object.keys(purchasedMovieTickets).length !== 0) {
         return (
-            <div className={classes.MovieTicketDashboard}>
+            <div className={classes.root}>
                 <div className={classes.content}>
                     <Row justify="center">
                         {Object.keys(purchasedMovieTickets).map(key => (
@@ -107,7 +109,7 @@ const MovieTicketDashboard = ({ user, history }) => {
     }
     else {
         return (
-            <div className={classes.MovieTicketDashboard}>
+            <div className={classes.root}>
                 <p> No content to display</p>
             </div>
         )

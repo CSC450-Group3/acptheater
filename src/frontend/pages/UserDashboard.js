@@ -88,7 +88,8 @@ function UserDashboard(props) {
 					</div>
 				</TabPanel>
 
-				<TabPanel value="2" class="userUpdateDash">
+		
+				<TabPanel value="2" className="userUpdateDash">
 					<h1 >User Information</h1>
 					<hr class="blackHr"></hr>
 					<div class="column" className="userCreationColumn">
@@ -156,7 +157,7 @@ function UserDashboard(props) {
 				<TabPanel value="3">
 					<p></p>
                   X
-        </TabPanel>
+        		</TabPanel>
 			</TabContext>
 		</div>
 	);
