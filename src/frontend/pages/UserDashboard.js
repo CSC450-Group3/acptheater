@@ -172,7 +172,7 @@ export default function UserDashboard(props) {
           <h1> This is where I'm invisioning the messages will be displayed to and from the recipients (from the database) < br/>
           and the following button will allow you to send a new message. < br/> The messages would likely be contained in a container
           (white background rounded edges, etc) with the actual message info (recipient, subject, message) displayed. < br/>
-          We may also want to thin kabout changing the background color for this messaging page, or just make sure the container is contrasting.</h1>
+          We may also want to think about changing the background color for this messaging page, or just make sure the container is contrasting.</h1>
             <div>
           <Button variant="contained" color="#1890FF" onClick={handleClickOpen}>
             New Message
