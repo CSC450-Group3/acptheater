@@ -79,12 +79,13 @@ exports.findShowtimeStatus = (req, res) => {
         if(err){
             if(err.kind === "not_found"){
                 res.status(404).send({
-                    message: `Showing times not found with movie_id ${req.params.movie_id} and date ${date}.`
+                    message: `Showing times not found with movie_id ${req.params.movie_id} and date ${req.params.date}.`
                 });
             }
             else{
+                console.log(err)
                 res.status(500).send({
-                    message: `Error retreiving showing times with movie_id  ${req.params.movie_id} and date ${date}.`
+                    message: `Error retreiving showing times with movie_id  ${req.params.movie_id} and date ${req.params.date}.`
                 });
             }
         }

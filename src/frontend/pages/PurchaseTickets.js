@@ -121,7 +121,8 @@ function PurchaseTickets(props) {
 				movieTimesObj[selectedShowingID].time,
 				numberOfViewers,
 				ticketType,
-				movieTimesObj[selectedShowingID].price
+				movieTimesObj[selectedShowingID].price,
+				movieTimesObj[selectedShowingID].screen_name
 			)
 
 			if(ticketType === "theater"){
@@ -250,7 +251,7 @@ function PurchaseTickets(props) {
 										<br />
 									</div>
 									<div className={classes.formField}>
-										<label htmlFor="time" style={{ padding: 10 }}>Time: </label>
+										<label htmlFor="time" style={{ padding: 10 }}>Time (CST): </label>
 										<br />
 										<Radio.Group onChange={onTimeChange} style={{ padding: 10 }} required >
 											{Object.keys(movieTimes).map((key) => (

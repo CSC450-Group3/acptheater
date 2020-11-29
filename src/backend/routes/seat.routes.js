@@ -12,6 +12,9 @@ router.post("/massCreate", seat.massCreate);
 // Get all seats for a screen
 router.get("/screen/:screen_id", seat.findAllByScreen);
 
+// Get ticket by ticket_id
+router.get("/transaction/:transaction_id", seat.findByTransaction);
+
 // Get seat availability for a showing
 router.get("/showing/:showing_id", seat.findAllAvailability);
 

@@ -51,6 +51,28 @@ exports.findOne = (req, res) => {
 }
 
 
+// Find ticket by transaction_id
+exports.findByTransaction = (req, res) => {
+    Ticket.getByTransaction(req.params.transaction_id, (err, data) => {
+        if(err){
+            if(err.kind === "not_found"){
+                res.status(404).send({
+                    message: `Ticket not found with transaction_id ${req.params.transaction_id}.`
+                });
+            }
+            else{
+                res.status(500).send({
+                    message: `Error retreiving ticket with transaction_id ${req.params.transaction_id}.`
+                });
+            }
+        }
+        else{
+            res.send(data);
+        }
+    })
+}
+
+
 // Get all purchased tickets by showing_id
 exports.findAllByShowing = (req, res) => {
     Ticket.getAllByShowing(req.params.showing_id, (err, data) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Spin } from 'antd';
 
 const Loader = () => (
-    <div>
+    <div style={{textAlign: "center"}}>
         <Spin />
     </div>
 )
