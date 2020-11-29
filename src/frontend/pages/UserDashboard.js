@@ -7,8 +7,16 @@ import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
 import { isoDate } from '../helper/FormatDate';
 import axios from 'axios';
-import { validateDate, displayDateAlert, duplicateEmailAlert } from '../helper/UserValidation'
-import MovieTicketDashboard from '../components/user/MovieTicketDashboard'
+import { validateDate, displayDateAlert, duplicateEmailAlert } from '../helper/UserValidation';
+import MovieTicketDashboard from '../components/user/MovieTicketDashboard';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -32,15 +40,23 @@ function UserDashboard(props) {
 	const [birthday, setBirthday] = useState(isoDate(user.birthday));
 	const [password, setPassword] = useState(null); // do not set this to the current props password, it will update the password in the database and be wrong
 	const [email, setEmail] = useState(user.email);
-	const [sameEmailError, setSameEmailError] = useState(false);
+  const [sameEmailError, setSameEmailError] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  
+  const handleClose = () => {
+    setOpen(false);
+  };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-	const handleChange = (event, newValue) => {
-		setValue(newValue);
-	};
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
-	const handleProfileUpdate = async (e) => {
-		e.preventDefault();
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
 
 		// Check if user email already exists
 		await axios.get('/api/user/email/' + email)
@@ -154,15 +170,60 @@ function UserDashboard(props) {
 					</div>
 				</TabPanel>
 
-				<TabPanel value="3">
-					<p></p>
-                  X
-        		</TabPanel>
-			</TabContext>
-		</div>
+        <TabPanel value="3">
+          <h1> This is where I'm invisioning the messages will be displayed to and from the recipients (from the database) < br/>
+          and the following button will allow you to send a new message. < br/> The messages would likely be contained in a container
+          (white background rounded edges, etc) with the actual message info (recipient, subject, message) displayed. < br/>
+          We may also want to think about changing the background color for this messaging page, or just make sure the container is contrasting.</h1>
+            <div>
+          <Button variant="contained" color="#1890FF" onClick={handleClickOpen}>
+            New Message
+          </Button>
+          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title">Message</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Type a recipient and subject, then send your message.
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Recipient"
+                type="email"
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                id="subject"
+                label="Subject"
+                type="text"
+                fullWidth
+              />
+              <TextField
+                autoFocus
+                multiline
+                margin="dense"
+                id="message"
+                label="Message"
+                type="text"
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} variant="contained" color="primary">
+                Send
+              </Button>
+              <Button onClick={handleClose} color="#1890FF">
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+        </TabPanel>
+      </TabContext>
+    </div>
 	);
 }
-
-
 
 export default UserDashboard;
