@@ -120,6 +120,28 @@ Seat.getAllAvailability = (showing_id, result) => {
     });
 };
 
+
+//Get the seat details by transaction_id
+Seat.getByTransaction = (transaction_id, result) =>{
+    sql.query(
+        `SELECT s.*
+        FROM  movieticket mt 
+        JOIN transaction t on t.transaction_id = mt.transaction_id
+        JOIN seat s on s.seat_id = mt.seat_id
+        WHERE mt.transaction_id = ${transaction_id}`,
+    (err, res) => {
+        //Error encountered
+        if(err){
+            result(err, null);
+            return;
+        }
+
+        //Ticket found
+        result(null, res);
+    });
+}
+
+
 // Update an existing seat by ID
 Seat.updateById = (seat_id, seat, result) => {
     sql.query(

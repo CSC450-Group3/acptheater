@@ -27,7 +27,9 @@ Movie.create = (newMovie, result) => {
 };
 
 Movie.findById = (movie_id, result) => {
-    sql.query(`SELECT movie_id, title, director, CAST(cast AS CHAR) AS cast, CAST(plot AS CHAR) AS plot, duration, rated, poster_URL, genre, release_date FROM movie WHERE movie_id = ${movie_id}`, (err, res) => {
+    sql.query(`SELECT movie_id, title, director, CAST(cast AS CHAR) AS cast, CAST(plot AS CHAR) AS plot, duration, rated, poster_URL, genre, release_date 
+            FROM movie WHERE 
+            movie_id = ${movie_id}`, (err, res) => {
         if(err){
             result(err, null);
             return;
@@ -46,13 +48,14 @@ Movie.findById = (movie_id, result) => {
 
 
 // Get all movie records by showing date
+// subtract 6 hours to get back into CST time before turning to date
 Movie.getByDate = (date, result) => {
     sql.query(
         "SELECT DISTINCT m.movie_id, m.title, m.director, CAST(m.cast AS CHAR) AS cast, CAST(m.plot AS CHAR) AS plot, m.duration, m.rated, m.poster_URL, m.genre, " +
         "DATE_FORMAT(m.release_date, '%c/%e/%Y') AS release_date " +
         "FROM  showing s " +
             "INNER JOIN movie m ON m.movie_id = s.movie_id " +
-        "WHERE CAST(s.start_date_time AS DATE) = ?", 
+        "WHERE CAST( date_sub(s.start_date_time, interval 6 hour) AS DATE) = ?", 
     [date], 
     (err, res) => {
         //Error encountered

@@ -181,6 +181,7 @@ function Payment(props) {
 									total_price={total_price}
 									selectedSeats={selectedSeats}
 									selectedTicket={selectedTicket}
+									showtime={selectedTicket.date + " " + selectedTicket.time}
 								/>
 							</Col>
 						</Row>
