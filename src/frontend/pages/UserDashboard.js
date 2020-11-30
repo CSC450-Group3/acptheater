@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 	menuButton: {
 		backgroundColor: '#1890FF',
 		color: 'black',
-	},
+  },
 }));
 
 function UserDashboard(props) {
@@ -171,55 +171,66 @@ function UserDashboard(props) {
 				</TabPanel>
 
         <TabPanel value="3">
-          <h1> This is where I'm invisioning the messages will be displayed to and from the recipients (from the database) < br/>
-          and the following button will allow you to send a new message. < br/> The messages would likely be contained in a container
-          (white background rounded edges, etc) with the actual message info (recipient, subject, message) displayed. < br/>
-          We may also want to think about changing the background color for this messaging page, or just make sure the container is contrasting.</h1>
-            <div>
-          <Button variant="contained" color="#1890FF" onClick={handleClickOpen}>
-            New Message
-          </Button>
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Message</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Type a recipient and subject, then send your message.
-              </DialogContentText>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Recipient"
-                type="email"
-              />
-              <TextField
-                autoFocus
-                margin="dense"
-                id="subject"
-                label="Subject"
-                type="text"
-                fullWidth
-              />
-              <TextField
-                autoFocus
-                multiline
-                margin="dense"
-                id="message"
-                label="Message"
-                type="text"
-                fullWidth
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} variant="contained" color="primary">
-                Send
-              </Button>
-              <Button onClick={handleClose} color="#1890FF">
-                Cancel
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
+          <div className="inboxContainer">
+            <div className="inbox">
+              <p>Inbox</p>
+              <p>Message 1 (To be populated with DB messages) </p>
+              <hr class="solid"/>
+              <p>Message 2 (To be populated with DB messages)</p>
+              <hr class="solid"/>
+              <p>Message 3 (To be populated with DB messages)</p>
+              <hr class="solid"/>
+              <p>Message 4 (To be populated with DB messages)</p>
+              <hr class="solid"/>
+              <p>Message 5 (To be populated with DB messages)</p>
+              <hr class="solid"/>
+              <div className="newMessage">
+                <Button variant="contained" color="#1890FF" onClick={handleClickOpen}>
+                  New Message
+                </Button>
+                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                  <DialogTitle id="form-dialog-title">Message</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Type a recipient and subject, then send your message.
+                    </DialogContentText>
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="name"
+                      label="Recipient"
+                      type="email"
+                    />
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="subject"
+                      label="Subject"
+                      type="text"
+                      fullWidth
+                    />
+                    <TextField
+                      autoFocus
+                      multiline
+                      margin="dense"
+                      id="message"
+                      label="Message"
+                      type="text"
+                      fullWidth
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose} variant="contained" color="primary">
+                      Send
+                    </Button>
+                    <Button onClick={handleClose} color="#1890FF">
+                      Cancel
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+            </div>
+          </div>
         </TabPanel>
       </TabContext>
     </div>
