@@ -7,6 +7,7 @@ import 'antd/dist/antd.css';
 import MovieCard from '../components/movie/MovieCard';
 import Alert from '@material-ui/lab/Alert';
 import { withRouter } from "react-router-dom";
+import Loader from '../components/util/Loader'
 
 
 const showtimeStyles = makeStyles((theme) => ({
@@ -35,14 +36,14 @@ const showtimeStyles = makeStyles((theme) => ({
 		paddingLeft: 15,
 		marginRight: 15
 	},
-	alert:{maxWidth: 350},
+	alert: { maxWidth: 350 },
 }));
 
 
 
 function PurchaseTickets(props) {
 	const classes = showtimeStyles();
-	const {customerMovie , selectedTicket, setSelectedTicketInfo, clearSelectedTicket, clearMovieTicketSelections, history} = props;
+	const { customerMovie, selectedTicket, setSelectedTicketInfo, clearSelectedTicket, clearMovieTicketSelections, history } = props;
 	const [dates, setDates] = useState([]);
 	const [movieTimes, setMovieTimes] = useState([]);
 	const [movieTimesObj] = useState({});
@@ -51,24 +52,32 @@ function PurchaseTickets(props) {
 	const [selectedShowingID, setselectedShowingID] = useState(null);
 	const [ticketType, setTicketType] = useState("theater")
 	const [timeError, setTimeError] = useState(false)
+	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
 		// load all showing dates for a given movie on or after today
+
 		async function loadShowings() {
 			await axios.get('/api/showing/movie/' + customerMovie.movie_id)
 				.then(function (res) {
 					setDates(res.data);
+					setIsLoading(false)
 				})
 				.catch(function (err) {
 					console.log(err)
+					setIsLoading(false)
 				})
 		}
 
-		loadShowings();
+		//only load data if customerMovie is populated
+		if (customerMovie.movie_id !== "") {
+			loadShowings();
+		}
 
 		if (customerMovie.selected_date !== "") {
 			loadShowingTimes(customerMovie.selected_date);
 		}
+
 	}, [customerMovie])
 
 
@@ -125,16 +134,16 @@ function PurchaseTickets(props) {
 				movieTimesObj[selectedShowingID].screen_name
 			)
 
-			if(ticketType === "theater"){
+			if (ticketType === "theater") {
 				history.push("/SeatingChart")
 			}
-			else{
+			else {
 				history.push("/Payment")
 			}
 		}
 	}
 
-	const handleCancel = () =>{
+	const handleCancel = () => {
 		//clean up data and reroute to showtime page 
 		clearMovieTicketSelections();
 		history.push("/Showtimes")
@@ -147,7 +156,7 @@ function PurchaseTickets(props) {
 	 * @param {*} showing_id 
 	 * @param {*} time 
 	 */
-	const Time = ({ showing_id, time, disabled}) => {
+	const Time = ({ showing_id, time, disabled }) => {
 		if (disabled) {
 			return (
 				<Radio.Button
@@ -223,67 +232,73 @@ function PurchaseTickets(props) {
 						]}
 
 					>
-						<Row>
-							<Col span={12}>
-								<div>
-									<p>Please select from all options below:</p>
+						{/* displays the loading screen if the data is loading, otherswise the form is displayed  */
+							isLoading ?	
+								<Loader /> 	
+								:
+								<Row>
+									<Col span={12}>
+										<div>
+											<p>Please select from all options below:</p>
 
-									<div className={classes.formField}>
-										<label htmlFor="date" style={{ padding: 10 }}>Date: </label>
-										<select
-											value={selectedDate}
-											name="date"
-											required
-											onChange={(event) => handleDateChange(event)}
-											className={classes.dateSelect}
-										>
-											{Object.keys(dates).map((key) => (
-												<option
-													key={dates[key].date}
-													value={dates[key].date}
-													name={dates[key].date}
+											<div className={classes.formField}>
+												<label htmlFor="date" style={{ padding: 10 }}>Date: </label>
+												<select
+													value={selectedDate}
+													name="date"
+													required
+													onChange={(event) => handleDateChange(event)}
+													className={classes.dateSelect}
 												>
-													{dates[key].date}
-												</option>
+													{Object.keys(dates).map((key) => (
+														<option
+															key={dates[key].date}
+															value={dates[key].date}
+															name={dates[key].date}
+														>
+															{dates[key].date}
+														</option>
 
-											))}
-										</select>
-										<br />
-									</div>
-									<div className={classes.formField}>
-										<label htmlFor="time" style={{ padding: 10 }}>Time (CST): </label>
-										<br />
-										<Radio.Group onChange={onTimeChange} style={{ padding: 10 }} required >
-											{Object.keys(movieTimes).map((key) => (
-												<Time
+													))}
+												</select>
+												<br />
+											</div>
+											<div className={classes.formField}>
+												<label htmlFor="time" style={{ padding: 10 }}>Time (CST): </label>
+												<br />
+												<Radio.Group onChange={onTimeChange} style={{ padding: 10 }} required >
+													{Object.keys(movieTimes).map((key) => (
+														<Time
 
-													key={movieTimes[key].showing_id}
-													showing_id={movieTimes[key].showing_id}
-													time={movieTimes[key].time}
-													disabled={movieTimes[key].disabled}
-												/>
-											))}
-										</Radio.Group>
-										{TimeAlert()}
-										<br />
-									</div>
+															key={movieTimes[key].showing_id}
+															showing_id={movieTimes[key].showing_id}
+															time={movieTimes[key].time}
+															disabled={movieTimes[key].disabled}
+														/>
+													))}
+												</Radio.Group>
+												{TimeAlert()}
+												<br />
+											</div>
 
 
-									<div className={classes.formField}>
-										<Radio.Group onChange={handleSelectTicketType} value={ticketType}>
-											<Radio value={"theater"}>Theater Ticket(s)</Radio>
-											<Radio value={"virtual"}>Virtual Ticket(s) </Radio>
-										</Radio.Group>
-									</div>
-									{displayNumViewers()}
+											<div className={classes.formField}>
+												<Radio.Group onChange={handleSelectTicketType} value={ticketType}>
+													<Radio value={"theater"}>Theater Ticket(s)</Radio>
+													<Radio value={"virtual"}>Virtual Ticket(s) </Radio>
+												</Radio.Group>
+											</div>
+											{displayNumViewers()}
 
-								</div>
+										</div>
 
-							</Col>
-							<Col span={8}>
-								<MovieCard title={customerMovie.title} poster_url={customerMovie.poster_url} className={classes.movieCard} />
-							</Col>
-						</Row>
+									</Col>
+									<Col span={8}>
+										<MovieCard title={customerMovie.title} poster_url={customerMovie.poster_url} className={classes.movieCard} />
+									</Col>
+								</Row>
+						}
+
 					</Card>
 				</form>
 			</div>

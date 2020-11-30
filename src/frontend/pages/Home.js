@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { v4 } from 'node-uuid'; // used to generate unique ID
-import MoviePurchaseCard from '../components/movie/MoviePurchaseCard';
-import MovieDetailPurchaseModal from '../components/movie/MovieDetailPurchaseModal';
+import MovieActionCard from '../components/movie/MovieActionCard';
+import MovieDetailActionModal from '../components/movie/MovieDetailActionModal';
 import RequireLoginModal from '../components/user/RequireLoginModal';
 import {isoDate} from '../helper/FormatDate';
 
@@ -39,31 +39,26 @@ function Home(props) {
           <div className="rowFood">
             {Object.keys(activeMovies).map(key => (
               <div className="column" key={v4()} >
-                <MoviePurchaseCard
+                <MovieActionCard
                   selectMovieToWatch={props.selectMovieToWatch}
                   setActivateDetailModal={setActivateDetailModal}
                   setActivateLoginModal={setActivateLoginModal}
                   setDetailRequest={setDetailRequest}
                   key={v4()}
-                  movie_id={activeMovies[key].movie_id}
+                  ID={activeMovies[key].movie_id}
                   title={activeMovies[key].title}
-                  cast={activeMovies[key].cast}
-                  plot={activeMovies[key].plot}
-                  duration={activeMovies[key].duration}
-                  rated={activeMovies[key].rated}
                   poster_url={activeMovies[key].poster_URL}
-                  genre={activeMovies[key].genre}
-                  release_date={activeMovies[key].release_date}
                   selected_date={today}
                   user={props.user}
                   history={props.history}
+                  action='purchase'
                 />
               </div>
             ))}
           </div>
         </marquee>
 
-        <MovieDetailPurchaseModal
+        <MovieDetailActionModal
           title={customerMovie.title}
           cast={customerMovie.cast}
           release_date={customerMovie.release_date}
@@ -80,6 +75,7 @@ function Home(props) {
           setActivateLoginModal={setActivateLoginModal}
           user={props.user}
           history={props.history}
+          action='purchase'
         />
 
         <RequireLoginModal

@@ -6,6 +6,7 @@ import SeatButton from '../components/seat/SeatButton';
 import { withRouter } from "react-router-dom";
 import Alert from '@material-ui/lab/Alert';
 import { v4 } from 'node-uuid'; // used to generate unique ID
+import Loader from '../components/util/Loader'
 
 const styles = makeStyles((theme) => ({
 	SeatingChart: {
@@ -23,26 +24,26 @@ const styles = makeStyles((theme) => ({
 		paddingLeft: 15,
 		marginRight: 15
 	},
-	alert: { 
+	alert: {
 		maxWidth: 350,
 		marginTop: 20,
 	},
-	screen:{
-		textAlign:"center",
+	screen: {
+		textAlign: "center",
 		textDecoration: "underline"
 	},
-	grid:{
-		maxWidth: 900, 
+	grid: {
+		maxWidth: 900,
 		margin: "auto",
 	},
-	row:{
+	row: {
 		padding: 2
 	}
 }));
 
 
 function SeatingChart(props) {
-	const {selectedSeats, selectedTicket, addSeat, removeSeat, clearSeats, clearMovieToWatch, clearSelectedTicket, history, clearMovieTicketSelections} = props;
+	const { selectedSeats, selectedTicket, addSeat, removeSeat, clearSeats, clearMovieToWatch, clearSelectedTicket, history, clearMovieTicketSelections } = props;
 	const classes = styles();
 	const columns = 20;
 	const rows = 10;
@@ -66,7 +67,7 @@ function SeatingChart(props) {
 					{
 						Object.keys(res.data).map((key) => (
 							objSeatData[(res.data)[key].seat_id] = (res.data)[key]
-						
+
 						))
 					}
 					setIsLoading(false);
@@ -82,20 +83,20 @@ function SeatingChart(props) {
 
 
 	const handleSubmit = e => {
-		e.preventDefault(); 
+		e.preventDefault();
 
-		if(Object.keys(selectedSeats).length === 0){
+		if (Object.keys(selectedSeats).length === 0) {
 			setSeatError(true);
 		}
 
-		if(Object.keys(selectedSeats).length !== 0){
+		if (Object.keys(selectedSeats).length !== 0) {
 			history.push("/Payment")
 		}
 	}
 
 	const handleSeatClick = (e) => {
 		//prevents rerendering
-		e.preventDefault(); 
+		e.preventDefault();
 		setSeatError(false);
 
 		const seat_id = e.target.value;
@@ -118,8 +119,8 @@ function SeatingChart(props) {
 		}
 	}
 
-	
-	const handleCancel = () =>{
+
+	const handleCancel = () => {
 		//clean up data and reroute to showtime page 
 		clearMovieTicketSelections();
 		history.push("/Showtimes")
@@ -147,7 +148,7 @@ function SeatingChart(props) {
 		if (isLoading === false) {
 			while (i < rows) {
 				row.push(
-					<Row justify="center" className={classes.row}>
+					<Row justify="center" className={classes.row} key={v4()}>
 						{createColumns()}
 					</Row>
 				)
@@ -199,12 +200,17 @@ function SeatingChart(props) {
 						</div>
 					]}
 				>
-					<h1 className={classes.screen}>___________Screen___________</h1>
+					{ /* Display a loading screen if data is loading, otherwise display the form */
+						isLoading ? <Loader /> :
+							<div>
+								<h1 className={classes.screen}>___________Screen___________</h1>
 
-					<div className={classes.grid}>
-						{createRows()}
-					</div>
-					{SeatAlert()}
+								<div className={classes.grid}>
+									{createRows()}
+								</div>
+								{SeatAlert()}
+							</div>
+					}
 
 				</Card>
 			</form>
