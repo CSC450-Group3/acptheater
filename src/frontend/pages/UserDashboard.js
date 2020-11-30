@@ -146,7 +146,7 @@ export default function UserDashboard(props) {
 
         <TabPanel value="3">
           <p></p>
-        <img src={process.env.PUBLIC_URL + '/images/chatExample.jpeg'} alt="chatExample" margin="auto" width="75%" />
+                  X
         </TabPanel>
       </TabContext>
     </div>
