@@ -8,9 +8,10 @@ var Message = function(message){
 };
 
 // Create new message record
+// UTC_TIMESTAMP because we are storing in universal time
 Message.create = (newMessage, result) => {
     sql.query(`INSERT INTO message(thread_id, sending_user_id, message_body, sent_date_time) ` + 
-        `VALUES(${newMessage.thread_id}, ${newMessage.sending_user_id}, '${newMessage.message_body}', NOW())`, 
+        `VALUES(${newMessage.thread_id}, ${newMessage.sending_user_id}, '${newMessage.message_body}', UTC_TIMESTAMP())`, 
     (err, res) => {
         //Error encountered
         if(err){
@@ -23,7 +24,7 @@ Message.create = (newMessage, result) => {
 
         // Create the UserReadMessage record for the user creating the message
         sql.query(`INSERT INTO userreadmessage (message_id, user_id, read_date_time) ` +
-        `VALUES(${res.insertId}, ${newMessage.sending_user_id}, NOW())`, err => {
+        `VALUES(${res.insertId}, ${newMessage.sending_user_id}, UTC_TIMESTAMP())`, err => {
             //Error encountered
             if(err){
 
@@ -58,8 +59,9 @@ Message.create = (newMessage, result) => {
 
 
 // Find message by ID
+//Subtract 6 hours from UTC to get to CST
 Message.findById = (message_id, result) => {
-    sql.query("SELECT thread_id, sending_user_id, CAST(message_body AS CHAR) AS body, DATE_FORMAT(sent_date_time, '%c/%e/%Y %r') AS sent_date_time " +
+    sql.query("SELECT thread_id, sending_user_id, CAST(message_body AS CHAR) AS body, DATE_FORMAT(date_sub(sent_date_time, interval 6 hour), '%c/%e/%Y %r') AS sent_date_time " +
                 "FROM message " +
                 "WHERE message_id = ? ", 
     [message_id],
@@ -82,14 +84,15 @@ Message.findById = (message_id, result) => {
 };
 
 // Find all messages by thread_id
+//subtract 6 hours to get UTC to CST
 Message.findByThread = (thread_id, accessing_user_id, result) => {
     sql.query(
-        "SELECT t.subject, m.message_id, t.resolved, u.first_name, u.last_name, CAST(m.message_body AS CHAR) as body, DATE_FORMAT(m.sent_date_time, '%c/%e/%Y %r') AS sent_date_time " +
+        "SELECT t.subject, m.message_id, t.resolved, u.first_name, u.last_name, CAST(m.message_body AS CHAR) as body, DATE_FORMAT(date_sub(m.sent_date_time, interval 6 hour), '%c/%e/%Y %r') AS sent_date_time " +
         "FROM thread t " + 
             "INNER JOIN message m on m.thread_id = t.thread_id " +
             "INNER JOIN user u on u.user_id = m.sending_user_id " +
         "WHERE t.thread_id = ? " +
-        "ORDER BY m.sent_date_time", 
+        "ORDER BY sent_date_time", 
     [thread_id],
     (err, res) => {
         //Error encountered
@@ -102,7 +105,7 @@ Message.findByThread = (thread_id, accessing_user_id, result) => {
         if(res.length){
             //find new messages in the thread
             sql.query(
-                `SELECT DISTINCT  m.*
+                `SELECT DISTINCT m.message_id, m.thread_id, m.sending_user_id, m.message_body,  DATE_FORMAT(date_sub(m.sent_date_time, interval 6 hour), '%c/%e/%Y %r') AS sent_date_time
                 FROM thread t  
                     INNER JOIN threadparticipant tp ON tp.thread_id = t.thread_id AND t.thread_id = ${thread_id} 
                     INNER JOIN message m on m.thread_id = t.thread_id AND m.sending_user_id != ${accessing_user_id} 
@@ -123,9 +126,10 @@ Message.findByThread = (thread_id, accessing_user_id, result) => {
                     for(i = 0; i < res2.length; i++){
                         var message_id = res2[i].message_id;
                         //Create User Read Message record for the message if it doesn't already exist
+                        // UTC_TIMESTAMP because we are storing in universal time
                         sql.query(
                             `INSERT INTO userreadmessage(message_id, user_id, read_date_time) ` +
-                            `SELECT * FROM ( SELECT ${message_id} AS thread_id , ${accessing_user_id} AS user_id, NOW() AS read_date_time) AS tmp ` +
+                            `SELECT * FROM ( SELECT ${message_id} AS thread_id , ${accessing_user_id} AS user_id, UTC_TIMESTAMP() AS read_date_time) AS tmp ` +
                             `WHERE NOT EXISTS(` +
                                 `SELECT message_id, user_id FROM userreadmessage WHERE user_id = ${message_id} AND thread_id = ${accessing_user_id}` +
                             `) LIMIT 1`,
@@ -150,13 +154,14 @@ Message.findByThread = (thread_id, accessing_user_id, result) => {
 };
 
 // New Messages by User
+//subtract 6 hours to get UTC to CST
 Message.findNewMessagesByUser = (user_id, user_type, result) => {
     var sqlString;
 
     //user is admin
     if(user_type == 'A'){
         // find all new messages for administrator from all threads
-        sqlString = `SELECT DISTINCT t.thread_id, t.subject, m.message_id, t.resolved, u1.first_name, u1.last_name, CAST(m.message_body AS CHAR) AS body, DATE_FORMAT(m.sent_date_time, '%c/%e/%Y %r') AS sent_date_time 
+        sqlString = `SELECT DISTINCT t.thread_id, t.subject, m.message_id, t.resolved, u1.first_name, u1.last_name, CAST(m.message_body AS CHAR) AS body, DATE_FORMAT(date_sub(m.sent_date_time, interval 6 hour), '%c/%e/%Y %r') AS sent_date_time 
                         FROM thread t  
                             INNER JOIN message m ON m.thread_id = t.thread_id AND m.sending_user_id != ${user_id}
                             INNER JOIN userreadmessage urm1 ON urm1.message_id = m.message_id  
@@ -168,7 +173,7 @@ Message.findNewMessagesByUser = (user_id, user_type, result) => {
     //user is a customer
     else{
         // find all new messages for only the threads that the customer has participated in (only threads they would have created)
-        sqlString = `SELECT DISTINCT t.thread_id, t.subject, m.message_id, t.resolved, u1.first_name, u1.last_name, CAST(m.message_body AS CHAR) AS body, DATE_FORMAT(m.sent_date_time, '%c/%e/%Y %r') AS sent_date_time 
+        sqlString = `SELECT DISTINCT t.thread_id, t.subject, m.message_id, t.resolved, u1.first_name, u1.last_name, CAST(m.message_body AS CHAR) AS body, DATE_FORMAT(date_sub(m.sent_date_time, interval 6 hour), '%c/%e/%Y %r') AS sent_date_time 
                     FROM thread t  
                         JOIN threadparticipant tp ON tp.thread_id = t.thread_id AND tp.user_id = ${user_id}
                         INNER JOIN message m ON m.thread_id = t.thread_id AND m.sending_user_id != ${user_id}
