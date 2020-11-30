@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { v4 } from 'node-uuid'; // used to generate unique ID
-import MoviePurchaseCard from '../components/movie/MoviePurchaseCard';
-import MovieDetailPurchaseModal from '../components/movie/MovieDetailPurchaseModal';
+import MovieActionCard from '../components/movie/MovieActionCard';
+import MovieDetailActionModal from '../components/movie/MovieDetailActionModal';
 import RequireLoginModal from '../components/user/RequireLoginModal';
 import { isoDate } from '../helper/FormatDate';
 import { ReactPhotoCollage } from "react-photo-collage";
@@ -25,6 +25,55 @@ function Home(props) {
     layout: [2, 3],
     photos: [
 
+        <marquee behavior="scroll" direction="left">
+          <div className="rowFood">
+            {Object.keys(activeMovies).map(key => (
+              <div className="column" key={v4()} >
+                <MovieActionCard
+                  selectMovieToWatch={props.selectMovieToWatch}
+                  setActivateDetailModal={setActivateDetailModal}
+                  setActivateLoginModal={setActivateLoginModal}
+                  setDetailRequest={setDetailRequest}
+                  key={v4()}
+                  ID={activeMovies[key].movie_id}
+                  title={activeMovies[key].title}
+                  poster_url={activeMovies[key].poster_URL}
+                  selected_date={today}
+                  user={props.user}
+                  history={props.history}
+                  action='purchase'
+                />
+              </div>
+            ))}
+          </div>
+        </marquee>
+
+        <MovieDetailActionModal
+          title={customerMovie.title}
+          cast={customerMovie.cast}
+          release_date={customerMovie.release_date}
+          rated={customerMovie.rated}
+          duration={customerMovie.duration}
+          genre={customerMovie.genre}
+          poster_url={customerMovie.poster_url}
+          plot={customerMovie.plot}
+          detailRequest={detailRequest}
+          activateModal={activateDetailModal}
+          setActivateModal={setActivateDetailModal}
+          setActivateForm={setActivateForm}
+          clearMovieToWatch={props.clearMovieToWatch}
+          setActivateLoginModal={setActivateLoginModal}
+          user={props.user}
+          history={props.history}
+          action='purchase'
+        />
+
+        <RequireLoginModal
+          activateLoginModal={activateLoginModal}
+          setActivateLoginModal={setActivateLoginModal}
+        />
+
+      </div>
       { src: '/images/inTheater1.jpeg' },
       { src: '/images/inHome1.jpeg' },
       { src: '/images/inTheater2.jpeg' },

@@ -12,6 +12,9 @@ router.get("/getAll", screen.findAll);
 // Get screen by screen_id
 router.get("/:screen_id", screen.findOne);
 
+// Get screen by screen_id
+router.get("/date/:date", screen.findAvailable);
+
 // Update screen with a given screen_id
 router.put("/:screen_id/update", screen.update);
 

@@ -49,6 +49,21 @@ exports.findOne = (req, res) => {
     })
 }
 
+
+// Find available screens by date
+exports.findAvailable = (req, res) => {
+    Screen.findAvailable(req.params.date, (err, data) => {
+        if(err){
+            res.status(500).send({
+                message: `Error retreiving screen with screen_id ${req.params.screen_id}.`
+            });  
+        }
+        else{
+            res.send(data);
+        }
+    })
+}
+
 // Find screen by Id
 exports.findAll = (req, res) => {
     Screen.getAll((err, data) => {

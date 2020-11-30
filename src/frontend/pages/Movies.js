@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Input, Row, Col, Card, Tag, Spin, Modal, Typography, Button, Space } from 'antd';
-import { Link } from "react-router-dom";
+import { Layout, Input, Row, Col} from 'antd';
+import MovieActionCard from '../components/movie/MovieActionCard';
+import MovieDetailActionModal from '../components/movie/MovieDetailActionModal'
+import { v4 } from 'node-uuid'; // used to generate unique ID
 import 'antd/dist/antd.css';
 import { makeStyles } from '@material-ui/core/styles';
 
 const { Content } = Layout;
 const { Search } = Input;
-const { Meta } = Card;
-const TextTitle = Typography.Title;
 
 const scheduleMovieStyles = makeStyles(() => ({
     movies: {
@@ -36,87 +36,7 @@ const SearchBox = ({searchHandler}) => {
             </Col>
         </Row>
     )
-}
-
-const MovieCard = ({Title, imdbID, Poster, ShowDetails, DetailRequest, ActivateModal}) => {
-
-    const clickHandler = () => {
-        
-        ActivateModal(true);
-        DetailRequest(true);
-
-        fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=cde43fc8`)
-        .then(resp => resp)
-        .then(resp => resp.json())
-        .then(response => {
-            DetailRequest(false);
-            ShowDetails(response);
-        })
-    }
-
-    return (
-        <Col style={{margin: '50px'}} span={3}>
-            <div>
-                <Card
-                    style={{ width: 300 }}
-                    cover={
-                        <img
-                            alt={Title}
-                            src={Poster === 'N/A' ? 'https://placehold.it/198x264&text=Image+Not+Found' : Poster}
-                        />
-                    }
-                    onClick={() => clickHandler()}
-                >
-                    <Meta
-                        title={Title}
-                    />
-                </Card>
-            </div>
-        </Col>
-    )
-}
-
-const MovieDetail = ({Title, Actors, Released, Rated, Runtime, Genre, Poster, Plot, }) => {
-    return (
-        <Row>
-            <Col span={11}>
-                <img 
-                    src={Poster === 'N/A' ? 'https://placehold.it/198x264&text=Image+Not+Found' : Poster} 
-                    alt={Title} 
-                />
-            </Col>
-            <Col span={13}>
-                <Row >
-                    <Col>
-                        <TextTitle>{Title}</TextTitle>
-                    </Col>
-                </Row>
-                <Row style={{marginBottom: '.7em'}}>
-                    <Col>{Actors}</Col>
-                </Row>
-                <Row style={{marginBottom: '.7em'}}>
-                    <Col>
-                        <Tag>{Released}</Tag>
-                        <Tag>{Rated}</Tag> 
-                        <Tag>{Runtime}</Tag> 
-                        <Tag>{Genre}</Tag>                        
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>{Plot}</Col>
-                </Row>
-            </Col>
-        </Row>
-    )
-}
-
-const Loader = () => (
-    <div>
-        <Spin />
-    </div>
-)
-
-				   
+}			   
 
 function Movies(props) {
     const classes = scheduleMovieStyles();
@@ -124,9 +44,15 @@ function Movies(props) {
     const [error, setError] = useState(null);
     const [query, setQuery] = useState('');
     const [activateModal, setActivateModal] = useState(false);
-    const [details, setShowDetails] = useState(false);
     const [detailRequest, setDetailRequest] = useState(false);
-    const [activateForm, setActivateForm] = useState(false);
+
+    const {
+        selectMovieToSchedule, 
+        movieToSchedule,
+        clearMovieToSchedule,
+		user,
+		history
+    } = props
 
     useEffect(() => {
         setError(null);
@@ -158,54 +84,40 @@ function Movies(props) {
                         <SearchBox searchHandler={setQuery} />
                         <br />
                         <Row justify="center">
-                            { data !== null && data.length > 0 && data.map((result, index) => (
-                                <MovieCard 
-                                    ShowDetails={setShowDetails} 
-                                    DetailRequest={setDetailRequest}
-                                    ActivateModal={setActivateModal}
-                                    ActivateForm={setActivateForm}
-                                    key={index} 
-                                    {...result} 
+                            { data !== null && data.length > 0 && data.map((result, index) => (                               
+                                <MovieActionCard
+                                    selectMovieToSchedule={selectMovieToSchedule}
+                                    setActivateDetailModal={setActivateModal}
+                                    setDetailRequest={setDetailRequest}
+                                    key={v4()}
+                                    ID={result.imdbID}
+                                    title={result.Title}
+                                    poster_url={result.Poster}
+                                    user={user}
+                                    action="schedule"
                                 />
+                                
                             ))}
                         </Row>
                     </div>
-                    <Modal
-                        title='Details'
-                        centered
-                        visible={activateModal}
-                        onCancel={() => setActivateModal(false)}
-                        onOk={() => setActivateForm(true)}
-                        width={800}
-                        footer={[
-                            <Space size ='small'>
-                                <Button key="schedule" type = "primary" han onClick={() =>{
-                                        props.selectMovieToSchedule(
-                                            details.Title,
-                                            details.Actors, 
-                                            details.Plot, 
-                                            details.Runtime,
-                                            details.Rated,
-                                            details.Poster,
-                                            details.Genre,
-                                            details.Released
-                                        )
-                                        setActivateForm(true);
-                                    }
-                                }>
-                                    <Link to='/ScheduleForm'>Schedule Movie</Link >
-                                </Button>
-                                <Button key="cancel" onClick={() => setActivateModal(false)}>
-                                    Cancel
-                                </Button>
-                            </Space>
-                          ]}
-                        >
-                        { detailRequest === false ?
-                            (<MovieDetail {...details} />) :
-                            (<Loader />) 
-                        }
-                    </Modal>
+                    
+                    <MovieDetailActionModal
+                        title={movieToSchedule.title}
+                        cast={movieToSchedule.cast}
+                        release_date={movieToSchedule.release_date}
+                        rated={movieToSchedule.rated}
+                        duration={movieToSchedule.duration}
+                        genre={movieToSchedule.genre}
+                        poster_url={movieToSchedule.poster_URL}
+                        plot={movieToSchedule.plot}
+                        detailRequest={detailRequest}
+                        activateModal={activateModal}
+                        setActivateModal={setActivateModal}
+                        clearMovieToSchedule={clearMovieToSchedule}
+                        action='schedule'
+                        user={user}
+                        history={history}
+                    />
                 </Content>
             </Layout>
         </div>

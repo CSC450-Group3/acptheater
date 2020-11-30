@@ -13,6 +13,7 @@ import ScheduleForm from './frontend/pages/ScheduleForm';
 import SignUp from './frontend/pages/SignUp';
 import Login from './frontend/pages/Login';
 import UserDashboard from './frontend/pages/UserDashboard';
+import StreamVirtual from './frontend/pages/StreamVirtual'
 import Navbar from './frontend/components/app/Navbar';
 import Footer from './frontend/components/app/Footer';
 import { loginAction, logoffAction, updateAccountAction } from "./frontend/actions/userAction.js";
@@ -87,7 +88,15 @@ class App extends Component {
 								history={history}
 							/>
 						</Route>
-						<Route exact path="/Movies"><Movies selectMovieToSchedule={selectMovieToSchedule} /> </Route>
+						<Route exact path="/Movies">
+							<Movies 
+								selectMovieToSchedule={selectMovieToSchedule} 
+								movieToSchedule={movieToSchedule}
+								clearMovieToSchedule={clearMovieToSchedule}
+								user={user}
+								history={history}
+							/> 
+						</Route>
 						<Route exact path="/ScheduleForm">
 							<ScheduleForm
 								movieToSchedule={movieToSchedule}
@@ -156,9 +165,16 @@ class App extends Component {
 								clearMovieTicketSelections={clearMovieTicketSelections}
 							/> 
 						</Route>
-						<Route exact path="/UserDashboard"><UserDashboard user={user} updateAccountAction={updateAccountAction} /> </Route>
+						<Route exact path="/UserDashboard">
+							<UserDashboard 
+								user={user} 
+								history={history}
+								updateAccountAction={updateAccountAction} 
+							/> 
+						</Route>
 						<Route exact path="/SignUp"><SignUp history={history} /> </Route>
 						<Route exact path="/Login"><Login loginAction={loginAction} history={history} /> </Route>
+						<Route exact path="/StreamVirtual"><StreamVirtual history={history} /> </Route>
 					</div>
 					<Footer />
 				</div>

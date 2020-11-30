@@ -22,9 +22,12 @@ Transaction.create = (newTransaction, result) => {
 
 
 // Find transaction By ID
+//subtract start_date_time by 6 hours to convert to CST time
 Transaction.findById = (transaction_id, result) => {
     sql.query(
-        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, DATE_FORMAT(sh.start_date_time, '%c/%e/%Y %r') AS start_date_time, m.title, m.duration " +
+        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, DATE_FORMAT(date_sub(sh.start_date_time, interval 6 hour), '%c/%e/%Y %r') AS start_date_time, " +
+        "m.movie_id, m.title, m.director, CAST(m.cast AS CHAR) AS cast, CAST(m.plot AS CHAR) AS plot, m.duration, m.rated, m.poster_URL, m.genre, " +
+        "DATE_FORMAT(m.release_date, '%c/%e/%Y') AS release_date " +
         "FROM transaction t " +
             "INNER JOIN movieticket mt ON mt.transaction_id = t.transaction_id " +
             "INNER JOIN showing sh ON sh.showing_id = mt.showing_id " + 
@@ -51,17 +54,36 @@ Transaction.findById = (transaction_id, result) => {
     });
 };
 
+/** 
+ *  Status 2 == actively playing now
+ *  Status 1 == future tickets
+ *  Status 0 == inactive / past tickets 
+ */
 // Get all transaction records by user_id
+// subtract 6 hours to convert to CST
 Transaction.getAllByUser = (user_id, result) => {
     sql.query(
-        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, DATE_FORMAT(sh.start_date_time, '%c/%e/%Y %r') AS start_date_time , m.title, m.duration " +
+        "SELECT DISTINCT t.transaction_id, DATE_FORMAT(date_sub(sh.start_date_time, interval 6 hour), '%c/%e/%Y %r') AS start_date_time , "+
+        "m.movie_id, m.title, m.director, CAST(m.cast AS CHAR) AS cast, CAST(m.plot AS CHAR) AS plot, m.duration, m.rated, m.poster_URL, m.genre, " +
+        "DATE_FORMAT(m.release_date, '%c/%e/%Y') AS release_date, " +
+        "CASE WHEN sh.start_date_time <= UTC_TIMESTAMP() AND UTC_TIMESTAMP() <= (sh.start_date_time + INTERVAL m.duration MINUTE) " +
+            "THEN 2 " +
+        "WHEN sh.start_date_time > UTC_TIMESTAMP() " +
+            "THEN 1 " +
+            "ELSE 0 " +
+        "END AS status, " + 
+        "CASE WHEN mt.total_viewers IS NOT NULL " +
+		    "THEN 1 " +
+            "ELSE 0 " +
+        "END AS isVirtual " +
         "FROM transaction t " +
             "INNER JOIN movieticket mt ON mt.transaction_id = t.transaction_id " +
             "INNER JOIN showing sh ON sh.showing_id = mt.showing_id " + 
             "INNER JOIN screen sc ON sc.screen_id = sh.screen_id " +
             "INNER JOIN movie m ON m.movie_id = sh.movie_id " +
             "LEFT JOIN seat st ON st.seat_id = mt.seat_id " +
-        "WHERE t.user_id = ?", 
+        "WHERE t.user_id = ? " + 
+        "ORDER BY status DESC, start_date_time ASC" , 
     [user_id], 
     (err, res) => {
         //Error encountered
@@ -76,9 +98,13 @@ Transaction.getAllByUser = (user_id, result) => {
 };
 
 // Get tickets for a user where the movie start time is in the future
+// subtract 6 hours to convert to CST
+// UTC_TIMESTAMP() since we are storing in UTC timezone
 Transaction.getUpcomingTicketsByUser = (user_id, result) => {
     sql.query(
-        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, DATE_FORMAT(sh.start_date_time, '%c/%e/%Y %r') AS start_date_time, m.title, m.duration " +
+        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, DATE_FORMAT(date_sub(sh.start_date_time, interval 6 hour), '%c/%e/%Y %r') AS start_date_time, "+
+        "m.movie_id, m.title, m.director, CAST(m.cast AS CHAR) AS cast, CAST(m.plot AS CHAR) AS plot, m.duration, m.rated, m.poster_URL, m.genre, " +
+        "DATE_FORMAT(m.release_date, '%c/%e/%Y') AS release_date " +
         "FROM transaction t " +
             "INNER JOIN movieticket mt ON mt.transaction_id = t.transaction_id " +
             "INNER JOIN showing sh ON sh.showing_id = mt.showing_id " +
@@ -86,7 +112,7 @@ Transaction.getUpcomingTicketsByUser = (user_id, result) => {
             "INNER JOIN movie m ON m.movie_id = sh.movie_id " +
             "LEFT JOIN seat st ON st.seat_id = mt.seat_id " +
         "WHERE t.user_id = ? " +
-            "AND sh.start_date_time > NOW()",
+            "AND sh.start_date_time > UTC_TIMESTAMP()",
     [user_id], 
     (err, res) => {
 
@@ -104,9 +130,13 @@ Transaction.getUpcomingTicketsByUser = (user_id, result) => {
 
 /* Get tickets for a user where the movie start time is now or in the past and the
  current time is within the duration of the movie */
+
+ //UTC_TIMESTAMP() since we are storing in UTC timzone
  Transaction.getActiveTicketsByUser = (user_id, result) => {
     sql.query(
-        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, DATE_FORMAT(sh.start_date_time, '%c/%e/%Y %r') AS start_date_time, m.title, m.duration " +
+        "SELECT t.*, mt.total_viewers, sc.screen_name, st.seat_number, st.row_name, DATE_FORMAT(date_sub(sh.start_date_time, interval 6 hour), '%c/%e/%Y %r') AS start_date_time, " +
+        "m.movie_id, m.title, m.director, CAST(m.cast AS CHAR) AS cast, CAST(m.plot AS CHAR) AS plot, m.duration, m.rated, m.poster_URL, m.genre, " +
+        "DATE_FORMAT(m.release_date, '%c/%e/%Y') AS release_date " +
         "FROM transaction t " +
             "INNER JOIN movieticket mt ON mt.transaction_id = t.transaction_id " +
             "INNER JOIN showing sh ON sh.showing_id = mt.showing_id " +
@@ -114,8 +144,8 @@ Transaction.getUpcomingTicketsByUser = (user_id, result) => {
             "INNER JOIN movie m ON m.movie_id = sh.movie_id " +
             "LEFT JOIN seat st ON st.seat_id = mt.seat_id " +
         "WHERE t.user_id = ? " +
-            "AND sh.start_date_time <= NOW() " +
-            "AND NOW() <= (sh.start_date_time + INTERVAL m.duration MINUTE)",
+            "AND sh.start_date_time <= UTC_TIMESTAMP() " +
+            "AND UTC_TIMESTAMP() <= (sh.start_date_time + INTERVAL m.duration MINUTE)",
     [user_id], 
     (err, res) => {
         

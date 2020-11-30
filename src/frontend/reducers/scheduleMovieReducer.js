@@ -1,4 +1,5 @@
 import {CLEAR_SCHEDULES, ADD_SCHEDULE, REMOVE_SCHEDULE} from "../actions/scheduleMovieAction.js";
+import {cstDateTime} from "../helper/FormatDate"
 
 const INITIAL_STATE=  {};
 
@@ -14,10 +15,11 @@ export default function scheduleMovieReducer(state = INITIAL_STATE, action ={}){
                 "key": showingDetails.key,
                 "screen_id": showingDetails.screen_id,
                 "screen_name": showingDetails.screen_name,
-                "start_date_time":showingDetails.start_date_time,
+                "start_date_time": cstDateTime(showingDetails.start_date_time),
                 "price": showingDetails.price
             };
             
+            //console.log(newShowing)
             //add new showing to the showing list with the unique key
             state[showingDetails.key] = newShowing;
             return state;
