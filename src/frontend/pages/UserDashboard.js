@@ -103,7 +103,6 @@ function UserDashboard(props) {
 						/>
 					</div>
 				</TabPanel>
-
 		
 				<TabPanel value="2" className="userUpdateDash">
 					<h1 >User Information</h1>
