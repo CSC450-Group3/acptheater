@@ -148,15 +148,10 @@ function ScheduleForm(props) {
 	async function handleSubmitSchedules(e){
 		e.preventDefault();
 
-		console.log()
 		//only save to db if there is a showing in the table
 		if(Object.keys(showings).length !==0 ){
 			setIsLoading(true);
-			//stip of the 'min' off duration, so we can store an int
-			var duration = (movieToSchedule.duration).replace(/[^0-9]/g,''); 
 
-			//format the date to yyyy-mm-dd format for storing in mysql 
-			var release_date = isoDate(movieToSchedule.release_date);
 			var movie_id = 0;
 
 			//create movie record
@@ -165,11 +160,11 @@ function ScheduleForm(props) {
 				"director": null,
 				"cast": movieToSchedule.cast,
 				"plot": movieToSchedule.plot,
-				"duration": duration,
+				"duration": movieToSchedule.duration,
 				"rated": movieToSchedule.rated,
 				"poster_URL": movieToSchedule.poster_URL, 
 				"genre": movieToSchedule.genre,
-				"release_date": release_date
+				"release_date": isoDate(movieToSchedule.release_date) //format the date to yyyy-mm-dd format for storing in mysql 
 			}
 			, {headers:{"Content-Type" : "application/json"}})
 			.then(function(res){

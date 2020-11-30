@@ -75,7 +75,7 @@ const MovieTicketDashboard = ({ user, history }) => {
 
     }
 
-    // If movies haven't been loaded for a user selected date, show whatever is playing today
+    // If movie tickets have been loaded for a user, show the movie tickets
     if (Object.keys(purchasedMovieTickets).length !== 0) {
         return (
             <div className={classes.root}>
@@ -107,6 +107,7 @@ const MovieTicketDashboard = ({ user, history }) => {
             </div>
         )
     }
+    //Otherwise there were no purchased tickets loaded
     else {
         return (
             <div className={classes.root}>

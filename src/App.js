@@ -88,7 +88,15 @@ class App extends Component {
 								history={history}
 							/>
 						</Route>
-						<Route exact path="/Movies"><Movies selectMovieToSchedule={selectMovieToSchedule} /> </Route>
+						<Route exact path="/Movies">
+							<Movies 
+								selectMovieToSchedule={selectMovieToSchedule} 
+								movieToSchedule={movieToSchedule}
+								clearMovieToSchedule={clearMovieToSchedule}
+								user={user}
+								history={history}
+							/> 
+						</Route>
 						<Route exact path="/ScheduleForm">
 							<ScheduleForm
 								movieToSchedule={movieToSchedule}

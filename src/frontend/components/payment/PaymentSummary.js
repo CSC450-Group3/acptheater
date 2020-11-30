@@ -2,6 +2,7 @@ import React from 'react';
 import TicketInfo from './TicketInfo'
 import { Card, Row, Col } from 'antd';
 import { cstDateTime } from '../../helper/FormatDate';
+import { v4 } from 'node-uuid'; // used to generate unique ID
 
 const PaymentSummary = ({ title, total_price, selectedSeats, selectedTicket, showtime }) => {
 
@@ -15,6 +16,7 @@ const PaymentSummary = ({ title, total_price, selectedSeats, selectedTicket, sho
                         <p>Screen: {selectedTicket.screen_name} </p>
                         <p>Showtime: {cstDateTime(showtime)}</p>
                         <TicketInfo
+                            key={v4()}
                             selectedTicket={selectedTicket}
                             selectedSeats={selectedSeats}
                         />
