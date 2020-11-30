@@ -5,8 +5,7 @@ import { v4 } from 'node-uuid'; // used to generate unique ID
 import MovieActionCard from '../components/movie/MovieActionCard';
 import MovieDetailActionModal from '../components/movie/MovieDetailActionModal';
 import RequireLoginModal from '../components/user/RequireLoginModal';
-import { isoDate } from '../helper/FormatDate';
-import { ReactPhotoCollage } from "react-photo-collage";
+import {isoDate} from '../helper/FormatDate';
 
 function Home(props) {
   const [activateDetailModal, setActivateDetailModal] = useState(false);
@@ -19,11 +18,22 @@ function Home(props) {
   const customerMovie = props.customerMovie;
   const today = isoDate();
 
-  const setting = {
-    width: '600px',
-    height: ['200px', '100px'],
-    layout: [2, 3],
-    photos: [
+  return (
+    <div>
+      <div className="welcome">
+        <h1>ACP Theaters Welcomes you!</h1>
+        <p className="welcomeIntro">
+          Brought to you by Alex Yahn, Caitlin Landrus, and
+          Patrick Garry. Happy to bring you live streaming
+          from the comforts of your own home as well as
+          in-person premier seating!
+          </p>
+      </div>
+
+      <div className="currentMovies">
+        <h1>
+          Current Movies
+        </h1>
 
         <marquee behavior="scroll" direction="left">
           <div className="rowFood">
@@ -74,84 +84,64 @@ function Home(props) {
         />
 
       </div>
-      { src: '/images/inTheater1.jpeg' },
-      { src: '/images/inHome1.jpeg' },
-      { src: '/images/inTheater2.jpeg' },
-      { src: '/images/inHome2.jpeg' },
-      { src: '/images/inTheater3.jpeg' },
-    ],
-  }
 
-  return (
-    <body>
-
-      <div className="ourHome2Yours">ACP Theaters Welcomes You!</div>
-        <div className="currentMovies">
-          <h1 className="headers">Current Movies</h1>
-          <marquee behavior="scroll" direction="left">
-            <div className="rowFood">
-              {Object.keys(activeMovies).map(key => (
-                <div className="column" key={v4()} >
-                  <MoviePurchaseCard
-                    selectMovieToWatch={props.selectMovieToWatch}
-                    setActivateDetailModal={setActivateDetailModal}
-                    setActivateLoginModal={setActivateLoginModal}
-                    setDetailRequest={setDetailRequest}
-                    key={v4()}
-                    movie_id={activeMovies[key].movie_id}
-                    title={activeMovies[key].title}
-                    cast={activeMovies[key].cast}
-                    plot={activeMovies[key].plot}
-                    duration={activeMovies[key].duration}
-                    rated={activeMovies[key].rated}
-                    poster_url={activeMovies[key].poster_URL}
-                    genre={activeMovies[key].genre}
-                    release_date={activeMovies[key].release_date}
-                    selected_date={today}
-                    user={props.user}
-                    history={props.history}
-                  />
-                </div>
-              ))}
-            </div>
-          </marquee>
-
-          <MovieDetailPurchaseModal
-            title={customerMovie.title}
-            cast={customerMovie.cast}
-            release_date={customerMovie.release_date}
-            rated={customerMovie.rated}
-            duration={customerMovie.duration}
-            genre={customerMovie.genre}
-            poster_url={customerMovie.poster_url}
-            plot={customerMovie.plot}
-            detailRequest={detailRequest}
-            activateModal={activateDetailModal}
-            setActivateModal={setActivateDetailModal}
-            setActivateForm={setActivateForm}
-            clearMovieToWatch={props.clearMovieToWatch}
-            setActivateLoginModal={setActivateLoginModal}
-            user={props.user}
-            history={props.history}
-          />
-          <RequireLoginModal
-            activateLoginModal={activateLoginModal}
-            setActivateLoginModal={setActivateLoginModal}
-          />
-        </div>
-
-      <div className="ourHome2Yours">From Our Home To Yours</div>
       <div className="beverages">
-        <h1 className="headers">Premier Seating or the Comfort of Your Home</h1>
-        <ReactPhotoCollage {...setting} />
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
+        <h1>Beverages</h1>
+        <p>
+          <img src={process.env.PUBLIC_URL + '/images/beer.jpeg'} alt="beer" width="75%" />
+        </p>
       </div>
 
-    </body>
+      <div className="food">
+        <h1>Food</h1>
+        <marquee behavior="scroll" direction="left">
+          <div className="rowFood">
+
+            <div className="columnFood">
+              <p><img src={process.env.PUBLIC_URL + '/images/popcorn.jpeg'} alt="popcorn" margin="auto" width="75%" /></p>
+              <p>Popcorn</p>
+              <p>Description / Sizes</p>
+              <p>Price(s)</p>
+            </div>
+
+            <div className="columnFood">
+              <p><img src={process.env.PUBLIC_URL + '/images/nachos.jpeg'} alt="nachos" margin="auto" width="75%" /></p>
+              <p>Nachos</p>
+              <p>Description</p>
+              <p>Price</p>
+            </div>
+
+            <div className="columnFood">
+              <p><img src={process.env.PUBLIC_URL + '/images/candy.jpeg'} alt="candy" margin="auto" alight width="75%" /></p>
+              <p>Candy</p>
+              <p>Description</p>
+              <p>Price</p>
+            </div>
+
+            <div className="columnFood">
+              <p><img src={process.env.PUBLIC_URL + '/images/popcorn.jpeg'} alt="popcorn" margin="auto" width="75%" /></p>
+              <p>Popcorn</p>
+              <p>Description / Sizes</p>
+              <p>Price(s)</p>
+            </div>
+
+            <div className="columnFood">
+              <p><img src={process.env.PUBLIC_URL + '/images/nachos.jpeg'} alt="nachos" margin="auto" width="75%" /></p>
+              <p>Nachos</p>
+              <p>Description</p>
+              <p>Price</p>
+            </div>
+
+            <div className="columnFood">
+              <p><img src={process.env.PUBLIC_URL + '/images/candy.jpeg'} alt="candy" margin="auto" alight width="75%" /></p>
+              <p>Candy</p>
+              <p>Description</p>
+              <p>Price</p>
+            </div>
+          </div>
+        </marquee>
+      </div>
+    </div>
   );
 }
 

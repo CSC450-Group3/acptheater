@@ -112,7 +112,7 @@ function Navbar(props) {
           >
             <Link to='/Movies'>Manage Movies</Link >
           </Button>
-          <IconButton aria-label="show messages" color="inherit" component={Link} to='/UserDashboard'>
+          <IconButton aria-label="show messages" color="inherit">
             <Badge badgeContent={1} color="secondary">
               <Link to= "/UserDashboard"><MailIcon /> </Link >
             </Badge>
@@ -132,7 +132,7 @@ function Navbar(props) {
     else{
       return(
         <div className={classes.menuButton}>
-            <IconButton aria-label="show messages" color="inherit" component={Link} to='/UserDashboard'>
+            <IconButton aria-label="show messages" color="inherit">
               <Badge badgeContent={1} color="secondary">
                 <MailIcon />
               </Badge>
