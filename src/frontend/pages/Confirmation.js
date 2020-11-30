@@ -14,7 +14,7 @@ function Confirmation(props) {
             // cleanup movie ticket data on unmount
             clearMovieTicketSelections();
         }
-    }, [clearMovieTicketSelections])
+    }, [])
 
     return (
         <div style={{ backgroundColor: '#282c34', paddingTop: 75 }}>

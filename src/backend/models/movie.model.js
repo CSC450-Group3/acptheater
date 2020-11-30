@@ -27,7 +27,7 @@ Movie.create = (newMovie, result) => {
 };
 
 Movie.findById = (movie_id, result) => {
-    sql.query(`SELECT movie_id, title, director, CAST(cast AS CHAR) AS cast, CAST(plot AS CHAR) AS plot, duration, rated, poster_URL, genre, release_date 
+    sql.query(`SELECT movie_id, title, director, CAST(cast AS CHAR) AS cast, CAST(plot AS CHAR) AS plot, duration, rated, poster_URL, genre,DATE_FORMAT(release_date, '%c/%e/%Y') AS release_date 
             FROM movie WHERE 
             movie_id = ${movie_id}`, (err, res) => {
         if(err){
