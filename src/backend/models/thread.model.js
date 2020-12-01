@@ -113,6 +113,98 @@ Thread.getAll = result => {
     });
 };
 
+
+
+Thread.getAllWithStatus = (user_id, type, result) =>{
+    var  sqlString;
+
+    if(type === 'A'){
+        // same logic as in message.model for new messages
+        // Admin see every thread from all customers
+        sqlString = 
+        `SELECT DISTINCT t.* , 
+            (SELECT DATE_FORMAT(date_sub(m1.sent_date_time, interval 6 hour), '%c/%e/%Y %r')
+                FROM message m1
+                INNER JOIN thread t2 ON t2.thread_id = t.thread_id AND m1.thread_id = t.thread_id
+                ORDER BY m1.message_id DESC
+                LIMIT 1
+            ) AS last_message_date,
+            (SELECT DATE_FORMAT(date_sub(m1.sent_date_time, interval 6 hour), '%c/%e/%Y %r')
+            FROM message m1
+            INNER JOIN thread t2 ON t2.thread_id = t.thread_id AND m1.thread_id = t.thread_id
+            ORDER BY m1.message_id ASC
+            LIMIT 1
+            ) AS created_date_time,
+            CASE WHEN t.thread_id = (
+                    SELECT DISTINCT t2.thread_id
+                        FROM thread t2   
+                            INNER JOIN message m ON m.thread_id = t2.thread_id AND m.sending_user_id != ${user_id}
+                            INNER JOIN userreadmessage urm1 ON urm1.message_id = m.message_id  
+                            LEFT JOIN userreadmessage urm2 ON urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
+                            INNER JOIN user u1 ON u1.user_id = urm1.user_id  AND u1.user_id = m.sending_user_id
+                            LEFT JOIN user u2 ON u2.user_id = urm2.user_id AND u2.type != u1.type 
+                        WHERE u2.user_id IS NULL and t.thread_id = t2.thread_id
+                    )
+                THEN 1 
+                ELSE 0 
+            END AS isNewMessage
+                FROM thread t
+                INNER JOIN message m ON m.thread_id = t.thread_id 
+                INNER JOIN user u ON u.user_id = m.sending_user_id
+                ORDER BY  isNewMessage DESC, sent_date_time DESC, thread_id`
+    }
+
+    if(type === 'C'){
+        // customers only see the threads/messages that they are a participant in (i.e. they created the thread)
+        sqlString = 
+        `SELECT DISTINCT t.* , 
+            (SELECT DATE_FORMAT(date_sub(m1.sent_date_time, interval 6 hour), '%c/%e/%Y %r')
+                FROM message m1
+                INNER JOIN thread t2 ON t2.thread_id = t.thread_id AND m1.thread_id = t.thread_id
+                ORDER BY m1.message_id DESC
+                LIMIT 1
+            ) AS last_message_date,
+            (SELECT DATE_FORMAT(date_sub(m1.sent_date_time, interval 6 hour), '%c/%e/%Y %r')
+            FROM message m1
+            INNER JOIN thread t2 ON t2.thread_id = t.thread_id AND m1.thread_id = t.thread_id
+            ORDER BY m1.message_id ASC
+            LIMIT 1
+            ) AS created_date_time,
+            CASE WHEN t.thread_id = (
+                    SELECT DISTINCT t2.thread_id
+                        FROM thread t2  
+                            JOIN threadparticipant tp ON tp.thread_id = t.thread_id AND tp.user_id = ${user_id}
+                            INNER JOIN message m ON m.thread_id = t2.thread_id AND m.sending_user_id != ${user_id}
+                            INNER JOIN userreadmessage urm1 ON urm1.message_id = m.message_id  
+                            LEFT JOIN userreadmessage urm2 ON urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
+                            INNER JOIN user u1 ON u1.user_id = urm1.user_id  AND u1.user_id = m.sending_user_id
+                            LEFT JOIN user u2 ON u2.user_id = urm2.user_id AND u2.type != u1.type 
+                        WHERE u2.user_id IS NULL and t.thread_id = t2.thread_id
+                    )
+                THEN 1 
+                ELSE 0 
+            END AS isNewMessage
+                FROM thread t
+                INNER JOIN message m ON m.thread_id = t.thread_id 
+                INNER JOIN user u ON u.user_id = m.sending_user_id
+                INNER JOIN threadparticipant tp ON tp.thread_id = t.thread_id
+                WHERE tp.user_id = ${user_id}
+                ORDER BY  isNewMessage DESC, sent_date_time DESC, thread_id`
+    }
+
+    sql.query( sqlString, (err, res) => {
+        //Error encountered
+        if(err){
+            result(err, null);
+            return;
+        }
+
+        //Thread found
+        result(null, res);
+    });
+
+}
+
 // Update an existing Thread by ID
 Thread.updateById = (thread_id, thread, result) => {
     sql.query("UPDATE thread SET subject = ?, resolved = ? WHERE thread_id = ?", [thread.subject, thread.resolved, thread_id],

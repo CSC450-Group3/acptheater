@@ -10,7 +10,7 @@ router.post("/create", message.create);
 router.get("/thread/:thread_id/user/:accessing_user_id", message.findAllByThread);
 
 
-// Get all messages for a given thread
+// Get all messages by user type
 router.get("/new/user/:user_id/type/:user_type", message.findNew);
 
 // Get message by message_id

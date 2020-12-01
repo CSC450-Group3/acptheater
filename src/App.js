@@ -16,6 +16,7 @@ import UserDashboard from './frontend/pages/UserDashboard';
 import StreamVirtual from './frontend/pages/StreamVirtual'
 import Navbar from './frontend/components/app/Navbar';
 import Footer from './frontend/components/app/Footer';
+import MessageThread from './frontend/pages/MessageThread';
 import { loginAction, logoffAction, updateAccountAction } from "./frontend/actions/userAction.js";
 import { selectMovieToSchedule, clearMovieToSchedule } from "./frontend/actions/adminMovieSelectionAction";
 import { addSchedule, removeSchedule, clearScheudles } from "./frontend/actions/scheduleMovieAction";
@@ -171,6 +172,9 @@ class App extends Component {
 								history={history}
 								updateAccountAction={updateAccountAction} 
 							/> 
+						</Route>
+						<Route exact path="/Thread/:thread_id/User/:user_id">
+							<MessageThread/> 
 						</Route>
 						<Route exact path="/SignUp"><SignUp history={history} /> </Route>
 						<Route exact path="/Login"><Login loginAction={loginAction} history={history} /> </Route>
