@@ -6,6 +6,9 @@ const router = express.Router()
 // Create a new thread
 router.post("/create", thread.create);
 
+// Get all threads with the new status by user type
+router.get("/user/:user_id/type/:type", thread.findAllWithStatus);
+
 // Get all threads for a given user
 // Option to include or not include the resolved threads (pass true or false)
 router.get("/user/:user_id/includeResolved/:includeResolved", thread.findAllByUser);

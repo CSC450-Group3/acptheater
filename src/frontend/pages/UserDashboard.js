@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tab from '@material-ui/core/Tab';
@@ -16,6 +16,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Inbox from '../components/message/Inbox';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,13 +27,14 @@ const useStyles = makeStyles((theme) => ({
 	menuButton: {
 		backgroundColor: '#1890FF',
 		color: 'black',
-  },
+	},
 }));
 
 function UserDashboard(props) {
 	const { user, history, updateAccountAction } = props;
 
 	const classes = useStyles();
+	/* profile data*/
 	const [value, setValue] = React.useState('1');
 	const [firstName, setFirstName] = useState(user.first_name);
 	const [lastName, setLastName] = useState(user.last_name);
@@ -40,23 +42,65 @@ function UserDashboard(props) {
 	const [birthday, setBirthday] = useState(isoDate(user.birthday));
 	const [password, setPassword] = useState(null); // do not set this to the current props password, it will update the password in the database and be wrong
 	const [email, setEmail] = useState(user.email);
-  const [sameEmailError, setSameEmailError] = useState(false);
-  const [open, setOpen] = React.useState(false);
-  
-  const handleClose = () => {
-    setOpen(false);
-  };
+	const [sameEmailError, setSameEmailError] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+	/* Message data */
+	const [open, setOpen] = React.useState(false);
+	const [subject, setSubject] = useState("");
+	const [message, setMessage] = useState("");
+	const [sentSuccessfully, setSetSuccessfully] = useState(false);
 
-  const handleProfileUpdate = async (e) => {
-    e.preventDefault();
+	useEffect(()=>{
+		if(sentSuccessfully){
+			//reset data (also forces rerender)
+			setSetSuccessfully(false)
+		}
+	},[sentSuccessfully])
+
+
+
+	const handleSendNewMessage = async () => {
+		//Create the thread record 
+		await axios.post('/api/thread/create', {
+			subject: subject,
+			resolved: 0,
+			user_id: user.user_id
+		})
+			.then(async function (res) {
+				//create the message for the thread
+				await axios.post('/api/message/create', {
+					thread_id: res.data.thread_id,
+					sending_user_id: user.user_id,
+					message_body:  message 
+				})
+					.then(function (res) {
+						setSetSuccessfully(true)
+						setOpen(false)
+					})
+					.catch(function (err) {
+						console.log(err)
+					})
+			})
+			.catch(function (err) {
+				console.log(err)
+			});
+	}
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleChange = (event, newValue) => {
+		setValue(newValue);
+	};
+
+	const handleProfileUpdate = async (e) => {
+		e.preventDefault();
 
 		// Check if user email already exists
 		await axios.get('/api/user/email/' + email)
@@ -104,7 +148,7 @@ function UserDashboard(props) {
 					</div>
 				</TabPanel>
 
-		
+
 				<TabPanel value="2" className="userUpdateDash">
 					<h1 >User Information</h1>
 					<hr class="blackHr"></hr>
@@ -170,70 +214,68 @@ function UserDashboard(props) {
 					</div>
 				</TabPanel>
 
-        <TabPanel value="3">
-          <div className="inboxContainer">
-            <div className="inbox">
-              <p>Inbox</p>
-              <p>Message 1 (To be populated with DB messages) </p>
-              <hr class="solid"/>
-              <p>Message 2 (To be populated with DB messages)</p>
-              <hr class="solid"/>
-              <p>Message 3 (To be populated with DB messages)</p>
-              <hr class="solid"/>
-              <p>Message 4 (To be populated with DB messages)</p>
-              <hr class="solid"/>
-              <p>Message 5 (To be populated with DB messages)</p>
-              <hr class="solid"/>
-              <div className="newMessage">
-                <Button variant="contained" color="#1890FF" onClick={handleClickOpen}>
-                  New Message
-                </Button>
-                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                  <DialogTitle id="form-dialog-title">Message</DialogTitle>
-                  <DialogContent>
-                    <DialogContentText>
-                      Type a recipient and subject, then send your message.
-                    </DialogContentText>
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Recipient"
-                      type="email"
-                    />
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="subject"
-                      label="Subject"
-                      type="text"
-                      fullWidth
-                    />
-                    <TextField
-                      autoFocus
-                      multiline
-                      margin="dense"
-                      id="message"
-                      label="Message"
-                      type="text"
-                      fullWidth
-                    />
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleClose} variant="contained" color="primary">
-                      Send
-                    </Button>
-                    <Button onClick={handleClose} color="#1890FF">
-                      Cancel
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </div>
-            </div>
-          </div>
-        </TabPanel>
-      </TabContext>
-    </div>
+				<TabPanel value="3">
+					<div className="inboxContainer">
+						<div className="inbox">
+							<p>Inbox</p>
+							<Inbox 
+								user = {user}
+								history={history}
+								reload={sentSuccessfully}
+							/>
+							<div className="newMessage">
+								{
+									/* display New Message button to customers only - admin's only reply to messages from customers */
+									user.type === 'C' ?
+										<Button variant="contained" color="#1890FF" onClick={handleClickOpen}>
+											New Message
+										</Button>
+										: null
+								}
+								<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+									<DialogTitle id="form-dialog-title">Message</DialogTitle>
+									<DialogContent>
+										<DialogContentText>
+											Type a subject and a message, then send your message.
+                   						</DialogContentText>
+										<TextField
+											autoFocus
+											margin="dense"
+											id="subject"
+											label="Subject"
+											type="text"
+											fullWidth
+											value={subject}
+											onChange={event => setSubject(event.target.value)}
+											required
+										/>
+										<TextField
+											multiline
+											margin="dense"
+											id="message"
+											label="Message"
+											type="text"
+											fullWidth
+											value={message}
+											onChange={event => setMessage(event.target.value)}
+											required
+										/>
+									</DialogContent>
+									<DialogActions>
+										<Button onClick={handleSendNewMessage} variant="contained" color="primary">
+											Send
+                    					</Button>
+										<Button onClick={handleClose} color="#1890FF">
+											Cancel
+                    					</Button>
+									</DialogActions>
+								</Dialog>
+							</div>
+						</div>
+					</div>
+				</TabPanel>
+			</TabContext>
+		</div>
 	);
 }
 
