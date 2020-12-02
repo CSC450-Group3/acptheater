@@ -178,7 +178,7 @@ class App extends Component {
 								clearMovieTicketSelections={clearMovieTicketSelections}
 							/> 
 						</Route>
-						<Route exact path="/UserDashboard">
+						<Route exact path="/UserDashboard/:tab_name">
 							<UserDashboard 
 								user={user} 
 								history={history}
