@@ -134,7 +134,7 @@ function Navbar(props) {
         <div className={classes.menuButton}>
             <IconButton aria-label="show messages" color="inherit">
               <Badge badgeContent={1} color="secondary">
-                <MailIcon />
+                <Link to= "/UserDashboard"><MailIcon /> </Link >
               </Badge>
             </IconButton>
             <IconButton
