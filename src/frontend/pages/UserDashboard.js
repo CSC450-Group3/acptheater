@@ -17,6 +17,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Inbox from '../components/message/Inbox';
+import { withRouter } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
 
 function UserDashboard(props) {
 	const { user, history, updateAccountAction } = props;
-
+	const { tab_name } = props.match.params;
 	const classes = useStyles();
 	/* profile data*/
-	const [value, setValue] = React.useState('1');
+	const [tab, setTab] = React.useState('1');
 	const [firstName, setFirstName] = useState(user.first_name);
 	const [lastName, setLastName] = useState(user.last_name);
 	const [middleName, setMiddleName] = useState(user.middle_name);
@@ -52,14 +53,33 @@ function UserDashboard(props) {
 	const [sentSuccessfully, setSetSuccessfully] = useState(false);
 
 	useEffect(()=>{
+		//set the tab based on the URL
+		switch(tab_name){
+			case 'Messaging':
+				setTab('3');
+				break;
+			case 'Profile':
+				setTab('2');
+				break;
+			case 'Tickets':
+				setTab('1')
+				break;
+			default:
+				//default to Tickets if an incorrect URL is entered
+				history.replace({ pathname: `/UserDashboard/Tickets`})
+				setTab('1');
+		}
+
 		if(sentSuccessfully){
 			//reset data (also forces rerender)
 			setSetSuccessfully(false)
 		}
-	},[sentSuccessfully])
+		
+	},[sentSuccessfully, tab_name])
 
 
 
+	console.log(tab)
 	const handleSendNewMessage = async () => {
 		//Create the thread record 
 		await axios.post('/api/thread/create', {
@@ -96,7 +116,21 @@ function UserDashboard(props) {
 	};
 
 	const handleChange = (event, newValue) => {
-		setValue(newValue);
+		setTab(newValue);
+
+		//Update the URL based on the selected tab
+		switch(newValue){
+			case '3':
+				history.replace({ pathname: `/UserDashboard/Messaging`})
+				break;
+			case '2':
+				history.replace({ pathname: `/UserDashboard/Profile`})
+				break;
+			case '1':
+				history.replace({ pathname: `/UserDashboard/Tickets`})
+				break;
+		}
+
 	};
 
 	const handleProfileUpdate = async (e) => {
@@ -130,10 +164,10 @@ function UserDashboard(props) {
 
 	return (
 		<div className={classes.root} class="userDash">
-			<TabContext value={value}>
+			<TabContext value={tab}>
 				<AppBar className={classes.menuButton} position="static">
 					<TabList className={classes.menuButton} onChange={handleChange} aria-label="dashboard tabs" centered>
-						<Tab label="Movies" value="1" />
+						<Tab label="Tickets" value="1" />
 						<Tab label="Profile" value="2" />
 						<Tab label="Messaging" value="3" />
 					</TabList>
@@ -279,4 +313,4 @@ function UserDashboard(props) {
 	);
 }
 
-export default UserDashboard;
+export default withRouter(UserDashboard);

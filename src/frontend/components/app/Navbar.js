@@ -72,19 +72,19 @@ function Navbar(props) {
 		history.push("/")
 	}
 
-	const MessageIcon = () => {
-		if (newMessages.length === 0) {
-			return (
-				<IconButton aria-label="show messages" color="inherit">
-					<Link to="/UserDashboard"><MailIcon /> </Link >
-				</IconButton>
+	const MessageIcon = () =>{
+		if(newMessages.length === 0){
+			return(
+			<IconButton aria-label="show messages" color="inherit">
+					<Link to="/UserDashboard/Messaging"><MailIcon /> </Link >
+			</IconButton>
 			)
 		}
 		else {
 			return (
 				<IconButton aria-label="show messages" color="inherit">
 					<Badge badgeContent={newMessages.length} color="secondary">
-						<Link to="/UserDashboard"><MailIcon /> </Link >
+						<Link to="/UserDashboard/Messaging"><MailIcon /> </Link >
 					</Badge>
 				</IconButton>
 			)
@@ -115,7 +115,8 @@ function Navbar(props) {
 			open={isProfileMenuOpen}
 			onClose={handleProfileMenuClose}
 		>
-			<MenuItem onClick={handleProfileMenuClose}><Link to='/UserDashboard'>Profile</Link></MenuItem>
+			<MenuItem onClick={handleProfileMenuClose}><Link to='/UserDashboard/Profile'>Profile</Link></MenuItem>
+			<MenuItem onClick={handleProfileMenuClose}><Link to='/UserDashboard/Tickets'>Tickets</Link></MenuItem>
 			<MenuItem onClick={handleLogOut}><Link to='/'>Sign Out</Link></MenuItem>
 		</Menu>
 	);

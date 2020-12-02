@@ -26,7 +26,7 @@ function Confirmation(props) {
                 </Col>
             </Row>
             < br />
-            <h2>You can now find your tickets within your user profile under the <Link to="/UserDashboard">Tickets</Link > tab. </h2>
+            <h2>You can now find your tickets within your user profile under the <Link to="/UserDashboard/Tickets">Tickets</Link > tab. </h2>
 
         
             <PaymentSummary
@@ -40,7 +40,7 @@ function Confirmation(props) {
             <h4 style={{ paddingLeft: 300, paddingRight: 300, paddingBottom: 100 }}>We look forward to seeing you, and we hope you enjoy your experience here at ACP Theaters!
             Should you have any questions or concerns in regards to your purchased tickets,
             please navigate to either the message icon located in the navigation bar or
-            within your user profile under the <Link to="/UserDashboard">Messaging</Link > tab.</h4>
+            within your user profile under the <Link to="/UserDashboard/Messaging">Messaging</Link > tab.</h4>
 
         </div>
         //Addition of Movie card that the user has purchased should show up between the h1 and h2 tags. No clicking of the modal to brign up
