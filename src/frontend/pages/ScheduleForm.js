@@ -185,7 +185,6 @@ function ScheduleForm(props) {
 						price: showings[key].price
 					})
 					.then(function(res) {
-						//console.log(res.data)
 						setIsLoading(false);
 						
 						//Reload the active movies in the store

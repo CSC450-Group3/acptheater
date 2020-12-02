@@ -89,7 +89,6 @@ function Showtimes(props) {
 
     const handleSelectChange = async(e) =>{
         setSelectedDate(e.target.value)
-        console.log(e.target.value)
         loadMoviesByDate(e.target.value)
     }
 

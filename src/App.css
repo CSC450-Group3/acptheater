@@ -128,7 +128,38 @@
   color: #000000;
 }
 
+.inbox {
+  background-color: white;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-right: 1.25em;
+  margin-left: 1.25em;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  font-size: calc(5px + 2vmin);
+  color: black;
+  border-radius: 15px;
+}
 
+.inboxContainer {
+  background-color: #2c323d;
+  margin-top: 1.5em;
+  margin-bottom: 5em;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+}
+
+.newMessage {
+  float: left;
+}
+
+hr.solid {
+  border-top: 1px solid #bbb;
+  width: 98%;
+}
 
 
 

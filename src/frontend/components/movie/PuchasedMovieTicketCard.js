@@ -25,8 +25,6 @@ const PuchasedMovieTicketCard = ({transaction_id, movie_id, title, cast, plot, d
         setActivateTransactionModal(true)
     }
 
-    console.log(isVirtual)
-
     const StatusTag = () => {
         if(status === 2){
             return(

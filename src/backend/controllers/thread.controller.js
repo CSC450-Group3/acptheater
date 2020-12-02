@@ -78,6 +78,21 @@ exports.findAll = (req, res) => {
     })
 }
 
+
+//Get all thread records
+exports.findAllWithStatus = (req, res) => {
+    Thread.getAllWithStatus(req.params.user_id, req.params.type, (err, data) => {
+        if(err){
+            res.status(500).send({
+                message: `Error retreiving thread for user_id ${req.params.user_id}.`
+            });
+        }
+        else{
+            res.send(data);
+        }
+    })
+}
+
 // Update an existing thread by ID
 exports.update = (req, res) =>{
     //Validate request

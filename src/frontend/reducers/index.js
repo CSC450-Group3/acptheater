@@ -6,6 +6,7 @@ import showtimeReducer from './showtimeReducer';
 import customerMovieSelectionReducer from './customerMovieSelectionReducer';
 import selectTicketReducer from './selectTicketReducer';
 import seatReducer from './seatReducer'
+import newMessageReducer from './newMessageReducer';
 
 export default combineReducers({
   user: userReducer,
@@ -15,4 +16,5 @@ export default combineReducers({
   customerMovie: customerMovieSelectionReducer,
   selectedTicket: selectTicketReducer,
   selectedSeats: seatReducer,
+  newMessages: newMessageReducer
 });
