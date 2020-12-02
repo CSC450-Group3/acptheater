@@ -95,7 +95,7 @@ function Showtimes(props) {
     function dateMenu(){
         return(
             <div>
-            <label htmlFor="date" className={classes.label}>Movie showing on date: </label>,
+            <label htmlFor="date" className={classes.label}>Movie showing on date: </label>
             <select
                 value = {selectedDate} 
                 name = "date"
@@ -174,7 +174,8 @@ function Showtimes(props) {
     
     return (
         <div className={classes.showtimes}>
-            <h1 className={classes.header}>Movies Showing</h1>
+            <h1 className={classes.header}>Showtimes</h1>
+            <hr width ="95%"></hr>
             {dateMenu()}
             <Layout className="layout">
                 <Content>
