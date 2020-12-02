@@ -136,7 +136,7 @@ function MessageThread(props) {
 						<Messages />
 
 
-						<Link to='/UserDashboard'>
+						<Link to='/UserDashboard/Messaging'>
 							<Button variant="contained"  >
 								Back
 							</Button>

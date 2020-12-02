@@ -28,7 +28,7 @@ const navbarStyle = makeStyles((position) => ({
 
 function Navbar(props) {
 	const classes = navbarStyle();
-	const { user, logoffAction, history, newMessages} = props
+	const { user, logoffAction, history, newMessages } = props
 	const [anchorEl1, setAnchorEl1] = useState(null);
 	const [anchorEl2, setAnchorEl2] = useState(null);
 	const [totalMessages, setTotalMessages] = useState(0);
@@ -37,7 +37,7 @@ function Navbar(props) {
 	const isProfileMenuOpen = Boolean(anchorEl2);
 
 	useEffect(() => {
-		
+
 		setNewMessages(newMessages.length)
 
 	}, [newMessages])
@@ -76,21 +76,20 @@ function Navbar(props) {
 		if(newMessages.length === 0){
 			return(
 			<IconButton aria-label="show messages" color="inherit">
-					<Link to="/UserDashboard"><MailIcon /> </Link >
+					<Link to="/UserDashboard/Messaging"><MailIcon /> </Link >
 			</IconButton>
 			)
 		}
-		else{
-			return(
+		else {
+			return (
 				<IconButton aria-label="show messages" color="inherit">
 					<Badge badgeContent={newMessages.length} color="secondary">
-						<Link to="/UserDashboard"><MailIcon /> </Link >
+						<Link to="/UserDashboard/Messaging"><MailIcon /> </Link >
 					</Badge>
 				</IconButton>
 			)
 		}
 	}
-	
 
 	const navMenu = (
 		<Menu
@@ -103,6 +102,7 @@ function Navbar(props) {
 		>
 			<MenuItem onClick={handleNavMenuClose}><Link to='/'>Home</Link ></MenuItem>
 			<MenuItem onClick={handleNavMenuClose}><Link to='/Showtimes'>Showtimes</Link></MenuItem>
+			<MenuItem onClick={handleNavMenuClose}><Link to='/AboutUs'>About Us</Link></MenuItem>
 		</Menu>
 	)
 
@@ -115,7 +115,8 @@ function Navbar(props) {
 			open={isProfileMenuOpen}
 			onClose={handleProfileMenuClose}
 		>
-			<MenuItem onClick={handleProfileMenuClose}><Link to='/UserDashboard'>Profile</Link></MenuItem>
+			<MenuItem onClick={handleProfileMenuClose}><Link to='/UserDashboard/Profile'>Profile</Link></MenuItem>
+			<MenuItem onClick={handleProfileMenuClose}><Link to='/UserDashboard/Tickets'>Tickets</Link></MenuItem>
 			<MenuItem onClick={handleLogOut}><Link to='/'>Sign Out</Link></MenuItem>
 		</Menu>
 	);
@@ -183,14 +184,11 @@ function Navbar(props) {
 					>
 						<MenuIcon />
 					</IconButton>
-					<Typography variant="p" noWrap>
-						<Link to="/">ACP Theater</Link>
-					</Typography>
+					<a href='/'><img className="logo" src='/images/ACP_THEATRES_LOGO.png' /></a>
 					<div className={classes.nav} />
 					<div className={classes.menuOptions}>
 						{displayByLoginStatus(user.user_id, user.type)}
 					</div>
-
 				</Toolbar>
 			</AppBar>
 			{navMenu}
