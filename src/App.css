@@ -15,50 +15,45 @@
   }
 }
 
-.welcome {
-  background-image: url("/images/welcomesYou.jpeg");
-  background-color: #cccccc;
+.logo {
+  width: 100%;
+  margin: 2%;
+}
+
+.currentMoviesHeader {
+  margin: 2%;
+  width: 35%;
+  text-align: center;
+  justify-items: left;
+  font-size: calc(15px + 2vmin);
+  color: white;
+}
+
+.homePageBottom {
+  background-image: url("/images/currentMoviesBackground2.png");
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
+  background-color: #4a576e;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
-.welcomeIntro {
-  background-image: url("/images/gradientGrey.jpeg");
-  background-color: #cccccc;
+.welcomeToACP {
+  background-image: url("/images/welcomeToACP.jpeg");
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
-  width: 45%;
-  height: auto;
-  margin: 20%;
-  padding: 15px;
-  justify-content: center;
-  align-items: center;
+  background-color: #000000;
+  width: 95%;
   text-align: center;
   border-radius: 25px;
   border: 4px solid #000000;
-  font-size: calc(5px + 2vmin);
-  color: black;
-}
-
-.headers {
-  background-image: url("/images/.jpeg");
-  background-color: #cccccc;
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  background-size: cover; /* Resize the background image to cover the entire container */
-  width: 100%;
-  padding: 15px;
-  margin: 2%;
-  text-align: center;
-  border: 4px solid #000000;
-  font-size: calc(15px + 2vmin);
+  font-size: calc(45px + 2vmin);
   color: black;
 }
 
@@ -76,13 +71,13 @@
 }
 
 .currentMovies {
-  background-image: url("/images/currentMoviesBackground1.png");
+  background-image: url("/images/lights.jpeg");
   background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
+  background-repeat: no-repeat; /* Do not repeat the image */
   background-color: #4a576e;
-  min-height: 35vh;
   display: flex;
+  min-height: 35vh;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -91,49 +86,9 @@
   height: auto;
 }
 
-.rowHome {
-  display: flex;
-}
-
-.columnHome {
-  flex: 100%;
-}
-
-.rowFood {
-  display: flex;
-}
-
-.columnFood {
-  flex: 100%;
-}
-
 .movieBox {
   border-style: inset;
   border: black;
-}
-
-.homePageBottom {
-  background-image: url("/images/currentMoviesBackground2.png");
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  background-size: cover; /* Resize the background image to cover the entire container */
-  background-color: #4a576e;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.food {
-  background-color: #4a576e;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .seating {
@@ -175,6 +130,56 @@
   color: black;
 }
 
+.userCreationHeader {
+  background-color: #000000;
+  font-size: calc(20px + 2vmin);
+  border-radius: 25px;
+  border: 4px solid #000000;
+  color: white;
+}
+
+.userCreationAlreadyMember {
+  color: white;
+}
+
+.userButtons {
+  font-size: calc(3px + 2vmin);
+  color: #000000;
+}
+
+.inbox {
+  background-color: white;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-right: 1.25em;
+  margin-left: 1.25em;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  font-size: calc(5px + 2vmin);
+  color: black;
+  border-radius: 15px;
+}
+
+.inboxContainer {
+  background-color: #2c323d;
+  margin-top: 1.5em;
+  margin-bottom: 5em;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+}
+
+.newMessage {
+  float: left;
+}
+
+hr.solid {
+  border-top: 1px solid #bbb;
+  width: 98%;
+}
+
 .userCreationAlreadyMember {
   color: white;
 }
@@ -211,6 +216,10 @@
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
   padding-top: 5%;
+}
+
+.loginHeader {
+  color: white;
 }
 
 .loginForgot {
@@ -362,4 +371,39 @@
 .seat-primary:hover, .seat-primary:focus{
   background:  #1890FF;
   border-color: #40a9ff;
+}
+
+#maindiv{
+  border: 2px solid black;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#div1 {
+  display: inline-block;
+  animation: marquee 20s linear infinite;
+}
+
+#div2 {
+  display: inline-block;
+  animation: marquee2 20s linear infinite;
+  animation-delay: 10s;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee2 {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-200%);
+  }
 }

@@ -63,7 +63,6 @@ function Payment(props) {
 				if (res.status === 200) {
 					setTransaction(res.data)
 
-					console.log(selectedTicket.ticket_type === "theater")
 					if (selectedTicket.ticket_type === "theater") {
 						Object.keys(selectedSeats).map(async key => (
 							await axios.post('api/ticket/create', {
