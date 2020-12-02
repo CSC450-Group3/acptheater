@@ -21,7 +21,7 @@ const MovieTransactionDetailModal = ({ transaction_id, title, cast, release_date
     useEffect(() => {
         setIsLoading(true);
         async function loadTicket() {
-            axios.get('api/ticket/transaction/' + transaction_id)
+            axios.get('/api/ticket/transaction/' + transaction_id)
                 .then(function (res) {
                    // console.log(res.data)
                     setSelectedTicket(res.data)
@@ -33,7 +33,7 @@ const MovieTransactionDetailModal = ({ transaction_id, title, cast, release_date
         }
 
         async function loadSeats() {
-            axios.get('api/seat/transaction/' + transaction_id)
+            axios.get('/api/seat/transaction/' + transaction_id)
                 .then(function (res) {
                     //console.log(res.data)
                     setSelectedSeats(res.data)
