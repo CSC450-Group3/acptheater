@@ -81,8 +81,6 @@ class App extends Component {
 			clearSeats();
 		}
 
-		console.log(newMessages)
-
 		return (
 			<Router>
 				<div className="App">

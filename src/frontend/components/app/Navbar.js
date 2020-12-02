@@ -42,10 +42,6 @@ function Navbar(props) {
 
 	}, [newMessages])
 
-
-	console.log(newMessages.length)
-
-
 	const handleNavMenuOpen = (event) => {
 		setAnchorEl1(event.currentTarget);
 	}
@@ -77,9 +73,7 @@ function Navbar(props) {
 	}
 
 	const MessageIcon = () =>{
-		{console.log(newMessages.length)}
 		if(newMessages.length === 0){
-			{console.log(newMessages.length)}
 			return(
 			<IconButton aria-label="show messages" color="inherit">
 					<Link to="/UserDashboard"><MailIcon /> </Link >
@@ -87,7 +81,6 @@ function Navbar(props) {
 			)
 		}
 		else{
-			{console.log(newMessages.length)}
 			return(
 				<IconButton aria-label="show messages" color="inherit">
 					<Badge badgeContent={newMessages.length} color="secondary">
