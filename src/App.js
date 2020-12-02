@@ -24,7 +24,7 @@ import { loadActiveMovies } from './frontend/actions/showtimeAction';
 import { selectMovieToWatch, clearMovieToWatch } from './frontend/actions/customerMovieSelectionAction';
 import { clearSelectedTicket, setSelectedTicketInfo } from './frontend/actions/selectTicketActions';
 import {addSeat, removeSeat, clearSeats} from './frontend/actions/seatAction';
-
+import { loadNewMessages } from './frontend/actions/newMessageActions'
 import './App.css';
 
 class App extends Component {
@@ -32,6 +32,11 @@ class App extends Component {
 	componentDidMount() {
 		//loads the movies actively playing today
 		this.props.loadActiveMovies();
+
+		//load new messages 
+		if(this.props.user.user_id !== ""){
+			this.props.loadNewMessages(this.props.user)
+		}
 	}
 
 	render() {
@@ -39,6 +44,7 @@ class App extends Component {
 			// data
 			customerMovie,
 			movieToSchedule,
+			newMessages,
 			selectedTicket,
 			scheduledMovies,
 			showings,
@@ -55,6 +61,7 @@ class App extends Component {
 			loginAction,
 			logoffAction,
 			loadActiveMovies,
+			loadNewMessages,
 			removeSchedule,
 			removeSeat,
 			selectMovieToSchedule,
@@ -74,10 +81,17 @@ class App extends Component {
 			clearSeats();
 		}
 
+		console.log(newMessages)
+
 		return (
 			<Router>
 				<div className="App">
-					<Navbar user={user} logoffAction={logoffAction} history={history} />
+					<Navbar 
+						user={user} 
+						logoffAction={logoffAction} 
+						history={history} 
+						newMessages={newMessages}
+					/>
 					<div className="content" style={{ minHeight: "90vh" }}>
 						<Route exact path="/">
 							<Home
@@ -174,7 +188,7 @@ class App extends Component {
 							/> 
 						</Route>
 						<Route exact path="/Thread/:thread_id/User/:user_id">
-							<MessageThread/> 
+							<MessageThread loadNewMessages={loadNewMessages} user={user}/> 
 						</Route>
 						<Route exact path="/SignUp"><SignUp history={history} /> </Route>
 						<Route exact path="/Login"><Login loginAction={loginAction} history={history} /> </Route>
@@ -188,7 +202,7 @@ class App extends Component {
 }
 
 
-const mapStateToProps = ({ user, movieToSchedule, showings, scheduledMovies, customerMovie, selectedTicket, selectedSeats }) => {
+const mapStateToProps = ({ user, movieToSchedule, showings, scheduledMovies, customerMovie, selectedTicket, selectedSeats, newMessages }) => {
 	return {
 		user,
 		movieToSchedule,
@@ -196,7 +210,8 @@ const mapStateToProps = ({ user, movieToSchedule, showings, scheduledMovies, cus
 		scheduledMovies,
 		customerMovie,
 		selectedTicket,
-		selectedSeats
+		selectedSeats,
+		newMessages
 	}
 }
 
@@ -219,7 +234,8 @@ const mapActionsToProps = (dispatch) => {
 		setSelectedTicketInfo,
 		addSeat,
 		removeSeat,
-		clearSeats
+		clearSeats,
+		loadNewMessages,
 	}, dispatch)
 }
 

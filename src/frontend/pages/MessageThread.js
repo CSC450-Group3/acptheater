@@ -56,7 +56,13 @@ function MessageThread(props) {
 
 		getMessages();
 
+		return () => {
+            //reload the new messages upon component unmount
+            props.loadNewMessages(props.user);
+        }
+
 	}, [thread_id, user_id, sentSuccessfully])
+
 
 
 	useEffect(() => {
