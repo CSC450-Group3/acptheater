@@ -189,7 +189,7 @@ Thread.getAllWithStatus = (user_id, type, result) =>{
                 INNER JOIN user u ON u.user_id = m.sending_user_id
                 INNER JOIN threadparticipant tp ON tp.thread_id = t.thread_id
                 WHERE tp.user_id = ${user_id}
-                ORDER BY  isNewMessage DESC, sent_date_time DESC, thread_id`
+                ORDER BY  isNewMessage DESC, last_message_date DESC, thread_id`
     }
 
     sql.query( sqlString, (err, res) => {
