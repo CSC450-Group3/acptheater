@@ -16,7 +16,7 @@
 }
 
 .logo {
-  width: 100%;
+  width: 70%;
   margin: 2%;
 }
 
@@ -227,7 +227,7 @@ hr.solid {
 }
 
 .userDash {
-  background-image: url("/images/gradientBackground.jpeg");
+  background-image: url("/images/lights.jpeg");
   background-color: #cccccc;
   /*height: 700px; /* You must set a specified height */
   background-position: center; /* Center the image */
