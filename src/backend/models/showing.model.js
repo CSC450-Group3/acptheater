@@ -61,7 +61,7 @@ Showing.getByMovie = (movie_id, result) => {
             FROM  showing s 
                 INNER JOIN movie m ON m.movie_id = s.movie_id 
             WHERE m.movie_id = ${movie_id} 
-            AND CAST(start_date_time AS DATE)>= CAST(UTC_TIMESTAMP() AS DATE) 
+            AND CAST(date_sub(s.start_date_time, interval 6 hour) AS DATE)>= CAST(date_sub(UTC_TIMESTAMP(),interval 6 hour) AS DATE)  
             ORDER BY date ASC`, 
         (err, res) => {
         //Error encountered
@@ -143,16 +143,17 @@ Showing.getByDate = (date, result) => {
 
 // Get upcoming movies showing (movies not currently playing, but scheduled in the future)
 // UTC_TIMESTAMP() since we are storing in UTC 
+// Subtract 6 to get back to CST time
 Showing.getUpcoming = result => {
     sql.query(
             "SELECT DISTINCT  m.title, m.director, CAST(m.cast as CHAR) AS cast, CAST(m.plot as CHAR) AS plot, m.duration, m.rated, m.poster_URL, " +
                 "m.genre, DATE_FORMAT(m.release_date, '%c/%e/%Y'), s.showing_id, DATE_FORMAT(date_sub(start_date_time, interval 6 hour), '%c/%e/%Y %h:%i %p') AS start_date_time  " +
             "FROM  showing s " +
             "INNER JOIN movie m on m.movie_id = s.movie_id " +
-            "WHERE CAST(start_date_time AS DATE) >  UTC_TIMESTAMP() " + 
+            "WHERE CAST(date_sub(s.start_date_time, interval 6 hour) AS DATE) >  CAST(date_sub(UTC_TIMESTAMP(),interval 6 hour) AS DATE) " + 
             "AND s.movie_id NOT IN ( SELECT DISTINCT movie_id " +
                 "FROM showing " +
-                "WHERE CAST(start_date_time AS DATE) = CAST(UTC_TIMESTAMP() AS DATE)"+
+                "WHERE CAST(date_sub(s.start_date_time, interval 6 hour) AS DATE) = CAST(date_sub(UTC_TIMESTAMP(),interval 6 hour) AS DATE)"+
             ")", 
     (err, res) => {
         //Error encountered
