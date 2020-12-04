@@ -32,11 +32,12 @@ store.subscribe(()=>{
 //console.log("STORE ", store.getState())
 
 ReactDOM.render(
-  <React.StrictMode>
+  //Removing strict mode because AntD doesn't play nicely with it and loses scroll bars
+  //<React.StrictMode>
     <Provider store={store}>
       <App />
-    </Provider>
-  </React.StrictMode>,
+    </Provider>,
+  //</React.StrictMode>,
   document.getElementById('root')
 );
 

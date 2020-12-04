@@ -48,7 +48,7 @@ function PurchaseTickets(props) {
 	const [movieTimes, setMovieTimes] = useState([]);
 	const [movieTimesObj] = useState({});
 	const [numberOfViewers, setNumberOfViewers] = useState(1);
-	const [selectedDate, setSelectedDate] = useState(customerMovie.selected_date)
+	const [selectedDate, setSelectedDate] = useState("")
 	const [selectedShowingID, setselectedShowingID] = useState(null);
 	const [ticketType, setTicketType] = useState("theater")
 	const [timeError, setTimeError] = useState(false)
@@ -76,6 +76,7 @@ function PurchaseTickets(props) {
 
 		if (customerMovie.selected_date !== "") {
 			loadShowingTimes(customerMovie.selected_date);
+			setSelectedDate(customerMovie.selected_date)
 		}
 
 	}, [customerMovie])
@@ -103,7 +104,6 @@ function PurchaseTickets(props) {
 		setselectedShowingID(e.target.value)
 		setTimeError(false);
 	}
-
 	const handleDateChange = async (e) => {
 		setSelectedDate(e.target.value);
 
