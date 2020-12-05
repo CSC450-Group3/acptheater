@@ -125,15 +125,17 @@ Thread.getAllWithStatus = (user_id, type, result) =>{
         `SELECT DISTINCT t.* , 
             (SELECT DATE_FORMAT(date_sub(m1.sent_date_time, interval 6 hour), '%c/%e/%Y %r')
                 FROM message m1
-                INNER JOIN thread t2 ON t2.thread_id = t.thread_id AND m1.thread_id = t.thread_id
+                INNER JOIN thread t2 ON m1.thread_id = t2.thread_id
+                WHERE t2.thread_id = t.thread_id
                 ORDER BY m1.message_id DESC
                 LIMIT 1
             ) AS last_message_date,
             (SELECT DATE_FORMAT(date_sub(m1.sent_date_time, interval 6 hour), '%c/%e/%Y %r')
-            FROM message m1
-            INNER JOIN thread t2 ON t2.thread_id = t.thread_id AND m1.thread_id = t.thread_id
-            ORDER BY m1.message_id ASC
-            LIMIT 1
+                FROM message m1
+                INNER JOIN thread t2 ON m1.thread_id = t2.thread_id
+                WHERE t2.thread_id = t.thread_id 
+                ORDER BY m1.message_id ASC
+                LIMIT 1
             ) AS created_date_time,
             CASE WHEN t.thread_id = (
                     SELECT DISTINCT t2.thread_id
@@ -160,20 +162,22 @@ Thread.getAllWithStatus = (user_id, type, result) =>{
         `SELECT DISTINCT t.* , 
             (SELECT DATE_FORMAT(date_sub(m1.sent_date_time, interval 6 hour), '%c/%e/%Y %r')
                 FROM message m1
-                INNER JOIN thread t2 ON t2.thread_id = t.thread_id AND m1.thread_id = t.thread_id
+                INNER JOIN thread t2 ON m1.thread_id = t2.thread_id
+                WHERE t2.thread_id = t.thread_id
                 ORDER BY m1.message_id DESC
                 LIMIT 1
             ) AS last_message_date,
             (SELECT DATE_FORMAT(date_sub(m1.sent_date_time, interval 6 hour), '%c/%e/%Y %r')
-            FROM message m1
-            INNER JOIN thread t2 ON t2.thread_id = t.thread_id AND m1.thread_id = t.thread_id
-            ORDER BY m1.message_id ASC
-            LIMIT 1
+                FROM message m1
+                INNER JOIN thread t2 ON m1.thread_id = t2.thread_id
+                WHERE t2.thread_id = t.thread_id
+                ORDER BY m1.message_id ASC
+                LIMIT 1
             ) AS created_date_time,
             CASE WHEN t.thread_id = (
                     SELECT DISTINCT t2.thread_id
                         FROM thread t2  
-                            JOIN threadparticipant tp ON tp.thread_id = t.thread_id AND tp.user_id = ${user_id}
+                            INNER JOIN threadparticipant tp ON tp.thread_id = t2.thread_id AND tp.user_id = ${user_id}
                             INNER JOIN message m ON m.thread_id = t2.thread_id AND m.sending_user_id != ${user_id}
                             INNER JOIN userreadmessage urm1 ON urm1.message_id = m.message_id  
                             LEFT JOIN userreadmessage urm2 ON urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
