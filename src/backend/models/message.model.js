@@ -128,11 +128,11 @@ Message.findByThread = (thread_id, accessing_user_id, result) => {
                         //Create User Read Message record for the message if it doesn't already exist
                         // UTC_TIMESTAMP because we are storing in universal time
                         sql.query(
-                            `INSERT INTO userreadmessage(message_id, user_id, read_date_time) ` +
-                            `SELECT * FROM ( SELECT ${message_id} AS thread_id , ${accessing_user_id} AS user_id, UTC_TIMESTAMP() AS read_date_time) AS tmp ` +
-                            `WHERE NOT EXISTS(` +
-                                `SELECT message_id, user_id FROM userreadmessage WHERE user_id = ${message_id} AND thread_id = ${accessing_user_id}` +
-                            `) LIMIT 1`,
+                            `INSERT INTO userreadmessage(message_id, user_id, read_date_time) 
+                            SELECT * FROM ( SELECT ${message_id} AS message_id , ${accessing_user_id} AS user_id, UTC_TIMESTAMP() AS read_date_time) AS tmp  
+                            WHERE NOT EXISTS(
+                                SELECT message_id, user_id FROM userreadmessage WHERE user_id = ${accessing_user_id} AND message_id = ${message_id}
+                            ) LIMIT 1`,
                         err => {
                             //Error encountered
                             if(err){
