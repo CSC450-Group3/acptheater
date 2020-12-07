@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Divider } from 'antd';
+import { Button, Row, Col, Divider } from 'antd';
 import { Link } from 'react-router-dom'
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -142,7 +141,7 @@ function MessageThread(props) {
 							</Button>
 						</Link>
 
-						<Button variant="contained"  onClick={handleClickOpen}>
+						<Button type="primary" variant="contained"  onClick={handleClickOpen}>
 							Reply
 						</Button>
 

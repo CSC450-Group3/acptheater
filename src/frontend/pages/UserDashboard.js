@@ -9,7 +9,7 @@ import { isoDate } from '../helper/FormatDate';
 import axios from 'axios';
 import { validateDate, displayDateAlert, duplicateEmailAlert } from '../helper/UserValidation';
 import MovieTicketDashboard from '../components/user/MovieTicketDashboard';
-import Button from '@material-ui/core/Button';
+import { Button, Col, Card, Row } from 'antd';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -261,7 +261,7 @@ function UserDashboard(props) {
 								{
 									/* display New Message button to customers only - admin's only reply to messages from customers */
 									user.type === 'C' ?
-										<Button variant="contained" color="#1890FF" onClick={handleClickOpen}>
+										<Button type="primary" variant="contained" color="#1890FF" onClick={handleClickOpen}>
 											New Message
 										</Button>
 										: null
