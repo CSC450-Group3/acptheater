@@ -37,7 +37,7 @@ function Confirmation(props) {
                 showtime={selectedTicket.date + " " + selectedTicket.time}
             />
             < br />
-            <h4 style={{ paddingLeft: 300, paddingRight: 300, paddingBottom: 100 }}>We look forward to seeing you, and we hope you enjoy your experience here at ACP Theaters!
+            <h4 style={{ paddingLeft: 300, paddingRight: 300, paddingBottom: 100 }}>We look forward to seeing you, and we hope you enjoy your experience here at ACP Theatres!
             Should you have any questions or concerns in regards to your purchased tickets,
             please navigate to either the message icon located in the navigation bar or
             within your user profile under the <Link to="/UserDashboard/Messaging">Messaging</Link > tab.</h4>
