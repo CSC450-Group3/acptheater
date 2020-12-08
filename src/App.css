@@ -110,6 +110,7 @@
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
   padding-top: 3%;
+  min-Height: 95vh;
 }
 
 .userCreationForm {
@@ -179,6 +180,7 @@
   display: flex;
   flex-direction: column;
   border-radius: 15px;
+  min-Height: 100vh;
 }
 
 .newMessage {
@@ -226,6 +228,7 @@ hr.solid {
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
   padding-top: 5%;
+  min-Height: 90vh;
 }
 
 .loginHeader {
