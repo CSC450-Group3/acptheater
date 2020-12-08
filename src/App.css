@@ -171,6 +171,16 @@
   border-radius: 15px;
 }
 
+.confirmationContainer {
+  background-color: white;
+  margin-left: 20%;
+  margin-right: 20%;  
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+}
+
 .newMessage {
   float: left;
 }
