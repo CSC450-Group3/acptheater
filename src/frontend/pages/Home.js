@@ -8,6 +8,7 @@ import RequireLoginModal from '../components/user/RequireLoginModal';
 import { isoDate } from '../helper/FormatDate';
 import { ReactPhotoCollage } from "react-photo-collage";
 import { Layout, Row } from 'antd';
+import NoMovies from '../components/movie/NoMovies';
 
 function Home(props) {
   const [activateDetailModal, setActivateDetailModal] = useState(false);
@@ -40,12 +41,9 @@ function Home(props) {
     showNumOfRemainingPhotos: true
   }
 
-  return (
-    <div>
-      <div className="currentMovies">
-        <div className="welcomeToACP">Welcome to ACP Theatres</div>
-        <h1 className="currentMoviesHeader">Now Showing<hr></hr></h1>
-
+  const MoviesDisplay = () => {
+    if (Object.keys(activeMovies).length !== 0) {
+      return (
         <marquee behavior="scroll" direction="left">
           <Row justify="center">
             {Object.keys(activeMovies).map(key => (
@@ -69,6 +67,23 @@ function Home(props) {
           </Row>
 
         </marquee>
+
+      )
+    }
+    else {
+      return (
+        <NoMovies>There are no movies scheduled today. Please see the showtimes page for upcoming movies.</NoMovies>
+      )
+    }
+  }
+
+  return (
+    <div>
+      <div className="currentMovies">
+        <div className="welcomeToACP">Welcome to ACP Theatres</div>
+        <h1 className="currentMoviesHeader">Now Showing<hr></hr></h1>
+
+        <MoviesDisplay />
 
         <MovieDetailActionModal
           title={customerMovie.title}
@@ -96,7 +111,7 @@ function Home(props) {
         />
       </div>
 
-{/* MARQUEE WORK 
+      {/* MARQUEE WORK 
 
       <div id="maindiv">
         <div id="div1">
@@ -108,7 +123,7 @@ function Home(props) {
         </div>
       </div>
 
-*/}      
+*/}
 
       <div className="ourHome2Yours">From Our Home To Yours</div>
       <div className="homePageBottom">

@@ -7,8 +7,8 @@ import 'antd/dist/antd.css';
 import { withRouter } from "react-router-dom";
 import PaymentSummary from '../payment/PaymentSummary';
 
-const MovieTransactionDetailModal = ({ transaction_id, title, cast, release_date, rated, duration, history,
-    genre, poster_url, plot, status, isVirtual, setActivateTransactionModal, activateTransactionModal
+const MovieTransactionDetailModal = ({ transaction_id, title,  history,
+     poster_url, status, isVirtual, setActivateTransactionModal, activateTransactionModal
  }
 ) => {
 
@@ -141,8 +141,8 @@ const MovieTransactionDetailModal = ({ transaction_id, title, cast, release_date
             onCancel={handleClose}
             width={800}
             footer={[
-                <VirtualTicketButton />,
-                <CloseButton />
+                <VirtualTicketButton key="virtualTicketButton"/>,
+                <CloseButton key="closeButton"/>
             ]}
         >
             { isLoading === false ?

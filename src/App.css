@@ -405,3 +405,9 @@ hr.solid {
     transform: translateX(-200%);
   }
 }
+
+
+
+.ant-layout-content{
+  background-color:#282c34;
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Row } from 'antd';
+import { Layout, Row, Empty } from 'antd';
 import MovieActionCard from '../components/movie/MovieActionCard';
 import { v4 } from 'node-uuid'; // used to generate unique ID
 import 'antd/dist/antd.css';
@@ -7,14 +7,17 @@ import MovieDetailActionModal from '../components/movie/MovieDetailActionModal'
 import RequireLoginModal from '../components/user/RequireLoginModal';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import {isoDate} from '../helper/FormatDate';
+import {isoDate, cstDate} from '../helper/FormatDate';
+import { Select } from 'antd';
+import NoMovies from '../components/movie/NoMovies';
 
 
+const { Option } = Select;
 const { Content } = Layout;
 const today = isoDate();
 
-const showtimeStyles = makeStyles((theme) => ({
-    showtimes: {
+const styles = makeStyles((theme) => ({
+    root: {
         background: '#282c34', 
         minHeight: "90vh",
     },
@@ -33,15 +36,18 @@ const showtimeStyles = makeStyles((theme) => ({
         color: 'black',
         height: '3em',
     },
-    label:{
+    text:{
         color: 'white',
-        fontSize: 18,
+        fontSize: '18px'
+    },
+    empty:{
+        backgroundColor:'#282c34',
     }
 }));
 
 
 function Showtimes(props) {
-    const classes = showtimeStyles();
+    const classes = styles();
 
     //props data from redux store
     const activeMoviesToday =  props.scheduledMovies; 
@@ -51,7 +57,7 @@ function Showtimes(props) {
     const [activateLoginModal, setActivateLoginModal] = useState(false);
     const [detailRequest, setDetailRequest] = useState(false);
     const [dates, setDates] = useState([]);
-    const [selectedDate, setSelectedDate] = useState(today);
+    const [selectedDate, setSelectedDate] = useState(cstDate());
     const [moviesToDispaly, setMoviesToDisplay] = useState({});
     
     useEffect(() =>{
@@ -60,7 +66,7 @@ function Showtimes(props) {
     });
 
     useEffect(()=>{
-        // load current future dates with movies scheduled
+        // load movie dates that have movies schedule on or after today
         async function loadMovieDates(){
             await axios.get('/api/showing/dateList/date/' + today)
             .then(function(res){
@@ -72,6 +78,11 @@ function Showtimes(props) {
         }
 
         loadMovieDates();
+
+        return () => {
+            // cleanup on unmount
+           
+        }
     }, [])
 
     
@@ -87,41 +98,62 @@ function Showtimes(props) {
             });
     }
 
-    const handleSelectChange = async(e) =>{
-        setSelectedDate(e.target.value)
-        loadMoviesByDate(e.target.value)
+    const handleSelectChange = async(value) =>{
+        setSelectedDate(value)
+        loadMoviesByDate(value)
     }
 
     function dateMenu(){
-        return(
-            <div>
-            <label htmlFor="date" className={classes.label}>Movie showing on date: </label>
-            <select
-                value = {selectedDate} 
-                name = "date"
-                required
-                onChange =  {(event) =>	handleSelectChange(event)}
-                className={classes.dateSelect}  
-            >
-                {Object.keys(dates).map((key) => (
-                    <option 
-                        key={dates[key].showing_date}
-                        value = {dates[key].showing_date}
-                        name = {dates[key].showing_date}
-                    >
-                        {dates[key].showing_date}
-                    </option >
-                    
-                ))}
-            </select>
-            </div>
+        if(dates.length > 0){
+            return(
+                <div>
+                <label htmlFor="date" className={classes.text}>Movie showing on date: </label>
 
-        )
+                {/* Display the list of dates that have movies from the database if today is a day with scheduled movies
+                    Otherwise, hardcode today in as an option, then display all future dates from the database*/}
+                {
+                    dates[0].showing_date === cstDate() ? 
+                    <Select defaultValue={selectedDate}  onChange={handleSelectChange}>
+                        {Object.keys(dates).map((key) => (
+                            <Option 
+                                key={dates[key].showing_date}
+                                value = {dates[key].showing_date}
+                                name = {dates[key].showing_date}
+                            >
+                                {dates[key].showing_date}
+                            </Option >
+                        
+                        ))}
+                   
+                    </Select> 
+                    :
+                    <Select defaultValue={selectedDate}  onChange={handleSelectChange}>
+                        {/* this is to display today's date as an option if today has no movies scheduled
+                            this will set today's date in iso format, but display today's date as mm/dd/yyyy format  */ }
+                        <Option value={today}>{cstDate()}</Option> 
+                        {Object.keys(dates).map((key) => (
+                            <Option 
+                                key={dates[key].showing_date}
+                                value = {dates[key].showing_date}
+                                name = {dates[key].showing_date}
+                            >
+                                {dates[key].showing_date}
+                            </Option >
+                        
+                        ))}
+               
+                </Select> 
+
+                }
+
+                </div>
+            )
+        }
     }
 
     function cardContent(){
-        // If movies haven't been loaded for a user selected date, show whatever is playing today
-        if(Object.keys(moviesToDispaly).length === 0){
+        // If movies haven't been loaded for a user selected date, show whatever is playing today if there are movies today
+        if(Object.keys(moviesToDispaly).length === 0 &&  Object.keys(activeMoviesToday).length !== 0){
             return(
                 <div className={classes.content}>
                     <Row justify="center">
@@ -143,6 +175,11 @@ function Showtimes(props) {
                         ))} 
                     </Row>
                 </div>
+            )
+        }
+        else if(Object.keys(moviesToDispaly).length === 0 &&  Object.keys(activeMoviesToday).length === 0 ){
+            return(
+               <NoMovies className={classes.empty}>There are no movies playing on the selected date.</NoMovies>         
             )
         }
         //otherwise, show the movies for the date selected by the user
@@ -173,7 +210,7 @@ function Showtimes(props) {
     }
     
     return (
-        <div className={classes.showtimes}>
+        <div className={classes.root}>
             <h1 className={classes.header}>Showtimes</h1>
             <hr width ="95%"></hr>
             {dateMenu()}
