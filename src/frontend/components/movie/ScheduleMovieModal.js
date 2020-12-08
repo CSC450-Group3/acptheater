@@ -33,9 +33,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
     )
 
 
-
     async function addNewShowing(bool) {
-        console.log(screenID)
         await axios.get('/api/screen/' + screenID)
             .then(function (res) {
                 //get the selected screen info and store the appropriate data to the database
@@ -118,7 +116,6 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
         //get all screens at the movie theater
         await axios.get('/api/screen/date/' + isoDate(date))
             .then(function (res) {
-                console.log(res.data)
                 //screens found successfully
                 setAvailableScreens(res.data)
             })
@@ -264,7 +261,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
             visible={activateModal}
             width={375}
             footer={[
-                <div style={{ textAlign: "left" }}>
+                <div style={{ textAlign: "left" }} key={v4()}>
                     <Button
                         key="addAgain"
                         type="primary"

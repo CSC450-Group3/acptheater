@@ -74,6 +74,23 @@ export function cstISODateTime(datetime){
     return returnDate;
 }
 
+/**
+ *  Returns the date in CST MM/DD/YYYY h:mm AM/PM format 
+ */
+export function cstDate(datetime){
+    var returnDate = null;
+
+    if(datetime !== null){
+        returnDate = moment(datetime).utc().tz('America/Chicago').format('MM/D/YYYY');
+    }
+    else{
+        returnDate = moment().utc().tz('America/Chicago').format('MM/D/YYYY');
+    }
+    
+    return returnDate;
+}
+
+
 
 /**
  *  Returns the date in CST MM/DD/YYYY h:mm AM/PM format 

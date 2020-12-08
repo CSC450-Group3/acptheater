@@ -53,10 +53,6 @@ function ScheduleForm(props) {
 	const {showings, movieToSchedule} = props
 	const [activateModal, setActivateModal] = useState(false);
 	const [allScreens, setAllScreens] = useState([]); 
-	const [screenID, setScreenID] = useState("");
-	const [startDate, setStartDate] = useState(null);
-	const [startTime, setStartTime] = useState(null);
-	const [price, setPrice] = useState(null);
 	const [isLoading, setIsLoading] = useState(false)
 	const [keyToDelete, setKeyToDelete] = useState("");
 	const [scheduleError, setScheduleError] = useState(false)
@@ -76,6 +72,12 @@ function ScheduleForm(props) {
 		}
 
 		getScreens();
+
+		return () => {
+			// cleanup on unmount
+			clearData();
+           
+        }
 
 	}, [showings])
 
@@ -191,7 +193,6 @@ function ScheduleForm(props) {
 						props.loadActiveMovies()
 
 						//Cleanup movie/schedule data and redirect to Movies page
-						clearData();
 						props.history.push("/Movies");
 					})
 					.catch(function (err) {

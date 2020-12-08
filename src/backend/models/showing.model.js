@@ -172,8 +172,10 @@ Showing.getUpcoming = result => {
 // subtract 6 hours to get to CST
 Showing.getShowingDates = (date, result) => {
     sql.query(
-            "SELECT DISTINCT  DATE_FORMAT(CAST(date_sub(start_date_time, interval 6 hour) AS DATE),'%c/%e/%Y' ) AS showing_date from showing " +
-            "WHERE  CAST(date_sub(start_date_time, interval 6 hour) AS DATE) >= ?", 
+            "SELECT DISTINCT  DATE_FORMAT(CAST(date_sub(start_date_time, interval 6 hour) AS DATE),'%c/%e/%Y' ) AS showing_date " +
+            "FROM showing " +
+            "WHERE  CAST(date_sub(start_date_time, interval 6 hour) AS DATE) >= ? " +
+            "ORDER BY start_date_time ASC ", 
     [date], (err, res) => {
         //Error encountered
         if(err){
