@@ -133,17 +133,16 @@ function MessageThread(props) {
 					<h2>{messages[0].subject}</h2>
 					<div className={classes.messages}>
 						<Messages />
-
-
+						
+						<Button type="primary" variant="contained"  onClick={handleClickOpen}>
+							Reply
+						</Button>
+						
 						<Link to='/UserDashboard/Messaging'>
 							<Button variant="contained"  >
 								Back
 							</Button>
 						</Link>
-
-						<Button type="primary" variant="contained"  onClick={handleClickOpen}>
-							Reply
-						</Button>
 
 						<div className="reply">
 							<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
