@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Row, Empty } from 'antd';
+import { Layout, Row } from 'antd';
 import MovieActionCard from '../components/movie/MovieActionCard';
 import { v4 } from 'node-uuid'; // used to generate unique ID
 import 'antd/dist/antd.css';
