@@ -97,7 +97,7 @@ function Navbar(props) {
 			anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
 			keepMounted
 			transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-			open={isNavMenuOpen}
+      open={isNavMenuOpen}
 			onClose={handleNavMenuClose}
 		>
 			<MenuItem onClick={handleNavMenuClose}><Link to='/'>Home</Link ></MenuItem>
@@ -150,7 +150,7 @@ function Navbar(props) {
 						aria-haspopup="true"
 						onClick={handleProfileMenuOpen}
 					>
-						<AccountCircle />
+						<AccountCircle style={{paddingBottom: 4}}/>
 					</IconButton>
 				</div>
 			)
@@ -166,7 +166,7 @@ function Navbar(props) {
 						aria-haspopup="true"
 						onClick={handleProfileMenuOpen}
 					>
-						<AccountCircle />
+						<AccountCircle style={{paddingBottom: 4}}/>
 					</IconButton>
 				</div>
 			)
