@@ -252,11 +252,21 @@ hr.solid {
   padding: 3%;
   margin: auto;
   margin-top: 5%;
+  text-align: "center";
 }
 
-.App-link {
-  color: #61dafb;
+.userUpdateDashForm{
+  text-align: left;
 }
+
+.userUpdateDashActionBar{
+  text-align: center;
+}
+
+.userUpdateDashButton{
+  margin: 10px;
+}
+
 
 .loading {
   position: absolute;

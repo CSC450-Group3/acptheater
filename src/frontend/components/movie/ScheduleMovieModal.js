@@ -190,7 +190,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
         setIsOverlapping(false)
     }
 
-    function displayDuplicateError() {
+    function displayAlert() {
         if (isDuplicate) {
             return (
                 <Alert
@@ -271,7 +271,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
                         style={{ marginBottom: 5 }}
                     >
                         Add & Add Another
-                </Button>
+                    </Button>
                     <Button
                         key="Add"
                         type="secondary"
@@ -281,8 +281,14 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
                         style={{ marginBottom: 5 }}
                     >
                         Add One
-                </Button>
-                    <Button key="cancel" size={'middle'} onClick={onCancel}>Close</Button>
+                    </Button>
+                    <Button 
+                        key="cancel" 
+                        size={'middle'} 
+                        onClick={onCancel}
+                    >
+                        Close
+                    </Button>
                 </div>
             ]}
 
@@ -368,7 +374,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
                     />
                 </Form.Item>
 
-                {displayDuplicateError()}
+                {displayAlert()}
             </Form>
         </Modal>
 
