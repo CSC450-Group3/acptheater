@@ -1,5 +1,5 @@
 import React from 'react';
-import Alert from '@material-ui/lab/Alert';
+import { Alert } from 'antd';
 import moment from 'moment';
 
 /**
@@ -24,9 +24,7 @@ export function validateDate(DOB) {
 export function duplicateEmailAlert(isSameEmail) {
     if (isSameEmail) {
         return (
-            <Alert severity="error">
-                User with the entered email already exists.
-            </Alert>
+            <Alert message="User with the entered email already exists." type="error" showIcon />
         )
     }
 }
@@ -36,9 +34,7 @@ export function displayDateAlert(DOB) {
     //show error if birthday is in the future
     if (validateDate(DOB)) {
         return (
-            <Alert severity="error">
-                Birthday cannot be in the future.
-            </Alert>
+            <Alert message=" Birthday cannot be in the future." type="error" showIcon />
         )
     }
 }
