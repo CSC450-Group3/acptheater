@@ -25,7 +25,7 @@ const style = makeStyles(() => ({
 
 function MessageThread(props) {
 	const classes = style();
-	const { thread_id, user_id } = props.match.params;
+	const { thread_id, user_id } = props.computedMatch.params; //computed due to the protected route
 	const [messages, setMessages] = useState(null)
 	const [isLoading, setIsLoading] = useState(true)
 	const [open, setOpen] = React.useState(false);
