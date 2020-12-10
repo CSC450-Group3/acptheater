@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
     img:{
         maxHeight: "350px",
         padding:20,
-        verticalAlign: 'center'
     },
     text:{
         color: 'white',
