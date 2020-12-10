@@ -33,9 +33,6 @@ function UserProfile(props) {
 
     const isNewPasswordPopulated = newPassword === null ? false : true;
 
-    console.log(isNewPasswordPopulated)
-    console.log(newPassword)
-
     useEffect(() => {
         //set a 2 second timer
         let timer = setTimeout(() => setSuccess(false), 2000)
@@ -127,8 +124,10 @@ function UserProfile(props) {
         setEmail(user.email);
         setBirthday(user.birthday);
         setNewPassword(null);
-        setConfirmPassword(null)
-        setConfirmError(null);
+        setConfirmPassword(null);
+        setConfirmError(false);
+        setSameEmailError(false);
+        setSuccess(false);
 
         resetFormFields();
     }

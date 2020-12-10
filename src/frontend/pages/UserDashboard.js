@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 function UserDashboard(props) {
 	const { user, history, updateAccountAction } = props;
-	const { tab_name } = props.match.params;
+	const { tab_name } = props.computedMatch.params; //computed due to the protected route
 	const classes = useStyles();
 	/* profile data*/
 	const [tab, setTab] = React.useState('1');
