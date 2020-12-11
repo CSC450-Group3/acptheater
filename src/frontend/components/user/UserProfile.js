@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { isoDate } from '../../helper/FormatDate';
 import axios from 'axios';
 import moment from 'moment';
@@ -7,17 +6,7 @@ import { validateDate, displayDateAlert, duplicateEmailAlert } from '../../helpe
 import { Form, DatePicker, Button, Alert, Input } from 'antd';
 
 
-
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-
-    },
-
-}));
-
 function UserProfile(props) {
-    const classes = useStyles();
     const { user, updateAccountAction } = props;
     const [firstName, setFirstName] = useState(user.first_name);
     const [lastName, setLastName] = useState(user.last_name);
@@ -54,7 +43,7 @@ function UserProfile(props) {
         //force form to validate
         form.validateFields()
         //if there are no errors, continue update
-        .then(async()=>{
+        .then(async() => {
              
             // Check if user email already exists
             await axios.get('/api/user/email/' + email)
@@ -98,7 +87,7 @@ function UserProfile(props) {
             })
             .catch((err) => {
                 //required fields were not populated
-                console.log(err)
+                //console.log(err)
             });
     }
 
@@ -166,29 +155,19 @@ function UserProfile(props) {
     }
 
     const ConfirmErrorAlert = () => {
-        if (confirmError === true) {
-            return (
-                <Alert message="The passwords do not match." type="error" showIcon />
-            )
-        }
-        else{
-            return(
-                null
-            )
-        }
+        return confirmError === true ? (
+            <Alert message="The passwords do not match." type="error" showIcon />
+        ):(
+            null
+        )
     }
 
     const SaveAlert = () => {
-        if (success === true) {
-            return (
+        return success === true ? (
                 <Alert message="User information updated!" type="success" showIcon />
-            )
-        }
-        else{
-            return(
-                null
-            )
-        }
+        ):(
+            null
+        )
     }
 
     return (
@@ -201,24 +180,17 @@ function UserProfile(props) {
                     layout="vertical"
                     name="Schedule Movie Form"
                     initialValues={{ remember: true }}
-                    footer={[
-                        <div style={{ textAlign: "left" }} >
-
-                            <Button key="cancel" size={'middle'} onClick={onCancel}>Close</Button>
-                        </div>
-                    ]}
                 >
                     <Form.Item
                         label="Email"
-
                         name="email"
                         rules={[{ required: true, message: 'Email is required.' }, {type: 'email', message: "Email is not a valid email."}]}
                     >
                         <Input
+                            autoFocus
                             defaultValue={email}
                             value={email}
                             name="email"
-                            className={classes.input}
                             onChange={onEmailChange}
                         />
                     </Form.Item>
@@ -233,7 +205,6 @@ function UserProfile(props) {
                             defaultValue={firstName}
                             value={firstName}
                             name="firstName"
-                            className={classes.input}
                             onChange={onFirstNameChange}
                         />
                     </Form.Item>
@@ -247,7 +218,6 @@ function UserProfile(props) {
                             defaultValue={lastName}
                             value={lastName}
                             name="lastName"
-                            className={classes.input}
                             onChange={onLastNameChange}
                         />
                     </Form.Item>
@@ -278,7 +248,6 @@ function UserProfile(props) {
                         <Input.Password
                             defaultValue={newPassword}
                             value={newPassword}
-                            className={classes.input}
                             onChange={onNewPasswordChange}
                         />
                     </Form.Item>
@@ -292,7 +261,6 @@ function UserProfile(props) {
                             defaultValue={confirmPassword}
                             value={confirmPassword}
                             type="password"
-                            className={classes.input}
                             onChange={onConfirmChange}
                         />
                     </Form.Item>

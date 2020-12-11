@@ -19,6 +19,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
     var showingDateTime = startDate + " " + startTime;
     //stip of the 'min' off duration, so add it to the start time
     var duration = (movie.duration).replace(/[^0-9]/g, '');
+    const dateFormat = 'MM/DD/YYYY'
 
     useEffect(() => {
         //set a 2 second timer
@@ -310,6 +311,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
                         required
                         onChange={onDateChange}
                         disabledDate={disabledDate}
+                        format={dateFormat}
                     />
                 </Form.Item>
 
