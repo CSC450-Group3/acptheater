@@ -183,3 +183,4 @@ function MessageThread(props) {
 
 	);
 }
+export default withRouter(MessageThread);
