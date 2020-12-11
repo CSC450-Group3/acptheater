@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Divider } from 'antd';
+import { Button, Row, Col, Divider } from 'antd';
 import { Link } from 'react-router-dom'
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -134,17 +133,16 @@ function MessageThread(props) {
 					<h2>{messages[0].subject}</h2>
 					<div className={classes.messages}>
 						<Messages />
-
-
+						
+						<Button type="primary" variant="contained"  onClick={handleClickOpen}>
+							Reply
+						</Button>
+						
 						<Link to='/UserDashboard/Messaging'>
 							<Button variant="contained"  >
 								Back
 							</Button>
 						</Link>
-
-						<Button variant="contained"  onClick={handleClickOpen}>
-							Reply
-						</Button>
 
 						<div className="reply">
 							<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -185,5 +183,3 @@ function MessageThread(props) {
 
 	);
 }
-
-export default withRouter(MessageThread);
