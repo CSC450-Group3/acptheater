@@ -72,14 +72,15 @@ User.validateCredentials = (credentials, result) => {
             return;
         }
 
-        //User found with matching credentials
-        if(res.length){
-            result(null, res[0]);
+        //Error encountered
+        if(err){
+            result(err, null);
             return;
         }
-    
-        //User not found
-        result({kind: "not_found"}, null);
+
+        //return results
+        result(null, res);
+        return;
     });
 };
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, Layout, Col, Card, Row } from 'antd';
+import { Button, Layout, Col, Card, Row, Form, Input, InputNumber } from 'antd';
+import MaskedInput from 'antd-mask-input'
 import { makeStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
 import { withRouter } from "react-router-dom";
 import { calculateTotalPrice } from '../helper/PaymentCalculation'
 import PaymentSummary from '../components/payment/PaymentSummary';
@@ -12,30 +12,41 @@ const styles = makeStyles((theme) => ({
 	PaymentForm: {
 		background: '#282c34',
 		minHeight: "90vh",
+		padding: '30px',
 	},
-	container:{
+	container: {
 		maxWidth: 900,
-		margin: "auto"
+		margin: "auto",
 	},
 	content: {
 		background: '#282c34',
 		padding: 60,
 		minHeight: 300,
 		textAlign: "left",
-		align: "center"
+		align: "center",
 	},
 	actionBar: {
 		textAlign: "left",
 		paddingLeft: 15,
-		marginRight: 15
+		marginRight: 15,
 	},
-	label: {
-		paddingLeft: 10,
-		alignContent: "center"
+	locationInput: {
+		display: 'inline-block',
+		marginRight: "5px",
 	},
-	cvv: {
-		width: "2em"
+	cardNumber:{
+		width: '100%',
 	},
+	cardInput:{
+		display: 'inline-block',
+		marginRight: "5px",
+	},
+	cardDetails:{
+		width: '50%',
+	},
+	expiration:{
+		display: 'inline-block'
+	}
 }));
 
 function Payment(props) {
@@ -45,6 +56,7 @@ function Payment(props) {
 	const [total_price] = useState(calculateTotalPrice(selectedTicket, selectedSeats));
 	const tickets = [];
 	const errors = [];
+	const [form] = Form.useForm();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -54,63 +66,77 @@ function Payment(props) {
 	}
 
 	async function createTransaction() {
-		await axios.post('api/transaction/create', {
-			"user_id": user.user_id,
-			"total_price": total_price
-		})
-			.then(function (res) {
-				//transaction created successfully
-				if (res.status === 200) {
-					setTransaction(res.data)
+		//force form to validate
+		form.validateFields()
+			//attempt to save transaction when fields are valid
+			.then(async () => {
+				await axios.post('api/transaction/create', {
+					"user_id": user.user_id,
+					"total_price": total_price
+				})
+					//transaction created successfully
+					.then(function (res) {
+						if (res.status === 200) {
+							setTransaction(res.data)
 
-					if (selectedTicket.ticket_type === "theater") {
-						Object.keys(selectedSeats).map(async key => (
-							await axios.post('api/ticket/create', {
-								"transaction_id": res.data.transaction_id,
-								"showing_id": selectedTicket.showing_id,
-								"seat_id": selectedSeats[key].seat_id,
-								"total_viewers": null
-							})
-								.then(function (res) {
-									//transaction created successfully
-									if (res.status === 200) {
-										tickets.push(res.data)
-										//go to confirmation page if save is successful
-										history.push("/Confirmation")
-									}
+							//attempt to save theater movie ticket if transaction saved
+							if (selectedTicket.ticket_type === "theater") {
+								Object.keys(selectedSeats).map(async key => (
+									await axios.post('api/ticket/create', {
+										"transaction_id": res.data.transaction_id,
+										"showing_id": selectedTicket.showing_id,
+										"seat_id": selectedSeats[key].seat_id,
+										"total_viewers": null
+									})
+										.then(function (res) {
+											//ticket created successfully
+											if (res.status === 200) {
+												tickets.push(res.data)
+												//go to confirmation page if save is successful
+												history.push("/Confirmation")
+											}
+										})
+										//ticket failed to save
+										.catch(function (err) {
+											errors.push(err)
+											console.log(errors)
+										})
+								))
+							}
+							// attempt to save virtual movie tickets
+							else {
+								axios.post('api/ticket/create', {
+									"transaction_id": res.data.transaction_id,
+									"showing_id": selectedTicket.showing_id,
+									"seat_id": null,
+									"total_viewers": selectedTicket.number_of_viewers
 								})
-								.catch(function (err) {
-									errors.push(err)
-									console.log(errors)
-								})
-						))
-					}
-					else {
-						axios.post('api/ticket/create', {
-							"transaction_id": res.data.transaction_id,
-							"showing_id": selectedTicket.showing_id,
-							"seat_id": null,
-							"total_viewers": selectedTicket.number_of_viewers
-						})
-							.then(function (res) {
-								//transaction created successfully
-								if (res.status === 200) {
-									tickets.push(res.data)
-									//go to confirmation page if save is successful
-									history.push("/Confirmation")
-								}
-							})
-							.catch(function (err) {
-								errors.push(err)
-								console.log(errors)
-							});
-					}
-				}
+									//virtual ticket created successfully
+									.then(function (res) {
+										if (res.status === 200) {
+											tickets.push(res.data)
+											//go to confirmation page if save is successful
+											history.push("/Confirmation")
+										}
+									})
+									//ticket faield to save
+									.catch(function (err) {
+										errors.push(err)
+										console.log(errors)
+									});
+							}
+						}
+					})
+					//transaction failed to save
+					.catch(function (err) {
+						errors.push(err)
+						console.log(errors)
+					});
 			})
-			.catch(function (err) {
-				errors.push(err)
-				console.log(errors)
-			});
+			.catch((err) => {
+				//user didn't populate fields correctly
+				//console.log(err)
+			})
 	}
 
 	const handleCancel = () => {
@@ -119,10 +145,59 @@ function Payment(props) {
 		history.push("/Showtimes")
 	}
 
+	const onNameOnCardChange = (event) => {
+		form.setFieldsValue({
+			nameOnCard: event.target.value
+		})
+	}
+
+	const onAddressChange = (event) => {
+		form.setFieldsValue({
+			address: event.target.value
+		})
+	}
+
+	const onCityChange = (event) => {
+		form.setFieldsValue({
+			city: event.target.value
+		})
+	}
+
+
+	const onStateChange = (event) => {
+		form.setFieldsValue({
+			state: event.target.value
+		})
+	}
+
+
+	const onZipChange = (event) => {
+		form.setFieldsValue({
+			zipCode: event.target.value
+		})
+	}
+
+	const onNumberChange = (value) => {
+		form.setFieldsValue({
+			cardNumber: value
+		})
+	}
+
+	const onExpirationChange = (event) => {
+		form.setFieldsValue({
+			expiration: event.target.value
+		})
+	}
+
+	const onCVVChange = (value) => {
+		form.setFieldsValue({
+			cvv: value
+		})
+	}
+
+
 	return (
 		<div className={classes.PaymentForm}>
-
-
 			<form className={classes.content} method="post" onSubmit={handleSubmit}>
 				<Layout className={classes.container}>
 					<Card
@@ -138,41 +213,117 @@ function Payment(props) {
 					>
 						<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
 							<Col span={16} >
-								<div>
-									<h3>Billing Information</h3>
-									<label htmlFor="name" className={classes.label} >Name on Card: </label>
-									<input type="text" required id="name" placeholder="Name" />
+								<h3>Billing Information</h3>
+								<Form
+									form={form}
+									layout="vertical"
+									name="Payment Form"
+									initialValues={{ remember: true }}
+								>
+									<Form.Item
+										label="Name on Card"
+										name="nameOnCard"
+										rules={[{
+											required: true,
+											message: 'Name on Card is required.'
+										}]}
+									>
+										<Input
+											autoFocus
+											onChange={onNameOnCardChange}
+										/>
+									</Form.Item>
 
-									<label htmlFor="address" className={classes.label} >Billing Address: </label>
-									<input type="text" required id="address" placeholder="Address" />
-									< br />
-									< br />
-									<label htmlFor="city" className={classes.label} >City: </label>
-									<input type="text" required id="city" placeholder="City" />
+									<Form.Item
+										label="Billing Address"
+										name="address"
+										rules={[{ required: true, message: 'Billing Address is required.' }]}
+									>
+										<Input
+											onChange={onAddressChange}
+										/>
+									</Form.Item>
 
-									<label htmlFor="state" className={classes.label} >State: </label>
-									<input type="text" required id="state" placeholder="State" />
-									< br />
-									< br />
-									<label htmlFor="zip" className={classes.label} >Zipcode: </label>
-									<input type="text" required id="zip" placeholder="Zipcode" />
-									< br />
-									< br />
-									< br />
+									<div>
+										<Form.Item
+											label="City"
+											name="city"
+											rules={[{ required: true, message: 'City is required.' }]}
+											className={classes.locationInput}
+										>
+											<Input
+												onChange={onCityChange}
+
+											/>
+										</Form.Item>
+
+										<Form.Item
+											label="State"
+											name="state"
+											rules={[{ required: true, message: 'State is required.' }]}
+											className={classes.locationInput}
+										>
+											<Input
+												onChange={onStateChange}
+											/>
+										</Form.Item>
+
+										<Form.Item
+											label="Zip Code"
+											name="zipCode"
+											rules={[{ required: true, message: 'Zip Code is required.' }]}
+											className={classes.locationInput}
+										>
+											<Input
+												onChange={onZipChange}
+											/>
+										</Form.Item>
+									</div>
+
+
 									<h3>Credit Card Information</h3>
-									<label htmlFor="card" className={classes.label} >Card Number: </label>
-									<input type="text" required id="card" placeholder="Card Number" />
 
-									<label htmlFor="exp" className={classes.label} >Expiration: </label>
-									<input type="text" required id="expiration" placeholder="MM/YY" />
-									< br />
-									< br />
-									<label htmlFor="cvv" className={classNames(classes.label, classes.cvv)} >CVV: </label>
-									<input type="text" required id="cvv" placeholder="CVV" />
-									< br />
-									< br />
+									<Form.Item
+										label="Card Number"
+										name="cardNumber"
+										rules={[{ required: true, message: 'Card Number is required.' }]}
+									>
+										<InputNumber
+											onChange={onNumberChange}
+											className={classes.cardNumber}
+										/>
+									</Form.Item>
 
-								</div>
+										
+									<Form.Item
+										label="Expiration"
+										name="expiration"
+										rules={[{ required: true, message: 'Expiration Year is required.' }]}
+										className={classes.cardInput}
+									>
+										<Input
+											placeholder="MM/YY"
+											onChange={onExpirationChange}
+											className={classes.cardDetails}
+										/>
+										
+									</Form.Item>
+
+
+									<Form.Item
+										label="CVV"
+										name="cvv"
+										rules={[{ required: true, message: 'CVV is required.' }]}
+										className={classes.cardInput}
+									>
+										<InputNumber
+											placeholder="###"
+											onChange={onCVVChange}
+											className={classes.cardDetails}
+										/>
+									</Form.Item>
+
+								</Form>
 							</Col>
 							<Col span={8}  >
 								<PaymentSummary

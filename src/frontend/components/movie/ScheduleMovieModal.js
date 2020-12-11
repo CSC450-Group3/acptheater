@@ -19,6 +19,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
     var showingDateTime = startDate + " " + startTime;
     //stip of the 'min' off duration, so add it to the start time
     var duration = (movie.duration).replace(/[^0-9]/g, '');
+    const dateFormat = 'MM/DD/YYYY'
 
     useEffect(() => {
         //set a 2 second timer
@@ -33,9 +34,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
     )
 
 
-
     async function addNewShowing(bool) {
-        console.log(screenID)
         await axios.get('/api/screen/' + screenID)
             .then(function (res) {
                 //get the selected screen info and store the appropriate data to the database
@@ -118,7 +117,6 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
         //get all screens at the movie theater
         await axios.get('/api/screen/date/' + isoDate(date))
             .then(function (res) {
-                console.log(res.data)
                 //screens found successfully
                 setAvailableScreens(res.data)
             })
@@ -193,7 +191,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
         setIsOverlapping(false)
     }
 
-    function displayDuplicateError() {
+    function displayAlert() {
         if (isDuplicate) {
             return (
                 <Alert
@@ -264,7 +262,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
             visible={activateModal}
             width={375}
             footer={[
-                <div style={{ textAlign: "left" }}>
+                <div style={{ textAlign: "left" }} key={v4()}>
                     <Button
                         key="addAgain"
                         type="primary"
@@ -274,7 +272,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
                         style={{ marginBottom: 5 }}
                     >
                         Add & Add Another
-                </Button>
+                    </Button>
                     <Button
                         key="Add"
                         type="secondary"
@@ -284,8 +282,14 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
                         style={{ marginBottom: 5 }}
                     >
                         Add One
-                </Button>
-                    <Button key="cancel" size={'middle'} onClick={onCancel}>Close</Button>
+                    </Button>
+                    <Button 
+                        key="cancel" 
+                        size={'middle'} 
+                        onClick={onCancel}
+                    >
+                        Close
+                    </Button>
                 </div>
             ]}
 
@@ -307,6 +311,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
                         required
                         onChange={onDateChange}
                         disabledDate={disabledDate}
+                        format={dateFormat}
                     />
                 </Form.Item>
 
@@ -371,7 +376,7 @@ function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, mo
                     />
                 </Form.Item>
 
-                {displayDuplicateError()}
+                {displayAlert()}
             </Form>
         </Modal>
 
