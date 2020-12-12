@@ -6,7 +6,7 @@ import { validateDate, displayDateAlert, duplicateEmailAlert } from '../../helpe
 import { Form, DatePicker, Button, Alert, Input } from 'antd';
 
 
-function UserProfile(props) {
+function UserProfileDashboard(props) {
     const { user, updateAccountAction } = props;
     const [firstName, setFirstName] = useState(user.first_name);
     const [lastName, setLastName] = useState(user.last_name);
@@ -173,7 +173,7 @@ function UserProfile(props) {
     return (
         <div className="userUpdateDash" >
             <h1 className="userUpdateDashHeader" >User Information</h1>
-            <hr class="blackHr"></hr>
+            <hr className="blackHr"></hr>
             <div className="userUpdateDashForm">
                 <Form
                     form={form}
@@ -188,7 +188,6 @@ function UserProfile(props) {
                     >
                         <Input
                             autoFocus
-                            defaultValue={email}
                             value={email}
                             name="email"
                             onChange={onEmailChange}
@@ -202,7 +201,6 @@ function UserProfile(props) {
                         rules={[{ required: true, message: 'First Name is required.' }]}
                     >
                         <Input
-                            defaultValue={firstName}
                             value={firstName}
                             name="firstName"
                             onChange={onFirstNameChange}
@@ -215,7 +213,6 @@ function UserProfile(props) {
                         rules={[{ required: true, message: 'Last Name is required.' }]}
                     >
                         <Input
-                            defaultValue={lastName}
                             value={lastName}
                             name="lastName"
                             onChange={onLastNameChange}
@@ -230,7 +227,6 @@ function UserProfile(props) {
                         <DatePicker
                             name="birthday"
                             id="birthday"
-                            defaultValue={moment(birthday)}
                             value={birthday !== null ? moment(birthday) : null}
                             format={dateFormat}
                             onChange={onBirthdayChange}
@@ -246,7 +242,6 @@ function UserProfile(props) {
                         rules={[{ required: false }]}
                     >
                         <Input.Password
-                            defaultValue={newPassword}
                             value={newPassword}
                             onChange={onNewPasswordChange}
                         />
@@ -258,7 +253,6 @@ function UserProfile(props) {
                         rules={[{  required: isNewPasswordPopulated , message: 'Confirm Password is required.'}]}
                     >
                         <Input.Password
-                            defaultValue={confirmPassword}
                             value={confirmPassword}
                             type="password"
                             onChange={onConfirmChange}
@@ -293,4 +287,4 @@ function UserProfile(props) {
     );
 }
 
-export default UserProfile;
+export default UserProfileDashboard;

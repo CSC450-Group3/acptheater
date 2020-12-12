@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PuchasedMovieTicketCard from '../movie/PuchasedMovieTicketCard'
 import MovieTransactionDetailModal from '../movie/MovieTransactionDetailModal'
-import { Layout, Row } from 'antd';
+import { Row } from 'antd';
 import axios from 'axios';
 import { v4 } from 'node-uuid'; // used to generate unique ID
 import 'antd/dist/antd.css';
@@ -24,9 +24,7 @@ const styles = makeStyles((theme) => ({
 
 }));
 
-const { Content } = Layout;
-
-const MovieTicketDashboard = ({ user, history }) => {
+const UserTicketDashboard = ({ user, history, tab_name }) => {
     const classes = styles();
     const [purchasedMovieTickets, setPurchasedMovieTickets] = useState([]);
     const [activateTransactionModal, setActivateTransactionModal] = useState(false)
@@ -44,8 +42,12 @@ const MovieTicketDashboard = ({ user, history }) => {
                 })
         }
 
-        loadPurchasedTickets();
-    }, [user])
+        // only load this data if the tickets tab is selected
+        // prevents memory leak error in console.
+        if(tab_name==='Tickets'){
+            loadPurchasedTickets();
+        }
+    }, [user, tab_name])
 
     const displayTransactionModal = () => {
         //only load this component if there is data to pass to it
@@ -118,4 +120,4 @@ const MovieTicketDashboard = ({ user, history }) => {
 
 }
 
-export default MovieTicketDashboard;
+export default UserTicketDashboard;

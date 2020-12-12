@@ -185,7 +185,8 @@
 }
 
 .newMessage {
-  float: left;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 hr.solid {
@@ -251,14 +252,11 @@ hr.solid {
   background-image: url("/images/gradientBackground.jpeg");
   background-color: #cccccc;
   /*height: 700px; /* You must set a specified height */
-  background-position: center; /* Center the image */	
   background-repeat: no-repeat; /* Do not repeat the image */	
-  background-size: cover; /* Resize the background image to cover the entire container */
+  background-size: 100vw 100vh; /* Resize the background image to cover the entire container */
   color: black;
   text-align: center;
   margin: auto;
-  min-height: 85vh; /* Fill the available screen area */
-  width: 100vw; /* Fill the width of the view window */
   background-attachment: fixed; /* Keep the image fixed to background where it is at on scroll*/
 }
 
