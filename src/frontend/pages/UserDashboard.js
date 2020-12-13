@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tab from '@material-ui/core/Tab';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
-import axios from 'axios';
 import { withRouter } from "react-router-dom";
 import UserProfileDashboard from '../components/user/UserProfileDashboard';
 import UserMessagingDashboard from '../components/user/UserMessageDashboard';
@@ -37,11 +36,14 @@ function UserDashboard(props) {
 		switch(tab_name){
 			case 'Messaging':
 				setTab('3');
+				document.title = `ACP | Messaging`;
 				break;
 			case 'Profile':
 				setTab('2');
+				document.title = `ACP | Profile`;
 				break;
 			case 'Tickets':
+				document.title = `ACP | Tickets`;
 				setTab('1')
 				break;
 			default:
@@ -50,7 +52,7 @@ function UserDashboard(props) {
 				setTab('1');
 		}
 		
-	},[ tab_name])
+	},[ tab_name, history])
 
 
 	const handleChange = (event, newValue) => {
@@ -67,6 +69,11 @@ function UserDashboard(props) {
 			case '1':
 				history.replace({ pathname: `/UserDashboard/Tickets`})
 				break;
+			default:
+				//default to the first tab if all else fails
+				history.replace({ pathname: `/UserDashboard/Tickets`})
+				break;
+
 		}
 
 	};

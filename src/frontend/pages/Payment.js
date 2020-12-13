@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Layout, Col, Card, Row, Form, Input, InputNumber } from 'antd';
-import MaskedInput from 'antd-mask-input'
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router-dom";
 import { calculateTotalPrice } from '../helper/PaymentCalculation'
@@ -46,17 +45,25 @@ const styles = makeStyles((theme) => ({
 	},
 	expiration:{
 		display: 'inline-block'
+	},
+	form:{
+		textAlign: "left"
 	}
 }));
 
 function Payment(props) {
 	const classes = styles();
-	const { user, selectedSeats, customerMovie, selectedTicket, clearMovieToWatch, clearSelectedTicket, clearSeats, history, clearMovieTicketSelections } = props
+	const { user, selectedSeats, customerMovie, selectedTicket, history, clearMovieTicketSelections } = props
 	const [transaction, setTransaction] = useState([]);
 	const [total_price] = useState(calculateTotalPrice(selectedTicket, selectedSeats));
 	const tickets = [];
 	const errors = [];
 	const [form] = Form.useForm();
+
+	useEffect( () => {
+		document.title = `ACP | Payment`;
+	}, [])
+
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -198,7 +205,14 @@ function Payment(props) {
 
 	return (
 		<div className={classes.PaymentForm}>
-			<form className={classes.content} method="post" onSubmit={handleSubmit}>
+			{/* <form className={classes.content} method="post" onSubmit={handleSubmit}> */}
+			<Form
+				form={form}
+				layout="vertical"
+				name="Payment Form"
+				initialValues={{ remember: true }}
+				className={classes.form}
+			>
 				<Layout className={classes.container}>
 					<Card
 						className={classes.card}
@@ -206,7 +220,7 @@ function Payment(props) {
 
 						actions={[
 							<div className={classes.actionBar}>
-								<Button key="purchase" type="primary" htmlType="submit" className={classes.actionBar} >Confirm </Button>
+								<Button key="purchase" type="primary" htmlType="submit" onClick={handleSubmit} className={classes.actionBar} >Confirm </Button>
 								<Button key="cancel" className={classes.actionBar} onClick={handleCancel}>Cancel</Button>
 							</div>
 						]}
@@ -214,12 +228,7 @@ function Payment(props) {
 						<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
 							<Col span={16} >
 								<h3>Billing Information</h3>
-								<Form
-									form={form}
-									layout="vertical"
-									name="Payment Form"
-									initialValues={{ remember: true }}
-								>
+	
 									<Form.Item
 										label="Name on Card"
 										name="nameOnCard"
@@ -323,7 +332,7 @@ function Payment(props) {
 										/>
 									</Form.Item>
 
-								</Form>
+							
 							</Col>
 							<Col span={8}  >
 								<PaymentSummary
@@ -337,7 +346,8 @@ function Payment(props) {
 						</Row>
 					</Card>
 				</Layout>
-			</form>
+				</Form>
+			{/* </form> */}
 
 
 		</div>

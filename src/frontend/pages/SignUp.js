@@ -4,7 +4,7 @@ import axios from 'axios';
 import { withRouter } from "react-router-dom";
 import { isoDate } from '../helper/FormatDate'
 import { validateDate, displayDateAlert, duplicateEmailAlert } from '../helper/UserValidation'
-import { Form, DatePicker, Button, Alert, Input, Checkbox  } from 'antd';
+import { Form, DatePicker, Button, Input, Checkbox  } from 'antd';
 import moment from 'moment';
 
 function UserCreation(props) {
@@ -56,7 +56,6 @@ function UserCreation(props) {
                         .then(function (res) {
                             //user created successfully
                             if (res.status === 200) {
-                                const user = res.data
                                 //redirect to login screen upon successful creation
                                 history.push("/Login");
                             }
@@ -122,11 +121,11 @@ function UserCreation(props) {
                     <h1 className="userCreationHeader">Become A Part Of The <br></br>ACP Theatres Family</h1>
                     <hr></hr>
                     <Form
-                    form={form}
-                    layout="vertical"
-                    name="Schedule Movie Form"
-                    initialValues={{ remember: true }}
-                >
+                        form={form}
+                        layout="vertical"
+                        name="Schedule Movie Form"
+                        initialValues={{ remember: true }}
+                    >
                     <Form.Item
                         label="Email"
                         name="email"

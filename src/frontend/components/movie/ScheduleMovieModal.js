@@ -5,7 +5,7 @@ import axios from 'axios';
 import moment from 'moment';
 import {  isoDate } from '../../helper/FormatDate';
 
-function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, movie, setActivateModal, activateModal, setScheduleError }) {
+function ScheduleMovieModal({ addSchedule, setRerender, showings, movie, setActivateModal, activateModal, setScheduleError }) {
     const [availableScreens, setAvailableScreens] = useState([])
     const [screenID, setScreenID] = useState("");
     const [startDate, setStartDate] = useState(null);

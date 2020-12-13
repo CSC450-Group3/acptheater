@@ -38,7 +38,6 @@ function Login(props) {
 					.then(function (res) {
 						//user found successfully
 						if (res.data.length ===  1) {
-							console.log(res.data[0])
 							const user = res.data[0]
 							//sent logged in user to the redux store
 							props.loginAction(
