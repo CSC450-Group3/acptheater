@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Form, Select, DatePicker, InputNumber, TimePicker, Button, Alert, Radio } from 'antd';
+import { Modal, Form, DatePicker, InputNumber, TimePicker, Button, Alert, Radio } from 'antd';
 import { v4 } from 'node-uuid'; // used to generate unique ID
 import axios from 'axios';
 import moment from 'moment';
-import { utcISODate, isoDate } from '../../helper/FormatDate';
+import {  isoDate } from '../../helper/FormatDate';
 
-function ScheduleMovieModal({ addSchedule, allScreens, setRerender, showings, movie, setActivateModal, activateModal, setScheduleError }) {
+function ScheduleMovieModal({ addSchedule, setRerender, showings, movie, setActivateModal, activateModal, setScheduleError }) {
     const [availableScreens, setAvailableScreens] = useState([])
     const [screenID, setScreenID] = useState("");
     const [startDate, setStartDate] = useState(null);

@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -13,7 +12,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import axios from 'axios';
+
 import { setNewMessages } from '../../actions/newMessageActions';
 
 const navbarStyle = makeStyles((position) => ({
@@ -31,7 +30,6 @@ function Navbar(props) {
 	const { user, logoffAction, history, newMessages } = props
 	const [anchorEl1, setAnchorEl1] = useState(null);
 	const [anchorEl2, setAnchorEl2] = useState(null);
-	const [totalMessages, setTotalMessages] = useState(0);
 
 	const isNavMenuOpen = Boolean(anchorEl1);
 	const isProfileMenuOpen = Boolean(anchorEl2);
@@ -184,7 +182,7 @@ function Navbar(props) {
 					>
 						<MenuIcon />
 					</IconButton>
-					<a href='/'><img className="logo" src='/images/ACP_THEATRES_LOGO.png' /></a>
+					<a href='/'><img className="logo" alt="ACP Theatres logo" src='/images/ACP_THEATRES_LOGO.png' /></a>
 					<div className={classes.nav} />
 					<div className={classes.menuOptions}>
 						{displayByLoginStatus(user.user_id, user.type)}

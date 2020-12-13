@@ -26,6 +26,8 @@ store.subscribe(()=>{
     customerMovie: store.getState().customerMovie,
     selectedTicket: store.getState().selectedTicket,
     selectedSeats: store.getState().selectedSeats,
+    movieToSchedule: store.getState().movieToSchedule,
+    showings: store.getState().showings
   });
 })
 

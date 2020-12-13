@@ -1,4 +1,3 @@
-import axios from 'axios';
 export const LOGIN = "LOGIN"
 export const LOG_OFF = "LOG_OFF"
 export const UPDATE_ACCOUNT = "UPDATE_ACCOUNT"

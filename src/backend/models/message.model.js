@@ -87,12 +87,13 @@ Message.findById = (message_id, result) => {
 //subtract 6 hours to get UTC to CST
 Message.findByThread = (thread_id, accessing_user_id, result) => {
     sql.query(
-        "SELECT t.subject, m.message_id, t.resolved, m.sending_user_id, u.first_name, u.last_name, CAST(m.message_body AS CHAR) as body, DATE_FORMAT(date_sub(m.sent_date_time, interval 6 hour), '%c/%e/%Y %r') AS sent_date_time " +
-        "FROM thread t " + 
-            "INNER JOIN message m on m.thread_id = t.thread_id " +
-            "INNER JOIN user u on u.user_id = m.sending_user_id " +
-        "WHERE t.thread_id = ? " +
-        "ORDER BY sent_date_time", 
+        "SELECT t.subject, m.message_id, t.resolved, m.sending_user_id, u.first_name, u.last_name, CAST(m.message_body AS CHAR) as body, " +
+        " DATE_FORMAT(date_sub(m.sent_date_time, interval 6 hour), '%c/%e/%Y %r') AS sent_date_time, date_sub(m.sent_date_time, interval 6 hour) AS sort_date " +
+        " FROM thread t " + 
+            " INNER JOIN message m on m.thread_id = t.thread_id " +
+            " INNER JOIN user u on u.user_id = m.sending_user_id " +
+        " WHERE t.thread_id = ? " +
+        " ORDER BY sort_date ", 
     [thread_id],
     (err, res) => {
         //Error encountered
