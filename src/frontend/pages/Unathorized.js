@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -25,6 +25,12 @@ const useStyles = makeStyles((theme) => ({
 
 function Unauthorized(){
     const classes = useStyles();
+
+    useEffect( () => {
+      document.title = `ACP | Unauthorized Access`;
+
+    }, [])
+
   return (
     <div className={classes.root}>
      

@@ -115,7 +115,6 @@ class App extends Component {
 								selectMovieToSchedule={selectMovieToSchedule}
 								movieToSchedule={movieToSchedule}
 								clearMovieToSchedule={clearMovieToSchedule}
-								user={user}
 								history={history}
 							/>
 
@@ -153,6 +152,7 @@ class App extends Component {
 								selectedTicket={selectedTicket}
 								customerMovie={customerMovie}
 								setSelectedTicketInfo={setSelectedTicketInfo}
+								clearSeats={clearSeats}
 								clearSelectedTicket={clearSelectedTicket}
 								clearMovieToWatch={clearMovieToWatch}
 								clearMovieTicketSelections={clearMovieTicketSelections}

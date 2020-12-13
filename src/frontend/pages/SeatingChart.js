@@ -43,22 +43,22 @@ const styles = makeStyles((theme) => ({
 
 
 function SeatingChart(props) {
-	const { selectedSeats, selectedTicket, addSeat, removeSeat, clearSeats, clearMovieToWatch, clearSelectedTicket, history, clearMovieTicketSelections } = props;
+	const { selectedSeats, selectedTicket, addSeat, removeSeat, clearSeats, history, clearMovieTicketSelections } = props;
 	const classes = styles();
 	const columns = 20;
 	const rows = 10;
 	var visitedSeat = 0;
-	const [activateModal, setActivateModal] = useState(true);
-	const [payment, setPayment] = useState(false);
 	const [loadedSeatData, setLoadedSeatData] = useState([]);
-	const [objSeatData, setObjSeatData] = useState({});
+	const [objSeatData] = useState({});
 	const [isLoading, setIsLoading] = useState(true)
 	const [seatError, setSeatError] = useState(false)
 
 
 	useEffect(() => {
+		document.title = `ACP | Select Seats`;
+		
 		// load the seats for the selected showing
-		async function loadShowings() {
+		async function loadAvailableSeats() {
 			await axios.get('/api/seat/showing/' + selectedTicket.showing_id)
 				.then(function (res) {
 					setLoadedSeatData(res.data);
@@ -77,7 +77,14 @@ function SeatingChart(props) {
 				})
 		}
 
-		loadShowings();
+		//load seats if the ticket is selected
+		if(selectedTicket.showing_id !== ""){
+			loadAvailableSeats();
+		}
+		//send back to tickets
+		else{
+			history.push("/PurchaseTickets")
+		}
 
 	}, [selectedTicket])
 
@@ -115,7 +122,7 @@ function SeatingChart(props) {
 		}
 		// remove the seat if it already exist (deselecting seat)
 		else {
-			removeSeat(seat_id)
+			removeSeat(seat_id);
 		}
 	}
 
@@ -172,7 +179,7 @@ function SeatingChart(props) {
 						booked={(loadedSeatData[visitedSeat]).booked}
 						row_name={(loadedSeatData[visitedSeat]).row_name}
 						seat_number={(loadedSeatData[visitedSeat]).seat_number}
-						selected={objSeatData[(loadedSeatData[visitedSeat]).seat_id].selected}
+						selected={selectedSeats[(loadedSeatData[visitedSeat]).seat_id] !== undefined ? true : false} //selected if it is in the redux store still
 						handleSeatClick={handleSeatClick}
 					/>
 				</Col>

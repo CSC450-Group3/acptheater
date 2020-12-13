@@ -1,37 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Space, Popconfirm } from 'antd';
+import { Button, Popconfirm , Card, Alert} from 'antd';
 import { Link } from "react-router-dom";
 import LoadingPage from '../components/util/LoadingPage'
 import { Table } from 'antd';
-import { v4 } from 'node-uuid'; // used to generate unique ID
 import axios from 'axios';
 import {isoDate} from '../helper/FormatDate'
-import Alert from '@material-ui/lab/Alert';
 import ScheduleMovieModal from '../components/movie/ScheduleMovieModal'
 import { withRouter } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { utcISODateTime } from '../helper/FormatDate';
-var moment = require('moment-timezone');
-
-
 
 const formStyle = makeStyles(() => ({
-    footer: {
-        background: '#000000',
-        color: '#fff',
-        textAlign: 'center',
-        position: 'absolute',
-        bottom: 0,
-        width: "100%",
+	root:{
+        background: '#282c34', 
+		minHeight: "90vh",
+		padding: '30px',
+	},
+	card:{
+		minHeight: '75vh',
+		width: '80vw',
+		margin: 'auto',
+		marginBottom: '70px'
+	},
+    actionButton: {
+		marginRight:"5px"
 	},
 	scheduleTable: {
 		width: '80vw',
 		textAlign: 'center',
+		minHeight: '60vh'
 	},
 	tableWrapper: {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center' 
+	},
+	actionBar: {
+		textAlign: "left",
+		paddingLeft: 15,
+		marginRight: 15,
 	},
 	formActionBar:{
 		position:"absolute", 
@@ -39,47 +46,31 @@ const formStyle = makeStyles(() => ({
 		bottom:90,
 	},
 	alert:{
-		marginTop: 15,
-		marginBottom: 15,
-		maxWidth:500,
-		position:"absolute", 
-		left: '10vw',
+		display: "inline",
+		width:"500px",
+
 	}
 }));
 
 
 function ScheduleForm(props) {
 	const classes = formStyle();
-	const {showings, movieToSchedule} = props
+	const {showings, movieToSchedule, history, removeSchedule, loadActiveMovies, clearMovieToSchedule, clearScheudles, addSchedule} = props
 	const [activateModal, setActivateModal] = useState(false);
-	const [allScreens, setAllScreens] = useState([]); 
 	const [isLoading, setIsLoading] = useState(false)
 	const [keyToDelete, setKeyToDelete] = useState("");
 	const [scheduleError, setScheduleError] = useState(false)
 	const [rerender, setRerender] = useState(false)
 
 	useEffect( () => {
-		//get all screens at the movie theater
-		async function getScreens(){
-			await axios.get('/api/screen/getAll')
-			.then(function(res) {
-				//screens found successfully
-				setAllScreens(res.data)
-			})
-			.catch(function (err) {
-				console.log(err)
-			});
-		}
-
-		getScreens();
+		document.title = `ACP | Schedule Movies`;
 
 		return () => {
 			// cleanup on unmount
 			clearData();
-           
         }
 
-	}, [showings])
+	}, [])
 
 	
 	function displayTable(data){
@@ -101,7 +92,7 @@ function ScheduleForm(props) {
 				<Button danger
 				  	onClick={() => {setKeyToDelete(record.key);}}
 				>
-				 <a> Delete </a>
+				  	Delete 
 				</Button>
 				</Popconfirm>
 			  ),
@@ -136,15 +127,18 @@ function ScheduleForm(props) {
 	const ScheduleAlert = () => {
 		if (scheduleError) {
 			return (
-				<Alert severity="error" className={classes.alert}>
-					Error: At least one showing must be scheduled.
-				</Alert>
+				<Alert 
+					message="Error: At least one showing must be scheduled." 
+					type="error" 
+					showIcon 
+					className={classes.alert}
+				/>
 			)
 		}
 	}
 
 	function confirmDelete() {
-		props.removeSchedule(keyToDelete)
+		removeSchedule(keyToDelete)
 	}
 
 	async function handleSubmitSchedules(e){
@@ -190,10 +184,10 @@ function ScheduleForm(props) {
 						setIsLoading(false);
 						
 						//Reload the active movies in the store
-						props.loadActiveMovies()
+						loadActiveMovies()
 
 						//Cleanup movie/schedule data and redirect to Movies page
-						props.history.push("/Movies");
+						history.push("/Movies");
 					})
 					.catch(function (err) {
 						console.log(err)
@@ -210,30 +204,52 @@ function ScheduleForm(props) {
 	 * Clean up the movie and schedule data in the redux store. 
 	 */
 	function clearData(){
-		props.clearMovieToSchedule()
-		props.clearScheudles()
+		clearMovieToSchedule()
+		clearScheudles()
 	}
 	
 	return (
-		<div className="ScheduleForm">
-			<h1>Scheduling Movie {movieToSchedule.title}</h1>
+		<div className={classes.root}>
 			<form  className="Schedule-Form"method="post" onSubmit={handleSubmitSchedules}>
-				{displayTable(showings)}
-				{ScheduleAlert()}
-				<div  className={classes.formActionBar}>
-					<Space size='small'>
-						<Button key="schedule"  type="primary"  onClick = {() => {
+			<Card 
+				className={classes.card}
+				title= {"Schedule Movie: " + movieToSchedule.title}
+				actions={[
+					<div className={classes.actionBar}>
+						<Button 
+							key="schedule"  
+							type="primary" 
+							className={classes.actionButton} 
+							onClick = {() => {
 								setActivateModal(true);
 							}
-						}>Add Schedule</Button>
-						<Button key="save" htmlType="submit" >Save</Button>
-						<Button key="cancel"  onClick ={()=>clearData()}><Link to="/Movies">Cancel</Link></Button>
-					</Space>
-				</div>
-			</form>		
+						}>
+							Add Schedule
+						</Button>
+						<Button 
+							key="save" 
+							htmlType="submit" 
+							className={classes.actionButton}
+						>
+							Save
+						</Button>
+						<Button 
+							key="cancel"  
+							className={classes.actionButton}
+							onClick ={()=>clearData()}
+						>
+							<Link to="/Movies">Cancel</Link>
+						</Button>
+						{ScheduleAlert()}
+					</div>
+				]}
+				
+			>	
+				{displayTable(showings)}
+				
+			
 			<ScheduleMovieModal  
-				addSchedule={props.addSchedule} 
-				allScreens={allScreens}
+				addSchedule={addSchedule} 
 				setActivateModal={setActivateModal}
 				activateModal={activateModal}
 				setScheduleError={setScheduleError}
@@ -242,6 +258,10 @@ function ScheduleForm(props) {
 				movie={movieToSchedule}
 			/>
 			{/* {dispalyScheduleModal()} */}
+			
+			</Card>
+
+			</form>	
 			{displayLoading()}
 		</div>
   );

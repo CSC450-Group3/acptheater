@@ -55,6 +55,7 @@ function Movies(props) {
     } = props
 
     useEffect(() => {
+        document.title = `ACP | Search Movies`;
         setError(null);
         setData(null);
 

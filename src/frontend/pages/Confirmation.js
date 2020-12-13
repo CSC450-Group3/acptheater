@@ -10,14 +10,16 @@ function Confirmation(props) {
     const [total_price] = useState(calculateTotalPrice(selectedTicket, selectedSeats));
 
     useEffect(() => {
+        document.title = `ACP | Confirmation`;
+        
         return () => {
             // cleanup movie ticket data on unmount
             clearMovieTicketSelections();
         }
-    }, [])
+    },[])
 
     return (
-        <div style={{ backgroundColor: '#282c34', paddingTop: 75 }}>
+        <div style={{ backgroundColor: '#282c34', paddingTop: 75, paddingBottom: 80 }}>
             <div className="confirmationContainer">
                 <h1>Your order has been successfully processed and your seats are confirmed! < br /> Thank you for your purchase.</h1>
                 < br />
@@ -38,7 +40,7 @@ function Confirmation(props) {
                     showtime={selectedTicket.date + " " + selectedTicket.time}
                 />
                 < br />
-                <h4 style={{ paddingLeft: 300, paddingRight: 300, paddingBottom: 100 }}>We look forward to seeing you, and we hope you enjoy your experience here at ACP Theatres!
+                <h4 style={{ margin:"auto", maxWidth: "300px", paddingBottom: 20 }}>We look forward to seeing you, and we hope you enjoy your experience here at ACP Theatres!
                 Should you have any questions or concerns in regards to your purchased tickets,
                 please navigate to either the message icon located in the navigation bar or
                 within your user profile under the <Link to="/UserDashboard/Messaging">Messaging</Link > tab.</h4>

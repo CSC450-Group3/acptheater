@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import { withRouter } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
+import { cstDateTime } from '../../helper/FormatDate';
 
 
 
@@ -70,13 +71,30 @@ function Inbox(props) {
 			{ 
                 title: 'Last Message', 
                 dataIndex: 'last_message_date',
-                key: 'last_message_date' 
+                key: 'last_message_date' ,
+                render: value => cstDateTime(value) + " (CST)"
             },
+            //  { 
+            //      title: 'Status2', 
+            //      dataIndex: 'isNewMessage', 
+            //      key: 'isNewMessage',  
+            //      render: value =>  value === 1 ? <Tag color='green' key={v4()}>New Message</Tag> : null
+            //  },
             { 
                 title: 'Status', 
-                dataIndex: 'isNewMessage', 
-                key: 'isNewMessage',  
-                render: value => value === 1 ? <Tag color='green' key={v4()}>New Message</Tag> : null
+                dataIndex: 'totalNew', 
+                key: 'totalNew',  
+                render: value =>  {
+                    if( value === 1){
+                        return(<Tag color='green' key={v4()}> {value} New Message</Tag>)
+                    }
+                    else if( value > 1){
+                        return(<Tag color='green' key={v4()}> {value} New Messages</Tag>)
+                    }
+                    else{
+                        return null
+                    }
+                } 
             }
         ];
 	

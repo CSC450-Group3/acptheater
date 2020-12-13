@@ -11,14 +11,23 @@ import Loader from '../components/util/Loader'
 import axios from 'axios';
 import { withRouter } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
+import { cstDateTime } from '../helper/FormatDate'
 
 const style = makeStyles(() => ({
 	root: {
-		background: 'white',
+		background: '#282c34',
 		minHeight: "90vh",
+		padding: "100px"
+	},
+	content:{
+		background: 'white',
+		padding: '20px;'
 	},
 	messages: {
 		margin: 20
+	},
+	actionButton:{
+		marginRight: "5px",
 	}
 }));
 
@@ -49,7 +58,8 @@ function MessageThread(props) {
 		if(sentSuccessfully){
 			//reset data for more messages
 			setSetSuccessfully(false);
-			setIsLoading(false)
+			setNewMessage("");
+			setIsLoading(false);
 		}
 
 
@@ -79,6 +89,7 @@ function MessageThread(props) {
 			.then(function (res) {
 				setSetSuccessfully(true)
 				setOpen(false)
+				
 			})
 			.catch(function (err) {
 				console.log(err)
@@ -89,6 +100,7 @@ function MessageThread(props) {
 
 	const handleClose = () => {
 		setOpen(false);
+		setNewMessage("");
 	};
 
 	const handleClickOpen = () => {
@@ -103,11 +115,11 @@ function MessageThread(props) {
 			messageData.push(
 				<div key={messages[key].message_id}>
 					<Row>
-						<Col span={6} >
+						<Col span={8} >
 							<div style={{ textAlign: "left" }}>
 								<p>From: {messages[key].first_name} {messages[key].last_name}
 									<br />
-							Sent: {messages[key].sent_date_time}
+							Sent: {cstDateTime(messages[key].sent_date_time)} (CST)
 								</p>
 							</div>
 
@@ -134,7 +146,7 @@ function MessageThread(props) {
 					<div className={classes.messages}>
 						<Messages />
 						
-						<Button type="primary" variant="contained"  onClick={handleClickOpen}>
+						<Button type="primary" variant="contained"  onClick={handleClickOpen} className={classes.actionButton}>
 							Reply
 						</Button>
 						
@@ -165,10 +177,10 @@ function MessageThread(props) {
 									/>
 								</DialogContent>
 								<DialogActions>
-									<Button onClick={handleSendNewMessage} variant="contained" color="primary">
+									<Button onClick={handleSendNewMessage} variant="contained" type="primary">
 										Send
 									</Button>
-									<Button onClick={handleClose} color="#1890FF">
+									<Button onClick={handleClose}>
 										Cancel
 									</Button>
 								</DialogActions>
@@ -183,3 +195,4 @@ function MessageThread(props) {
 
 	);
 }
+export default withRouter(MessageThread);
