@@ -4,6 +4,7 @@ import Loader from '../util/Loader'
 import MovieDetail from './MovieDetail';
 import 'antd/dist/antd.css';
 import { withRouter } from "react-router-dom";
+import { v4 } from 'uuid';
 
 /**
  * @param {*} title - Movie Title 
@@ -69,7 +70,7 @@ const MovieDetailActionModal = (
                         }>
                         Purchase Tickets
                     </Button>
-                    <Button key="cancel" onClick={() => {
+                    <Button key="cancelPurchase" onClick={() => {
                         clearMovieToWatch(); //clear selected movie details
                         setActivateModal(false); // close the modal
                     }
@@ -85,7 +86,7 @@ const MovieDetailActionModal = (
             return (
                 <div>
                     <Button
-                        key="purchase"
+                        key="schedule"
                         type="primary"
                         onClick={() => {
                             handleSchedule();
@@ -93,7 +94,7 @@ const MovieDetailActionModal = (
                         }>
                         Schedule Movie
                     </Button>
-                    <Button key="cancel" onClick={() => {
+                    <Button key="cancelSchedule" onClick={() => {
                         clearMovieToSchedule(); //clear selected movie details
                         setActivateModal(false); // close the modal
                     }
@@ -113,7 +114,7 @@ const MovieDetailActionModal = (
             onCancel={() => setActivateModal(false)}
             width={800}
             footer={[
-                <ActionBar />,
+                <ActionBar key={v4()}/>,
             ]}
         >
             { detailRequest === false ?

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Divider } from 'antd';
+import { Button, Row, Col, Divider } from 'antd';
 import { Link } from 'react-router-dom'
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,20 +11,29 @@ import Loader from '../components/util/Loader'
 import axios from 'axios';
 import { withRouter } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
+import { cstDateTime } from '../helper/FormatDate'
 
 const style = makeStyles(() => ({
 	root: {
-		background: 'white',
+		background: '#282c34',
 		minHeight: "90vh",
+		padding: "100px"
+	},
+	content:{
+		background: 'white',
+		padding: '20px;'
 	},
 	messages: {
 		margin: 20
+	},
+	actionButton:{
+		marginRight: "5px",
 	}
 }));
 
 function MessageThread(props) {
 	const classes = style();
-	const { thread_id, user_id } = props.match.params;
+	const { thread_id, user_id } = props.computedMatch.params; //computed due to the protected route
 	const [messages, setMessages] = useState(null)
 	const [isLoading, setIsLoading] = useState(true)
 	const [open, setOpen] = React.useState(false);
@@ -50,7 +58,8 @@ function MessageThread(props) {
 		if(sentSuccessfully){
 			//reset data for more messages
 			setSetSuccessfully(false);
-			setIsLoading(false)
+			setNewMessage("");
+			setIsLoading(false);
 		}
 
 
@@ -80,6 +89,7 @@ function MessageThread(props) {
 			.then(function (res) {
 				setSetSuccessfully(true)
 				setOpen(false)
+				
 			})
 			.catch(function (err) {
 				console.log(err)
@@ -90,6 +100,7 @@ function MessageThread(props) {
 
 	const handleClose = () => {
 		setOpen(false);
+		setNewMessage("");
 	};
 
 	const handleClickOpen = () => {
@@ -104,11 +115,11 @@ function MessageThread(props) {
 			messageData.push(
 				<div key={messages[key].message_id}>
 					<Row>
-						<Col span={6} >
+						<Col span={8} >
 							<div style={{ textAlign: "left" }}>
 								<p>From: {messages[key].first_name} {messages[key].last_name}
 									<br />
-							Sent: {messages[key].sent_date_time}
+							Sent: {cstDateTime(messages[key].sent_date_time)} (CST)
 								</p>
 							</div>
 
@@ -134,17 +145,16 @@ function MessageThread(props) {
 					<h2>{messages[0].subject}</h2>
 					<div className={classes.messages}>
 						<Messages />
-
-
+						
+						<Button type="primary" variant="contained"  onClick={handleClickOpen} className={classes.actionButton}>
+							Reply
+						</Button>
+						
 						<Link to='/UserDashboard/Messaging'>
 							<Button variant="contained"  >
 								Back
 							</Button>
 						</Link>
-
-						<Button variant="contained"  onClick={handleClickOpen}>
-							Reply
-						</Button>
 
 						<div className="reply">
 							<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -167,10 +177,10 @@ function MessageThread(props) {
 									/>
 								</DialogContent>
 								<DialogActions>
-									<Button onClick={handleSendNewMessage} variant="contained" color="primary">
+									<Button onClick={handleSendNewMessage} variant="contained" type="primary">
 										Send
 									</Button>
-									<Button onClick={handleClose} color="#1890FF">
+									<Button onClick={handleClose}>
 										Cancel
 									</Button>
 								</DialogActions>
@@ -185,5 +195,4 @@ function MessageThread(props) {
 
 	);
 }
-
 export default withRouter(MessageThread);

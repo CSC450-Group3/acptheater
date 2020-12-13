@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Col, Card, Button } from 'antd';
 import 'antd/dist/antd.css';
 import MovieCard from './MovieCard';

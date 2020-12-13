@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 } from 'uuid';
 
 const TicketInfo = ({ selectedTicket, selectedSeats }) => {
     const tickets = [];
@@ -9,7 +10,7 @@ const TicketInfo = ({ selectedTicket, selectedSeats }) => {
         ))
     }
     else {
-        tickets.push(<div><p>Virtual Tickets Viewers: {selectedTicket.number_of_viewers}</p><p> Movie Price: ${selectedTicket.price}</p></div>)
+        tickets.push(<div key={v4()}><p>Virtual Tickets Viewers: {selectedTicket.number_of_viewers}</p><p> Movie Price: ${selectedTicket.price}</p></div>)
     }
     return (tickets);
 }

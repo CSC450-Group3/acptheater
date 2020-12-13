@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 
-const SeatButton = ({ seat_id, blocked, booked, row_name, seat_number, handleSeatClick }) => {
-    const [selected, setSelected]=useState(false)
+
+const SeatButton = ({ seat_id, blocked, booked, row_name, seat_number, handleSeatClick, selected }) => {
+    const [isSelected, setSelected]= useState(selected)
     const seat = row_name.concat(seat_number)
+
 
     if (blocked === 1 || booked === 1) {
         return (
@@ -13,12 +15,12 @@ const SeatButton = ({ seat_id, blocked, booked, row_name, seat_number, handleSea
             </div>
         )
     }
-    else if (selected === true) {
+    else if (isSelected) {
         return (
             <div>
                 <button className="seat-primary" value={seat_id} onClick={(e) => 
                     {
-                        setSelected(!selected);
+                        setSelected(!isSelected);
                         handleSeatClick(e);
                     }
                 }>
@@ -32,7 +34,7 @@ const SeatButton = ({ seat_id, blocked, booked, row_name, seat_number, handleSea
             <div>
                 <button className="seat" value={seat_id} onClick={(e) => 
                     {
-                        setSelected(!selected);
+                        setSelected(!isSelected);
                         handleSeatClick(e);
                     }
                 }>

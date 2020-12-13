@@ -122,18 +122,27 @@ Thread.getAllWithStatus = (user_id, type, result) =>{
         // same logic as in message.model for new messages
         // Admin see every thread from all customers
         sqlString = 
-        `SELECT DISTINCT t.* , 
+        `SELECT DISTINCT t.* ,
+            (SELECT date_sub(m1.sent_date_time, interval 6 hour)
+                FROM message m1
+                INNER JOIN thread t2 ON m1.thread_id = t2.thread_id
+                WHERE t2.thread_id = t.thread_id
+                ORDER BY m1.message_id DESC
+                LIMIT 1
+            ) AS sort_date, 
             (SELECT DATE_FORMAT(date_sub(m1.sent_date_time, interval 6 hour), '%c/%e/%Y %r')
                 FROM message m1
-                INNER JOIN thread t2 ON t2.thread_id = t.thread_id AND m1.thread_id = t.thread_id
+                INNER JOIN thread t2 ON m1.thread_id = t2.thread_id
+                WHERE t2.thread_id = t.thread_id
                 ORDER BY m1.message_id DESC
                 LIMIT 1
             ) AS last_message_date,
             (SELECT DATE_FORMAT(date_sub(m1.sent_date_time, interval 6 hour), '%c/%e/%Y %r')
-            FROM message m1
-            INNER JOIN thread t2 ON t2.thread_id = t.thread_id AND m1.thread_id = t.thread_id
-            ORDER BY m1.message_id ASC
-            LIMIT 1
+                FROM message m1
+                INNER JOIN thread t2 ON m1.thread_id = t2.thread_id
+                WHERE t2.thread_id = t.thread_id 
+                ORDER BY m1.message_id ASC
+                LIMIT 1
             ) AS created_date_time,
             CASE WHEN t.thread_id = (
                     SELECT DISTINCT t2.thread_id
@@ -147,33 +156,51 @@ Thread.getAllWithStatus = (user_id, type, result) =>{
                     )
                 THEN 1 
                 ELSE 0 
-            END AS isNewMessage
+            END AS isNewMessage,
+            ( SELECT COUNT(DISTINCT m.message_id)
+            FROM thread t2   
+                INNER JOIN message m ON m.thread_id = t2.thread_id AND m.sending_user_id != ${user_id}
+                INNER JOIN userreadmessage urm1 ON urm1.message_id = m.message_id  
+                LEFT JOIN userreadmessage urm2 ON urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
+                INNER JOIN user u1 ON u1.user_id = urm1.user_id  AND u1.user_id = m.sending_user_id
+                LEFT JOIN user u2 ON u2.user_id = urm2.user_id AND u2.type != u1.type 
+            WHERE u2.user_id IS NULL AND t.thread_id = t2.thread_id
+            ) AS totalNew
                 FROM thread t
                 INNER JOIN message m ON m.thread_id = t.thread_id 
                 INNER JOIN user u ON u.user_id = m.sending_user_id
-                ORDER BY  isNewMessage DESC, sent_date_time DESC, thread_id`
+                ORDER BY  isNewMessage DESC, sort_date DESC, thread_id`
     }
 
     if(type === 'C'){
         // customers only see the threads/messages that they are a participant in (i.e. they created the thread)
         sqlString = 
         `SELECT DISTINCT t.* , 
+            (SELECT date_sub(m1.sent_date_time, interval 6 hour)
+                FROM message m1
+                INNER JOIN thread t2 ON m1.thread_id = t2.thread_id
+                WHERE t2.thread_id = t.thread_id
+                ORDER BY m1.message_id DESC
+                LIMIT 1
+            ) AS sort_date,
             (SELECT DATE_FORMAT(date_sub(m1.sent_date_time, interval 6 hour), '%c/%e/%Y %r')
                 FROM message m1
-                INNER JOIN thread t2 ON t2.thread_id = t.thread_id AND m1.thread_id = t.thread_id
+                INNER JOIN thread t2 ON m1.thread_id = t2.thread_id
+                WHERE t2.thread_id = t.thread_id
                 ORDER BY m1.message_id DESC
                 LIMIT 1
             ) AS last_message_date,
             (SELECT DATE_FORMAT(date_sub(m1.sent_date_time, interval 6 hour), '%c/%e/%Y %r')
-            FROM message m1
-            INNER JOIN thread t2 ON t2.thread_id = t.thread_id AND m1.thread_id = t.thread_id
-            ORDER BY m1.message_id ASC
-            LIMIT 1
+                FROM message m1
+                INNER JOIN thread t2 ON m1.thread_id = t2.thread_id
+                WHERE t2.thread_id = t.thread_id
+                ORDER BY m1.message_id ASC
+                LIMIT 1
             ) AS created_date_time,
             CASE WHEN t.thread_id = (
                     SELECT DISTINCT t2.thread_id
                         FROM thread t2  
-                            JOIN threadparticipant tp ON tp.thread_id = t.thread_id AND tp.user_id = ${user_id}
+                            INNER JOIN threadparticipant tp ON tp.thread_id = t2.thread_id AND tp.user_id = ${user_id}
                             INNER JOIN message m ON m.thread_id = t2.thread_id AND m.sending_user_id != ${user_id}
                             INNER JOIN userreadmessage urm1 ON urm1.message_id = m.message_id  
                             LEFT JOIN userreadmessage urm2 ON urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
@@ -183,13 +210,23 @@ Thread.getAllWithStatus = (user_id, type, result) =>{
                     )
                 THEN 1 
                 ELSE 0 
-            END AS isNewMessage
+            END AS isNewMessage,
+            ( SELECT COUNT(DISTINCT m.message_id)
+                FROM thread t2  
+                    INNER JOIN threadparticipant tp ON tp.thread_id = t2.thread_id AND tp.user_id = ${user_id}
+                    INNER JOIN message m ON m.thread_id = t2.thread_id AND m.sending_user_id != ${user_id}
+                    INNER JOIN userreadmessage urm1 ON urm1.message_id = m.message_id  
+                    LEFT JOIN userreadmessage urm2 ON urm2.message_id = m.message_id AND urm1.user_id != urm2.user_id 
+                    INNER JOIN user u1 ON u1.user_id = urm1.user_id  AND u1.user_id = m.sending_user_id
+                    LEFT JOIN user u2 ON u2.user_id = urm2.user_id AND u2.type != u1.type 
+                WHERE u2.user_id IS NULL and t.thread_id = t2.thread_id
+            ) AS totalNew
                 FROM thread t
                 INNER JOIN message m ON m.thread_id = t.thread_id 
                 INNER JOIN user u ON u.user_id = m.sending_user_id
                 INNER JOIN threadparticipant tp ON tp.thread_id = t.thread_id
                 WHERE tp.user_id = ${user_id}
-                ORDER BY  isNewMessage DESC, last_message_date DESC, thread_id`
+                ORDER BY  isNewMessage DESC, sort_date DESC, thread_id`
     }
 
     sql.query( sqlString, (err, res) => {

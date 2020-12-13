@@ -11,6 +11,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "antd": "^4.7.3",
+    "antd-mask-input": "^0.1.14",
     "axios": "^0.20.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
@@ -33,8 +34,10 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-spinners": "^0.9.0",
+    "recompose": "^0.30.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "save": "^2.4.0",
     "styled-components": "^5.2.1",
     "uuid": "^8.3.1"
   },

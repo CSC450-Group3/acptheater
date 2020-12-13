@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Radio, Col, Card, Row } from 'antd';
+import { Button, Radio, Col, Card, Row , Select} from 'antd';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import { isoDate } from '../helper/FormatDate'
@@ -8,7 +8,10 @@ import MovieCard from '../components/movie/MovieCard';
 import Alert from '@material-ui/lab/Alert';
 import { withRouter } from "react-router-dom";
 import Loader from '../components/util/Loader'
+import moment from 'moment'
 
+
+const { Option } = Select;
 
 const showtimeStyles = makeStyles((theme) => ({
 	PurchaseForm: {
@@ -43,20 +46,27 @@ const showtimeStyles = makeStyles((theme) => ({
 
 function PurchaseTickets(props) {
 	const classes = showtimeStyles();
-	const { customerMovie, selectedTicket, setSelectedTicketInfo, clearSelectedTicket, clearMovieTicketSelections, history } = props;
+	const { customerMovie, setSelectedTicketInfo, clearSeats, clearSelectedTicket, clearMovieTicketSelections, history } = props;
 	const [dates, setDates] = useState([]);
 	const [movieTimes, setMovieTimes] = useState([]);
 	const [movieTimesObj] = useState({});
 	const [numberOfViewers, setNumberOfViewers] = useState(1);
-	const [selectedDate, setSelectedDate] = useState(customerMovie.selected_date)
+	const [selectedDate, setSelectedDate] = useState("")
 	const [selectedShowingID, setselectedShowingID] = useState(null);
 	const [ticketType, setTicketType] = useState("theater")
 	const [timeError, setTimeError] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
 
-	useEffect(() => {
-		// load all showing dates for a given movie on or after today
 
+	useEffect(() => {
+		document.title = `ACP | Select Ticket`;
+
+		// clear the data upon re-loading this screen 
+		// starting over on ticket selection
+		clearSeats();
+		clearSelectedTicket();
+		
+		// load all showing dates for a given movie on or after today
 		async function loadShowings() {
 			await axios.get('/api/showing/movie/' + customerMovie.movie_id)
 				.then(function (res) {
@@ -74,8 +84,10 @@ function PurchaseTickets(props) {
 			loadShowings();
 		}
 
+		//set the selected date if user selected something else on Showing page
 		if (customerMovie.selected_date !== "") {
 			loadShowingTimes(customerMovie.selected_date);
+			setSelectedDate(moment(customerMovie.selected_date).format('MM/DD/YYYY'))
 		}
 
 	}, [customerMovie])
@@ -103,12 +115,14 @@ function PurchaseTickets(props) {
 		setselectedShowingID(e.target.value)
 		setTimeError(false);
 	}
-
-	const handleDateChange = async (e) => {
-		setSelectedDate(e.target.value);
+	const handleDateChange = (value) => {
+		setSelectedDate(value);
 
 		//load the show times for the date that was selected
-		loadShowingTimes(e.target.value);
+		loadShowingTimes(value);
+
+		//clear the dependent data dependent on the  date
+		setselectedShowingID(null)
 	}
 
 	const handleSelectTicketType = (e) => {
@@ -243,33 +257,34 @@ function PurchaseTickets(props) {
 
 											<div className={classes.formField}>
 												<label htmlFor="date" style={{ padding: 10 }}>Date: </label>
-												<select
+												<Select
 													value={selectedDate}
 													name="date"
 													required
-													onChange={(event) => handleDateChange(event)}
+													onChange={handleDateChange}
 													className={classes.dateSelect}
 												>
 													{Object.keys(dates).map((key) => (
-														<option
+														<Option
 															key={dates[key].date}
 															value={dates[key].date}
 															name={dates[key].date}
 														>
-															{dates[key].date}
-														</option>
+															{moment(dates[key].date).format('MM/DD/YYYY')}
+														</Option>
 
 													))}
-												</select>
+												</Select>
 												<br />
 											</div>
+											
 											<div className={classes.formField}>
 												<label htmlFor="time" style={{ padding: 10 }}>Time (CST): </label>
 												<br />
-												<Radio.Group onChange={onTimeChange} style={{ padding: 10 }} required >
+												<Radio.Group onChange={onTimeChange} style={{ padding: 10 }} required>
 													{Object.keys(movieTimes).map((key) => (
 														<Time
-
+															value={movieTimes[key].showing_id}
 															key={movieTimes[key].showing_id}
 															showing_id={movieTimes[key].showing_id}
 															time={movieTimes[key].time}

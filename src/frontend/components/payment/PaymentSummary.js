@@ -9,7 +9,7 @@ const PaymentSummary = ({ title, total_price, selectedSeats, selectedTicket, sho
     return (
         <Row type="flex" align="center">
             <Col >
-                <Card style={{ maxWidth: 300, backgroundColor: "inherit", border: "none" }}>
+                <Card style={{ maxWidth: 300, backgroundColor: "inherit", border: "none" }}> 
                     <h3>Purchase Summary</h3>
                     <div style={{ textAlign: "left" }}>
                         <p>Selected Movie: {title}</p>

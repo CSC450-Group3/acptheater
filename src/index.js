@@ -26,17 +26,20 @@ store.subscribe(()=>{
     customerMovie: store.getState().customerMovie,
     selectedTicket: store.getState().selectedTicket,
     selectedSeats: store.getState().selectedSeats,
+    movieToSchedule: store.getState().movieToSchedule,
+    showings: store.getState().showings
   });
 })
 
 //console.log("STORE ", store.getState())
 
 ReactDOM.render(
-  <React.StrictMode>
+  //Removing strict mode because AntD doesn't play nicely with it and loses scroll bars
+  //<React.StrictMode>
     <Provider store={store}>
       <App />
-    </Provider>
-  </React.StrictMode>,
+    </Provider>,
+  //</React.StrictMode>,
   document.getElementById('root')
 );
 

@@ -18,7 +18,7 @@ const footerStyle = makeStyles(() => ({
             <div className="footer-wrapper">
             <div style={{padding: 20}}className={classes.footer}>
                 <footer className="footer">
-                    ACP Theater | Caitlin Landrus, Patrick Garry, Alex Yahn | © 2020
+                    ACP Theatres | Caitlin Landrus, Patrick Garry, Alex Yahn | © 2020
                 </footer>
             </div>   
             </div>

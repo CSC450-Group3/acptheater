@@ -105,16 +105,19 @@
 .userCreationWelcome {
   background-image: url("/images/seats.jpeg");
   background-color: #cccccc;
-  height: 700px; /* You must set a specified height */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
   padding-top: 3%;
+	min-height: 90vh; /* Makes the image cover the full background */
+  padding-bottom: 150px;
 }
 
 .userCreationForm {
-  background-image: url("/images/gradientGrey.jpeg");
-  background-color: #cccccc;
+	/* background-image: url("/images/gradientGrey.jpeg");
+  background-color: #cccccc; */
+  background: rgb(124,121,121);
+  background: linear-gradient(150deg, rgb(124, 121, 121,1) 0%, rgba(234,235,237,1) 46%, rgba(124,121,121,1) 100%);
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
@@ -123,7 +126,7 @@
   padding: 15px;
   justify-content: center;
   align-items: center;
-  text-align: center;
+  text-align: left;
   border-radius: 25px;
   border: 4px solid #000000;
   font-size: calc(5px + 2vmin);
@@ -131,11 +134,10 @@
 }
 
 .userCreationHeader {
-  background-color: #000000;
-  font-size: calc(20px + 2vmin);
+  color: #000000;
+  font-size: calc(18px + 2vmin);
   border-radius: 25px;
-  border: 4px solid #000000;
-  color: white;
+  text-align: center;
 }
 
 .userCreationAlreadyMember {
@@ -171,8 +173,22 @@
   border-radius: 15px;
 }
 
+.confirmationContainer {
+  background-color: white;
+  margin-left: 20%;
+  margin-right: 20%;  
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  min-Height: 100vh;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
 .newMessage {
-  float: left;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 hr.solid {
@@ -190,8 +206,10 @@ hr.solid {
 }
 
 .login {
-  background-image: url("/images/gradientGrey.jpeg");
-  background-color: #cccccc;
+  /* background-image: url("/images/gradientGrey.jpeg"); */
+  /* background-color: #cccccc; */
+  background: rgb(124,121,121);
+  background: linear-gradient(150deg, rgb(124, 121, 121,1) 0%, rgba(234,235,237,1) 46%, rgba(124,121,121,1) 100%);
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
@@ -200,8 +218,8 @@ hr.solid {
   align-items: center;
   font-size: calc(3px + 2vmin);
   color: 282c34;
-  width: 20%;
-  text-align: center;
+  width: 22%;
+  text-align: left;
   border-radius: 25px;
   border: 4px solid #000000;
   padding: 3%;
@@ -216,6 +234,12 @@ hr.solid {
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
   padding-top: 5%;
+  min-Height: 90vh; /* makes the image take up the full background */
+}
+
+.login-input{
+  width: 100%;
+  padding-bottom: 10px;
 }
 
 .loginHeader {
@@ -230,20 +254,19 @@ hr.solid {
   background-image: url("/images/lights.jpeg");
   background-color: #cccccc;
   /*height: 700px; /* You must set a specified height */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  background-size: cover; /* Resize the background image to cover the entire container */
+  background-repeat: no-repeat; /* Do not repeat the image */	
+  background-size: 100vw 100vh; /* Resize the background image to cover the entire container */
   color: black;
   text-align: center;
   margin: auto;
-  min-height: 85vh; /* Fill the available screen area */
   background-attachment: fixed; /* Keep the image fixed to background where it is at on scroll*/
 }
 
 .userUpdateDash {
-  background-image: url("/images/gradientGrey.jpeg");
-  background-color: #cccccc;
-  background-position: center; /* Center the image */
+	/* background-image: url("/images/gradientGrey.jpeg");
+  background-color: #cccccc; */
+  background: rgb(124,121,121);
+  background: linear-gradient(150deg, rgb(124, 121, 121,1) 0%, rgba(234,235,237,1) 46%, rgba(124,121,121,1) 100%);
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover; /* Resize the background image to cover the entire container */
   font-size: calc(3px + 2vmin);
@@ -254,6 +277,17 @@ hr.solid {
   padding: 3%;
   margin: auto;
   margin-top: 5%;
+  text-align: "center";
+}
+
+.userUpdateDashForm{
+  text-align: left;
+}
+.userUpdateDashActionBar{
+  text-align: center;
+}
+.userUpdateDashButton{
+  margin: 10px;
 }
 
 .App-link {
@@ -264,23 +298,34 @@ hr.solid {
   position: absolute;
   top: 50vh;
   z-index: 99;
-  min-height: 100vh;
   min-width: 100vw;
+  padding:0;
+  margin:0;
 }
 
 .loadingWrapper{
   position: absolute;
   top: 0;
+  left: 0;
   background-color: rgba(0, 0, 0, .4);
   z-index: 98;
   min-height: 100vh;
   min-width: 100vw;
+  padding:0;
+  margin:0;
+
 }
 
 /* prevent title getting gut off in movie cards */
 .ant-card-meta-title {
   white-space: pre-line;
 }
+
+.ant-alert{
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
 
 @keyframes App-logo-spin {
   from {
@@ -305,6 +350,10 @@ hr.solid {
 
 .ant-card-head-title{
   text-align: center;
+}
+
+.ant-layout-content{
+  background-color:#282c34;
 }
 
 .seat{
